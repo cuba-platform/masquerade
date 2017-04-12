@@ -1,0 +1,17 @@
+group 'com.haulmont'
+version '0.6-SNAPSHOT'
+
+apply plugin: 'groovy'
+apply plugin: 'java'
+
+sourceCompatibility = 1.8
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    compile 'org.codehaus.groovy:groovy-all:2.3.11'
+    compile 'com.codeborne:selenide:4.4.2'
+    testCompile 'junit:junit:4.12'
+}
