@@ -1,4 +1,4 @@
-package com.haulmont.masquerade.components.impl;
+package com.haulmont.masquerade.components.impl.fresh;
 
 import com.codeborne.selenide.Condition;
 import com.codeborne.selenide.SelenideElement;
@@ -8,7 +8,7 @@ import org.openqa.selenium.By;
 import static com.codeborne.selenide.Selenide.$;
 
 public class TextFieldImpl implements TextField {
-    private SelenideElement impl;
+    private final SelenideElement impl;
 
     public TextFieldImpl(By by) {
         this.impl = $(by);

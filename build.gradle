@@ -1,5 +1,5 @@
 group 'com.haulmont'
-version '0.6-SNAPSHOT'
+version '0.1-SNAPSHOT'
 
 apply plugin: 'groovy'
 apply plugin: 'java'
@@ -11,7 +11,43 @@ repositories {
 }
 
 dependencies {
-    compile 'org.codehaus.groovy:groovy-all:2.3.11'
     compile 'com.codeborne:selenide:4.4.2'
+    testCompile 'org.codehaus.groovy:groovy-all:2.4.10'
     testCompile 'junit:junit:4.12'
+}
+
+task sourceJar(type: Jar) {
+    from sourceSets.main.java
+    from sourceSets.main.resources
+    classifier = 'sources'
+}
+
+artifacts {
+    archives sourceJar
+}
+
+if (project.hasProperty('uploadUrl')) {
+    apply plugin: 'maven'
+
+    configurations {
+        deployerJars
+    }
+
+    dependencies {
+        deployerJars('org.apache.maven.wagon:wagon-http:2.12')
+    }
+
+    def uploadUrl = project.uploadUrl
+    def uploadUser = project.uploadUser
+    def uploadPassword = project.uploadPassword
+
+    uploadArchives.configure {
+        repositories.mavenDeployer {
+            name = 'httpDeployer'
+            configuration = configurations.deployerJars
+            repository(url: uploadUrl) {
+                authentication(userName: uploadUser, password: uploadPassword)
+            }
+        }
+    }
 }

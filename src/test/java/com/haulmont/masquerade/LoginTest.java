@@ -12,12 +12,13 @@ public class LoginTest {
     public void login() {
         open("http://localhost:8080/app");
 
-        LoginWindow loginWindow = mask("loginMainBox").as(LoginWindow.class);
+        LoginWindow loginWindow = mask("loginMainBox").with(LoginWindow.class);
 
         assertNotNull(loginWindow.getLoginField());
         assertNotNull(loginWindow.getPasswordField());
 
         loginWindow.getLoginField().setValue("masquerade");
         loginWindow.getPasswordField().setValue("rulezzz");
+        loginWindow.getLoginButton().click();
     }
 }

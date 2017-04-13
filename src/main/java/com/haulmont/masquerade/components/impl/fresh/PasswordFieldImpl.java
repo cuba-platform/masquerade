@@ -1,4 +1,4 @@
-package com.haulmont.masquerade.components.impl;
+package com.haulmont.masquerade.components.impl.fresh;
 
 import com.haulmont.masquerade.components.PasswordField;
 import org.openqa.selenium.By;
