@@ -10,8 +10,8 @@ import org.apache.commons.lang3.reflect.FieldUtils;
 import org.openqa.selenium.By;
 
 import java.lang.reflect.Field;
-import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Function;
 
 import static com.haulmont.masquerade.Selectors.byChain;
@@ -19,7 +19,7 @@ import static com.haulmont.masquerade.Selectors.byCubaId;
 
 public final class Masquerade {
 
-    private static final Map<Class, Function<By, ?>> masks = new HashMap<>();
+    private static final Map<Class, Function<By, ?>> masks = new ConcurrentHashMap<>();
 
     public static final String CUBA_VERSION_SYSTEM_PROPERTY = "cuba.version";
 

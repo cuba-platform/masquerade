@@ -1,10 +1,10 @@
 package com.haulmont.masquerade.components.impl.fresh;
 
-import com.codeborne.selenide.Condition;
 import com.codeborne.selenide.SelenideElement;
 import com.haulmont.masquerade.components.TextField;
 import org.openqa.selenium.By;
 
+import static com.codeborne.selenide.Condition.visible;
 import static com.codeborne.selenide.Selenide.$;
 
 public class TextFieldImpl implements TextField {
@@ -16,12 +16,12 @@ public class TextFieldImpl implements TextField {
 
     @Override
     public void setValue(String value) {
-        impl.shouldBe(Condition.visible).setValue(value);
+        impl.shouldBe(visible).setValue(value);
     }
 
     @Override
     public String getValue() {
-        return impl.shouldBe(Condition.visible).getValue();
+        return impl.shouldBe(visible).getValue();
     }
 
     @Override
