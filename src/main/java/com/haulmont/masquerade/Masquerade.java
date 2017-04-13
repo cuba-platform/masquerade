@@ -1,5 +1,6 @@
 package com.haulmont.masquerade;
 
+import com.codeborne.selenide.SelenideElement;
 import com.haulmont.masquerade.components.Button;
 import com.haulmont.masquerade.components.PasswordField;
 import com.haulmont.masquerade.components.TextField;
@@ -8,14 +9,16 @@ import com.haulmont.masquerade.components.impl.fresh.PasswordFieldImpl;
 import com.haulmont.masquerade.components.impl.fresh.TextFieldImpl;
 import org.apache.commons.lang3.reflect.FieldUtils;
 import org.openqa.selenium.By;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.lang.reflect.Field;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Function;
 
-import static com.haulmont.masquerade.Selectors.byChain;
-import static com.haulmont.masquerade.Selectors.byCubaId;
+import static com.codeborne.selenide.Selenide.$;
+import static com.haulmont.masquerade.Selectors.*;
 
 public final class Masquerade {
 
@@ -42,8 +45,8 @@ public final class Masquerade {
         return new Mask(byCubaId(cubId));
     }
 
-    public static Mask mask() {
-        return new Mask(null);
+    public static <T> T mask(Class<T> clazz) {
+        return new Mask(null).with(clazz);
     }
 
     public static class Mask {
@@ -68,24 +71,58 @@ public final class Masquerade {
                     throw new RuntimeException("Unable to instantiate composite", e);
                 }
 
+                By targetBy = by;
+                if (targetBy == null) {
+                    Connect clazzConnect = clazz.getAnnotation(Connect.class);
+                    if (clazzConnect != null && clazzConnect.path().length != 0) {
+                        targetBy = byPath(clazzConnect.path());
+                    }
+                }
+
                 // connect fields
 
                 Field[] allFields = FieldUtils.getAllFields(clazz);
                 for (Field field : allFields) {
-                    Connect[] connects = field.getAnnotationsByType(Connect.class);
-                    if (connects != null && connects.length > 0) {
+                    Connect connect = field.getAnnotation(Connect.class);
+                    if (connect != null) {
                         String fieldName = field.getName();
 
-                        By fieldBy;
-                        if (by != null) {
-                            fieldBy = byChain(by, byCubaId(fieldName));
+                        Object fieldValue;
+                        if (field.getType() == SelenideElement.class) {
+                            By connectBy = targetBy;
+                            if (connectBy == null) {
+                                connectBy = By.tagName("body");
+                            }
+
+                            fieldValue = $(connectBy);
+                        } else if (field.getType() == By.class) {
+                            By connectBy = targetBy;
+                            if (connectBy == null) {
+                                connectBy = By.tagName("body");
+                            }
+
+                            fieldValue = connectBy;
+                        } else if (field.getType() == Logger.class) {
+                            fieldValue = LoggerFactory.getLogger(clazz);
                         } else {
-                            fieldBy = byCubaId(fieldName);
+                            String[] path = connect.path();
+                            if (path.length == 0) {
+                                path = new String[]{fieldName};
+                            }
+
+                            By fieldBy;
+                            if (targetBy != null) {
+                                fieldBy = byChain(targetBy, byPath(path));
+                            } else {
+                                fieldBy = byPath(path);
+                            }
+
+                            fieldValue = mask(fieldBy).with(field.getType());
                         }
 
                         try {
                             field.setAccessible(true);
-                            field.set(instance, mask(fieldBy).with(field.getType()));
+                            field.set(instance, fieldValue);
                         } catch (IllegalAccessException e) {
                             throw new RuntimeException("Unable to set @Connect field " + fieldName, e);
                         }

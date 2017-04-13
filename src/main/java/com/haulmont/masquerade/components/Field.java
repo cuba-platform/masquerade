@@ -1,5 +1,5 @@
 package com.haulmont.masquerade.components;
 
-public interface Field extends Component {
+public interface Field<T extends Field> extends Component<T> {
     boolean isEditable();
 }

@@ -1,6 +1,8 @@
 package com.haulmont.masquerade.components;
 
-public interface Component {
+import com.haulmont.masquerade.base.SelenideElementWrapper;
+
+public interface Component<T extends Component> extends SelenideElementWrapper<T> {
     boolean isEnabled();
     boolean isVisible();
 }

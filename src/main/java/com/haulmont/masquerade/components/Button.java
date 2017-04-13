@@ -1,9 +1,7 @@
 package com.haulmont.masquerade.components;
 
-public interface Button {
+public interface Button extends Component<Button> {
     String getCaption();
-
-    boolean isEnabled();
 
     void click();
 }

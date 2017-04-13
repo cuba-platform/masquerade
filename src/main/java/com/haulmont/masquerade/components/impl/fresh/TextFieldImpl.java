@@ -1,5 +1,6 @@
 package com.haulmont.masquerade.components.impl.fresh;
 
+import com.codeborne.selenide.Condition;
 import com.codeborne.selenide.SelenideElement;
 import com.haulmont.masquerade.components.TextField;
 import org.openqa.selenium.By;
@@ -32,13 +33,17 @@ public class TextFieldImpl implements TextField {
 
     @Override
     public boolean isVisible() {
-        // todo implement
-        return false;
+        return is(Condition.visible);
     }
 
     @Override
     public boolean isEditable() {
         // todo implement
         return false;
+    }
+
+    @Override
+    public SelenideElement delegate() {
+        return impl;
     }
 }

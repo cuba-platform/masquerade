@@ -12,7 +12,7 @@ public class LoginTest {
     public void login() {
         open("http://localhost:8080/app");
 
-        LoginWindow loginWindow = mask("loginMainBox").with(LoginWindow.class);
+        LoginWindow loginWindow = mask(LoginWindow.class);
 
         assertNotNull(loginWindow.getLoginField());
         assertNotNull(loginWindow.getPasswordField());

@@ -1,4 +1,4 @@
 package com.haulmont.masquerade.components;
 
-public interface PasswordField extends TextField {
+public interface PasswordField extends TextInput<PasswordField> {
 }

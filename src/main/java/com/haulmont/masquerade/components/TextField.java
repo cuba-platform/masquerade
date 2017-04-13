@@ -1,6 +1,4 @@
 package com.haulmont.masquerade.components;
 
-public interface TextField extends Field {
-    void setValue(String value);
-    String getValue();
+public interface TextField extends TextInput<TextField> {
 }
