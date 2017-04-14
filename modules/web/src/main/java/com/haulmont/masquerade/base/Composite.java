@@ -1,10 +1,10 @@
 package com.haulmont.masquerade.base;
 
 import com.codeborne.selenide.SelenideElement;
-import com.haulmont.masquerade.Connect;
+import com.haulmont.masquerade.Wire;
 
 public abstract class Composite<T extends Composite> implements SelenideElementWrapper<T> {
-    @Connect
+    @Wire
     private SelenideElement impl;
 
     @Override

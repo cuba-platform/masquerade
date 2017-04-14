@@ -1,51 +1,58 @@
 group 'com.haulmont'
 version '0.1-SNAPSHOT'
 
-apply plugin: 'groovy'
-apply plugin: 'java'
-apply plugin: 'maven'
-
-sourceCompatibility = 1.8
-
-repositories {
-    mavenCentral()
-}
-
-dependencies {
-    compile 'com.codeborne:selenide:4.4.2'
-    testCompile 'org.codehaus.groovy:groovy-all:2.4.10'
-    testCompile 'junit:junit:4.12'
-}
-
-task sourceJar(type: Jar) {
-    from sourceSets.main.java
-    from sourceSets.main.resources
-    classifier = 'sources'
-}
-
-artifacts {
-    archives sourceJar
-}
-
-if (project.hasProperty('uploadUrl')) {
-    configurations {
-        deployerJars
+allprojects {
+    repositories {
+        mavenCentral()
     }
+}
+
+configure([project(':masquerade-web'), project(':masquerade-connector')]) {
+    apply plugin: 'java'
+
+    sourceCompatibility = 1.8
+}
+
+configure(project(':masquerade-web')) {
+    apply plugin: 'groovy'
+    apply plugin: 'maven'
 
     dependencies {
-        deployerJars('org.apache.maven.wagon:wagon-http:2.12')
+        compile 'com.codeborne:selenide:4.4.2'
+        testCompile 'org.codehaus.groovy:groovy-all:2.4.10'
+        testCompile 'junit:junit:4.12'
     }
 
-    def uploadUrl = project.uploadUrl
-    def uploadUser = project.uploadUser
-    def uploadPassword = project.uploadPassword
+    task sourceJar(type: Jar) {
+        from sourceSets.main.java
+        from sourceSets.main.resources
+        classifier = 'sources'
+    }
 
-    uploadArchives.configure {
-        repositories.mavenDeployer {
-            name = 'httpDeployer'
-            configuration = configurations.deployerJars
-            repository(url: uploadUrl) {
-                authentication(userName: uploadUser, password: uploadPassword)
+    artifacts {
+        archives sourceJar
+    }
+
+    if (rootProject.hasProperty('uploadUrl')) {
+        configurations {
+            deployerJars
+        }
+
+        dependencies {
+            deployerJars('org.apache.maven.wagon:wagon-http:2.12')
+        }
+
+        def uploadUrl = rootProject.uploadUrl
+        def uploadUser = rootProject.uploadUser
+        def uploadPassword = rootProject.uploadPassword
+
+        uploadArchives.configure {
+            repositories.mavenDeployer {
+                name = 'httpDeployer'
+                configuration = configurations.deployerJars
+                repository(url: uploadUrl) {
+                    authentication(userName: uploadUser, password: uploadPassword)
+                }
             }
         }
     }

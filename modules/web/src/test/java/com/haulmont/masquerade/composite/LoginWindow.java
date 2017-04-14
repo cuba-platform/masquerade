@@ -1,20 +1,20 @@
 package com.haulmont.masquerade.composite;
 
-import com.haulmont.masquerade.Connect;
+import com.haulmont.masquerade.Wire;
 import com.haulmont.masquerade.base.Composite;
 import com.haulmont.masquerade.components.Button;
 import com.haulmont.masquerade.components.PasswordField;
 import com.haulmont.masquerade.components.TextField;
 
-@Connect(path = "loginMainBox")
+@Wire(path = "loginMainBox")
 public class LoginWindow extends Composite<LoginWindow> {
-    @Connect
+    @Wire
     private TextField loginField;
 
-    @Connect
+    @Wire
     private PasswordField passwordField;
 
-    @Connect(path = {"loginFormLayout", "loginButton"})
+    @Wire(path = {"loginFormLayout", "loginButton"})
     private Button loginButton;
 
     public TextField getLoginField() {

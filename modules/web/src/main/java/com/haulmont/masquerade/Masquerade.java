@@ -71,9 +71,9 @@ public final class Masquerade {
 
                 By targetBy = by;
                 if (targetBy == null) {
-                    Connect clazzConnect = clazz.getAnnotation(Connect.class);
-                    if (clazzConnect != null && clazzConnect.path().length != 0) {
-                        targetBy = byPath(clazzConnect.path());
+                    Wire clazzWire = clazz.getAnnotation(Wire.class);
+                    if (clazzWire != null && clazzWire.path().length != 0) {
+                        targetBy = byPath(clazzWire.path());
                     }
                 }
 
@@ -81,8 +81,8 @@ public final class Masquerade {
 
                 Field[] allFields = FieldUtils.getAllFields(clazz);
                 for (Field field : allFields) {
-                    Connect connect = field.getAnnotation(Connect.class);
-                    if (connect != null) {
+                    Wire wire = field.getAnnotation(Wire.class);
+                    if (wire != null) {
                         String fieldName = field.getName();
 
                         Object fieldValue;
@@ -103,7 +103,7 @@ public final class Masquerade {
                         } else if (field.getType() == Logger.class) {
                             fieldValue = LoggerFactory.getLogger(clazz);
                         } else {
-                            String[] path = connect.path();
+                            String[] path = wire.path();
                             if (path.length == 0) {
                                 path = new String[]{fieldName};
                             }
@@ -122,7 +122,7 @@ public final class Masquerade {
                             field.setAccessible(true);
                             field.set(instance, fieldValue);
                         } catch (IllegalAccessException e) {
-                            throw new RuntimeException("Unable to set @Connect field " + fieldName, e);
+                            throw new RuntimeException("Unable to set @Wire field " + fieldName, e);
                         }
                     }
                 }

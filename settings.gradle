@@ -1,1 +1,5 @@
 rootProject.name = 'masquerade'
+
+include(':masquerade-web', ':masquerade-connector')
+project(':masquerade-web').projectDir = new File(settingsDir, 'modules/web')
+project(':masquerade-connector').projectDir = new File(settingsDir, 'modules/connector')

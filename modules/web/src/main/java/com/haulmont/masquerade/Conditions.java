@@ -18,7 +18,7 @@ public abstract class Conditions extends Condition {
 
         @Override
         public boolean apply(WebElement element) {
-            return true;
+            throw new RuntimeException("ComponentSpecificCondition must be checked ony in component implementations");
         }
     }
 

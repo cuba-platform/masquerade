@@ -1,17 +1,17 @@
 package com.haulmont.masquerade.composite
 
-import com.haulmont.masquerade.Connect
+import com.haulmont.masquerade.Wire
 import com.haulmont.masquerade.components.Button
 import com.haulmont.masquerade.components.PasswordField
 import com.haulmont.masquerade.components.TextField
 
 class GroovyLoginWindow {
-    @Connect
+    @Wire
     TextField loginField
 
-    @Connect
+    @Wire
     PasswordField passwordField
 
-    @Connect
+    @Wire
     Button loginButton
 }
