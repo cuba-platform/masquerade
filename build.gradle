@@ -1,7 +1,7 @@
-group 'com.haulmont.masquerade'
-version '0.1-SNAPSHOT'
-
 allprojects {
+    group 'com.haulmont.masquerade'
+    version '0.1-SNAPSHOT'
+
     repositories {
         mavenCentral()
     }
