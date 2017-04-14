@@ -2,15 +2,20 @@ package com.haulmont.masquerade.components.impl.fresh;
 
 import com.codeborne.selenide.Condition;
 import com.codeborne.selenide.SelenideElement;
+import com.haulmont.masquerade.Conditions;
 import com.haulmont.masquerade.components.Button;
 import org.openqa.selenium.By;
 
-import static com.codeborne.selenide.Condition.visible;
+import static com.codeborne.selenide.Condition.*;
 import static com.codeborne.selenide.Selenide.$;
 import static com.haulmont.masquerade.Selectors.byChain;
+import static com.haulmont.masquerade.sys.VaadinClassNames.DISABLED_CLASSNAME;
 import static org.openqa.selenium.By.className;
 
 public class ButtonImpl implements Button {
+
+    public static final String BUTTON_CAPTION_CLASSNAME = "v-button-caption";
+
     private final By by;
     private final SelenideElement impl;
 
@@ -19,28 +24,59 @@ public class ButtonImpl implements Button {
         this.impl = $(by);
     }
 
-    // todo implement support for shouldBe(Condition.enabled)
-
     @Override
     public String getCaption() {
-        // todo test
-        return $(byChain(by, className(".v-caption-text"))).getText();
+        return $(byChain(by, className(BUTTON_CAPTION_CLASSNAME))).getText();
+    }
+
+    @Override
+    public boolean is(Condition c) {
+        if (c == enabled) {
+            return !impl.has(cssClass(DISABLED_CLASSNAME));
+        }
+        return Button.super.is(c);
     }
 
     @Override
     public boolean isEnabled() {
-        // todo implement
-        return false;
-    }
-
-    @Override
-    public boolean isVisible() {
-        return is(Condition.visible);
+        return is(enabled);
     }
 
     @Override
     public void click() {
-        impl.shouldBe(visible).click();
+        impl.shouldBe(visible)
+                .shouldNotHave(cssClass(DISABLED_CLASSNAME))
+                .click();
+    }
+
+    @Override
+    public Button should(Condition... condition) {
+        for (Condition c : condition) {
+            if (c == enabled) {
+                impl.shouldNotHave(cssClass(DISABLED_CLASSNAME));
+            } else if (c instanceof Conditions.Caption) {
+                String caption = ((Conditions.Caption) c).getCaption();
+                $(byChain(by, className(BUTTON_CAPTION_CLASSNAME))).shouldHave(text(caption));
+            } else {
+                Button.super.should(c);
+            }
+        }
+        return this;
+    }
+
+    @Override
+    public Button shouldNot(Condition... condition) {
+        for (Condition c : condition) {
+            if (c == enabled) {
+                impl.shouldHave(cssClass(DISABLED_CLASSNAME));
+            } if (c instanceof Conditions.Caption) {
+                String caption = ((Conditions.Caption) c).getCaption();
+                $(byChain(by, className(BUTTON_CAPTION_CLASSNAME))).shouldNotHave(text(caption));
+            } else {
+                Button.super.should(c);
+            }
+        }
+        return this;
     }
 
     @Override

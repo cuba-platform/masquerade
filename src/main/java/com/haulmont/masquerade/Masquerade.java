@@ -1,12 +1,8 @@
 package com.haulmont.masquerade;
 
 import com.codeborne.selenide.SelenideElement;
-import com.haulmont.masquerade.components.Button;
-import com.haulmont.masquerade.components.PasswordField;
-import com.haulmont.masquerade.components.TextField;
-import com.haulmont.masquerade.components.impl.fresh.ButtonImpl;
-import com.haulmont.masquerade.components.impl.fresh.PasswordFieldImpl;
-import com.haulmont.masquerade.components.impl.fresh.TextFieldImpl;
+import com.haulmont.masquerade.components.*;
+import com.haulmont.masquerade.components.impl.fresh.*;
 import org.apache.commons.lang3.reflect.FieldUtils;
 import org.openqa.selenium.By;
 import org.slf4j.Logger;
@@ -28,8 +24,10 @@ public final class Masquerade {
 
     static {
         masks.put(TextField.class, TextFieldImpl::new);
+        masks.put(TextArea.class, TextAreaImpl::new);
         masks.put(PasswordField.class, PasswordFieldImpl::new);
         masks.put(Button.class, ButtonImpl::new);
+        masks.put(CheckBox.class, CheckBoxImpl::new);
 
         String cubaVersion = System.getProperty(CUBA_VERSION_SYSTEM_PROPERTY);
         if (cubaVersion == null || "5.x".equals(cubaVersion)) {

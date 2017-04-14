@@ -3,6 +3,8 @@ package com.haulmont.masquerade.base;
 import com.codeborne.selenide.Condition;
 import com.codeborne.selenide.SelenideElement;
 
+import static com.codeborne.selenide.Condition.visible;
+
 @SuppressWarnings("unchecked")
 public interface SelenideElementWrapper<T> {
     SelenideElement delegate();
@@ -11,8 +13,8 @@ public interface SelenideElementWrapper<T> {
         return delegate().exists();
     }
 
-    default boolean isDisplayed() {
-        return delegate().isDisplayed();
+    default boolean isVisible() {
+        return is(visible);
     }
 
     default boolean is(Condition condition) {
@@ -29,13 +31,11 @@ public interface SelenideElementWrapper<T> {
     }
 
     default T shouldHave(Condition... condition) {
-        delegate().shouldHave(condition);
-        return (T) this;
+        return should(condition);
     }
 
     default T shouldBe(Condition... condition) {
-        delegate().shouldBe(condition);
-        return (T) this;
+        return should(condition);
     }
 
     default T shouldNot(Condition... condition) {
@@ -44,13 +44,11 @@ public interface SelenideElementWrapper<T> {
     }
 
     default T shouldNotHave(Condition... condition) {
-        delegate().shouldNotHave(condition);
-        return (T) this;
+        return (T) shouldNot(condition);
     }
 
     default T shouldNotBe(Condition... condition) {
-        delegate().shouldNotBe(condition);
-        return (T) this;
+        return shouldNot(condition);
     }
 
     default T waitUntil(Condition condition, long timeoutMilliseconds) {

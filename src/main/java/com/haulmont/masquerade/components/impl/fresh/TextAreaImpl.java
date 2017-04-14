@@ -1,18 +1,18 @@
 package com.haulmont.masquerade.components.impl.fresh;
 
 import com.codeborne.selenide.SelenideElement;
-import com.haulmont.masquerade.components.TextField;
+import com.haulmont.masquerade.components.TextArea;
 import org.openqa.selenium.By;
 
+import static com.codeborne.selenide.Condition.enabled;
 import static com.codeborne.selenide.Condition.visible;
 import static com.codeborne.selenide.Selenide.$;
 import static com.haulmont.masquerade.Conditions.editable;
-import static com.haulmont.masquerade.Conditions.enabled;
 
-public class TextFieldImpl implements TextField {
+public class TextAreaImpl implements TextArea {
     private final SelenideElement impl;
 
-    public TextFieldImpl(By by) {
+    public TextAreaImpl(By by) {
         this.impl = $(by);
     }
 

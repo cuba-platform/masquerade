@@ -1,12 +1,13 @@
 package com.haulmont.masquerade.components.impl.fresh;
 
-import com.codeborne.selenide.Condition;
 import com.codeborne.selenide.SelenideElement;
 import com.haulmont.masquerade.components.PasswordField;
 import org.openqa.selenium.By;
 
 import static com.codeborne.selenide.Condition.visible;
 import static com.codeborne.selenide.Selenide.$;
+import static com.haulmont.masquerade.Conditions.editable;
+import static com.haulmont.masquerade.Conditions.enabled;
 
 public class PasswordFieldImpl implements PasswordField {
 
@@ -18,7 +19,10 @@ public class PasswordFieldImpl implements PasswordField {
 
     @Override
     public void setValue(String value) {
-        impl.shouldBe(visible).setValue(value);
+        impl.shouldBe(visible)
+                .shouldBe(enabled)
+                .shouldBe(editable)
+                .setValue(value);
     }
 
     @Override
@@ -28,19 +32,12 @@ public class PasswordFieldImpl implements PasswordField {
 
     @Override
     public boolean isEnabled() {
-        // todo implement
-        return false;
-    }
-
-    @Override
-    public boolean isVisible() {
-        return is(Condition.visible);
+        return is(enabled);
     }
 
     @Override
     public boolean isEditable() {
-        // todo implement
-        return false;
+        return is(editable);
     }
 
     @Override
