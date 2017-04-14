@@ -1,4 +1,4 @@
-group 'com.haulmont'
+group 'com.haulmont.masquerade'
 version '0.1-SNAPSHOT'
 
 allprojects {
