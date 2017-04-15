@@ -1,4 +1,4 @@
 package com.haulmont.masquerade.components;
 
-public interface TabSheet extends Component {
+public interface TabSheet extends Component<TabSheet> {
 }

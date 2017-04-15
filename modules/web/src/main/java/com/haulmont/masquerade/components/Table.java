@@ -1,4 +1,4 @@
 package com.haulmont.masquerade.components;
 
-public interface Table extends Component {
+public interface Table extends Component<Table> {
 }

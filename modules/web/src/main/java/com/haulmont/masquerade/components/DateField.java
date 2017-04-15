@@ -1,4 +1,10 @@
 package com.haulmont.masquerade.components;
 
-public interface DateField extends Field {
+import java.time.LocalDate;
+
+public interface DateField extends Field<DateField> {
+    LocalDate getConvertedValue();
+
+    String getValue();
+    void setValue(String value);
 }

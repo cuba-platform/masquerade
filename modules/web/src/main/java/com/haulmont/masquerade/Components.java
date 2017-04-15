@@ -16,18 +16,18 @@ import java.util.function.Function;
 import static com.codeborne.selenide.Selenide.$;
 import static com.haulmont.masquerade.Selectors.*;
 
-public final class Masquerade {
+public class Components {
 
-    private static final Map<Class, Function<By, ?>> masks = new ConcurrentHashMap<>();
+    private static final Map<Class, Function<By, ?>> components = new ConcurrentHashMap<>();
 
     public static final String CUBA_VERSION_SYSTEM_PROPERTY = "cuba.version";
 
     static {
-        masks.put(TextField.class, TextFieldImpl::new);
-        masks.put(TextArea.class, TextAreaImpl::new);
-        masks.put(PasswordField.class, PasswordFieldImpl::new);
-        masks.put(Button.class, ButtonImpl::new);
-        masks.put(CheckBox.class, CheckBoxImpl::new);
+        components.put(TextField.class, TextFieldImpl::new);
+        components.put(TextArea.class, TextAreaImpl::new);
+        components.put(PasswordField.class, PasswordFieldImpl::new);
+        components.put(Button.class, ButtonImpl::new);
+        components.put(CheckBox.class, CheckBoxImpl::new);
 
         String cubaVersion = System.getProperty(CUBA_VERSION_SYSTEM_PROPERTY);
         if (cubaVersion == null || "5.x".equals(cubaVersion)) {
@@ -35,28 +35,28 @@ public final class Masquerade {
         }
     }
 
-    public static Mask mask(By by) {
-        return new Mask(by);
+    public static WireContext wire(By by) {
+        return new WireContext(by);
     }
 
-    public static Mask mask(String cubId) {
-        return new Mask(byCubaId(cubId));
+    public static WireContext wire(String cubaId) {
+        return new WireContext(byCubaId(cubaId));
     }
 
-    public static <T> T mask(Class<T> clazz) {
-        return new Mask(null).with(clazz);
+    public static <T> T wire(Class<T> clazz) {
+        return new WireContext(null).with(clazz);
     }
 
-    public static class Mask {
+    public static class WireContext {
         private final By by;
 
-        public Mask(By by) {
+        public WireContext(By by) {
             this.by = by;
         }
 
         @SuppressWarnings("unchecked")
         public <T> T with(Class<T> clazz) {
-            Function<By, ?> component = masks.get(clazz);
+            Function<By, ?> component = Components.components.get(clazz);
             if (by != null && component != null) {
                 return (T) component.apply(by);
             } else {
@@ -115,7 +115,7 @@ public final class Masquerade {
                                 fieldBy = byPath(path);
                             }
 
-                            fieldValue = mask(fieldBy).with(field.getType());
+                            fieldValue = wire(fieldBy).with(field.getType());
                         }
 
                         try {
@@ -132,7 +132,7 @@ public final class Masquerade {
         }
     }
 
-    public static <T> void registerMask(Class<T> clazz, Function<By, T> maskSupplier) {
-        masks.put(clazz, maskSupplier);
+    public static <T> void register(Class<T> clazz, Function<By, T> maskSupplier) {
+        components.put(clazz, maskSupplier);
     }
 }

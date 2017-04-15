@@ -4,8 +4,8 @@ import com.haulmont.masquerade.composite.LoginWindow;
 import org.junit.Test;
 
 import static com.codeborne.selenide.Selenide.open;
+import static com.haulmont.masquerade.Components.wire;
 import static com.haulmont.masquerade.Conditions.*;
-import static com.haulmont.masquerade.Masquerade.mask;
 import static org.junit.Assert.assertNotNull;
 
 public class LoginTest {
@@ -13,7 +13,7 @@ public class LoginTest {
     public void login() {
         open("http://localhost:8080/app");
 
-        LoginWindow loginWindow = mask(LoginWindow.class);
+        LoginWindow loginWindow = wire(LoginWindow.class);
 
         assertNotNull(loginWindow.getLoginField());
         assertNotNull(loginWindow.getPasswordField());

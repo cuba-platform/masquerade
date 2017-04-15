@@ -1,5 +1,4 @@
 package com.haulmont.masquerade.components;
 
-public interface GroupBox extends Container {
-
+public interface GroupBox extends Container<GroupBox> {
 }

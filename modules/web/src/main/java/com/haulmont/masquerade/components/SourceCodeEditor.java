@@ -1,5 +1,5 @@
 package com.haulmont.masquerade.components;
 
-public interface SourceCodeEditor {
+public interface SourceCodeEditor extends Field<SourceCodeEditor> {
 
 }

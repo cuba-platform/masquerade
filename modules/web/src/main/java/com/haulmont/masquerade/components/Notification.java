@@ -1,5 +1,7 @@
 package com.haulmont.masquerade.components;
 
-public interface Notification {
+import com.haulmont.masquerade.base.SelenideElementWrapper;
+
+public interface Notification extends SelenideElementWrapper<Notification> {
 
 }

@@ -1,5 +1,5 @@
 package com.haulmont.masquerade.components;
 
-public interface GroupTable extends Component {
+public interface GroupTable extends Component<GroupTable> {
 
 }

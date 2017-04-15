@@ -1,4 +1,4 @@
 package com.haulmont.masquerade.components;
 
-public interface TreeTable extends Component {
+public interface TreeTable extends Component<TreeTable> {
 }
