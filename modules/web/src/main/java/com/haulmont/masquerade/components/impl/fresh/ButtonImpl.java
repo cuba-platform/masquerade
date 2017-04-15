@@ -6,6 +6,8 @@ import com.haulmont.masquerade.Conditions;
 import com.haulmont.masquerade.components.Button;
 import org.openqa.selenium.By;
 
+import java.util.Objects;
+
 import static com.codeborne.selenide.Condition.*;
 import static com.codeborne.selenide.Selenide.$;
 import static com.haulmont.masquerade.Selectors.byChain;
@@ -35,6 +37,15 @@ public class ButtonImpl implements Button {
             return !impl.has(cssClass(DISABLED_CLASSNAME));
         }
         return Button.super.is(c);
+    }
+
+    @Override
+    public boolean has(Condition condition) {
+        if (condition instanceof Conditions.Caption) {
+            String expectedCaption = ((Conditions.Caption) condition).getCaption();
+            return Objects.equals(getCaption(), expectedCaption);
+        }
+        return Button.super.has(condition);
     }
 
     @Override

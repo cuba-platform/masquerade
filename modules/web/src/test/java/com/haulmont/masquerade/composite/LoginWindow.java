@@ -3,6 +3,7 @@ package com.haulmont.masquerade.composite;
 import com.haulmont.masquerade.Wire;
 import com.haulmont.masquerade.base.Composite;
 import com.haulmont.masquerade.components.Button;
+import com.haulmont.masquerade.components.CheckBox;
 import com.haulmont.masquerade.components.PasswordField;
 import com.haulmont.masquerade.components.TextField;
 
@@ -13,6 +14,9 @@ public class LoginWindow extends Composite<LoginWindow> {
 
     @Wire
     private PasswordField passwordField;
+
+    @Wire(path = "rememberMeCheckBox")
+    private CheckBox rememberMeCheckBox;
 
     @Wire(path = {"loginFormLayout", "loginButton"})
     private Button loginButton;
@@ -27,5 +31,9 @@ public class LoginWindow extends Composite<LoginWindow> {
 
     public Button getLoginButton() {
         return loginButton;
+    }
+
+    public CheckBox getRememberMeCheckBox() {
+        return rememberMeCheckBox;
     }
 }
