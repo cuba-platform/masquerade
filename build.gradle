@@ -11,17 +11,6 @@ configure([project(':masquerade-web'), project(':masquerade-connector')]) {
     apply plugin: 'java'
 
     sourceCompatibility = 1.8
-}
-
-configure(project(':masquerade-web')) {
-    apply plugin: 'groovy'
-    apply plugin: 'maven'
-
-    dependencies {
-        compile 'com.codeborne:selenide:4.4.2'
-        testCompile 'org.codehaus.groovy:groovy-all:2.4.10'
-        testCompile 'junit:junit:4.12'
-    }
 
     task sourceJar(type: Jar) {
         from sourceSets.main.java
@@ -55,5 +44,22 @@ configure(project(':masquerade-web')) {
                 }
             }
         }
+    }
+}
+
+configure(project(':masquerade-connector')) {
+    dependencies {
+        testCompile 'junit:junit:4.12'
+    }
+}
+
+configure(project(':masquerade-web')) {
+    apply plugin: 'groovy'
+    apply plugin: 'maven'
+
+    dependencies {
+        compile 'com.codeborne:selenide:4.4.2'
+        testCompile 'org.codehaus.groovy:groovy-all:2.4.10'
+        testCompile 'junit:junit:4.12'
     }
 }
