@@ -7,10 +7,10 @@ import static com.codeborne.selenide.Condition.visible;
 
 @SuppressWarnings("unchecked")
 public interface SelenideElementWrapper<T> {
-    SelenideElement delegate();
+    SelenideElement getDelegate();
 
     default boolean exists() {
-        return delegate().exists();
+        return getDelegate().exists();
     }
 
     default boolean isVisible() {
@@ -18,15 +18,15 @@ public interface SelenideElementWrapper<T> {
     }
 
     default boolean is(Condition condition) {
-        return delegate().is(condition);
+        return getDelegate().is(condition);
     }
 
     default boolean has(Condition condition) {
-        return delegate().has(condition);
+        return getDelegate().has(condition);
     }
 
     default T should(Condition... condition) {
-        delegate().should(condition);
+        getDelegate().should(condition);
         return (T) this;
     }
 
@@ -39,7 +39,7 @@ public interface SelenideElementWrapper<T> {
     }
 
     default T shouldNot(Condition... condition) {
-        delegate().shouldNot(condition);
+        getDelegate().shouldNot(condition);
         return (T) this;
     }
 
@@ -52,30 +52,30 @@ public interface SelenideElementWrapper<T> {
     }
 
     default T waitUntil(Condition condition, long timeoutMilliseconds) {
-        delegate().waitUntil(condition, timeoutMilliseconds);
+        getDelegate().waitUntil(condition, timeoutMilliseconds);
         return (T) this;
     }
 
     default T waitUntil(Condition condition, long timeoutMilliseconds, long pollingIntervalMilliseconds) {
-        delegate().waitUntil(condition, timeoutMilliseconds, pollingIntervalMilliseconds);
+        getDelegate().waitUntil(condition, timeoutMilliseconds, pollingIntervalMilliseconds);
         return (T) this;
     }
 
     default T waitWhile(Condition condition, long timeoutMilliseconds) {
-        delegate().waitWhile(condition, timeoutMilliseconds);
+        getDelegate().waitWhile(condition, timeoutMilliseconds);
         return (T) this;
     }
 
     default T waitWhile(Condition condition, long timeoutMilliseconds, long pollingIntervalMilliseconds) {
-        delegate().waitWhile(condition, timeoutMilliseconds, pollingIntervalMilliseconds);
+        getDelegate().waitWhile(condition, timeoutMilliseconds, pollingIntervalMilliseconds);
         return (T) this;
     }
 
     default String getAttribute(String name) {
-        return delegate().getAttribute(name);
+        return getDelegate().getAttribute(name);
     }
 
     default String getCssValue(String propertyName) {
-        return delegate().getCssValue(propertyName);
+        return getDelegate().getCssValue(propertyName);
     }
 }

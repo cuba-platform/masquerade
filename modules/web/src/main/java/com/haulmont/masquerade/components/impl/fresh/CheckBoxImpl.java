@@ -86,12 +86,17 @@ public class CheckBoxImpl implements CheckBox {
     }
 
     @Override
-    public SelenideElement delegate() {
+    public SelenideElement getDelegate() {
         return impl;
     }
 
     @Override
     public boolean isEditable() {
         return is(Conditions.editable);
+    }
+
+    @Override
+    public By getBy() {
+        return by;
     }
 }

@@ -1,11 +1,12 @@
 package com.haulmont.masquerade.composite
 
 import com.haulmont.masquerade.Wire
+import com.haulmont.masquerade.base.Composite
 import com.haulmont.masquerade.components.Button
 import com.haulmont.masquerade.components.PasswordField
 import com.haulmont.masquerade.components.TextField
 
-class GroovyLoginWindow {
+class GroovyLoginWindow extends Composite<GroovyLoginWindow> {
     @Wire
     TextField loginField
 

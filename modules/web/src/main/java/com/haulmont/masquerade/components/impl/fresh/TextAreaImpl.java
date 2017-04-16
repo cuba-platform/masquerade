@@ -11,9 +11,11 @@ import static com.haulmont.masquerade.Conditions.editable;
 
 public class TextAreaImpl implements TextArea {
     private final SelenideElement impl;
+    private final By by;
 
     public TextAreaImpl(By by) {
         this.impl = $(by);
+        this.by = by;
     }
 
     @Override
@@ -40,7 +42,12 @@ public class TextAreaImpl implements TextArea {
     }
 
     @Override
-    public SelenideElement delegate() {
+    public SelenideElement getDelegate() {
         return impl;
+    }
+
+    @Override
+    public By getBy() {
+        return by;
     }
 }

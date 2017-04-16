@@ -11,9 +11,11 @@ import static com.haulmont.masquerade.Conditions.enabled;
 
 public class TextFieldImpl implements TextField {
     private final SelenideElement impl;
+    private final By by;
 
     public TextFieldImpl(By by) {
         this.impl = $(by);
+        this.by = by;
     }
 
     @Override
@@ -40,7 +42,12 @@ public class TextFieldImpl implements TextField {
     }
 
     @Override
-    public SelenideElement delegate() {
+    public SelenideElement getDelegate() {
         return impl;
+    }
+
+    @Override
+    public By getBy() {
+        return by;
     }
 }

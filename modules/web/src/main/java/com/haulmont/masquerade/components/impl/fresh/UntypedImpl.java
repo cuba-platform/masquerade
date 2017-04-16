@@ -8,13 +8,20 @@ import static com.codeborne.selenide.Selenide.$;
 
 public class UntypedImpl implements Untyped {
     private final SelenideElement impl;
+    private final By by;
 
     public UntypedImpl(By by) {
         this.impl = $(by);
+        this.by = by;
     }
 
     @Override
-    public SelenideElement delegate() {
+    public SelenideElement getDelegate() {
         return impl;
+    }
+
+    @Override
+    public By getBy() {
+        return by;
     }
 }

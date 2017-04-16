@@ -91,7 +91,12 @@ public class ButtonImpl implements Button {
     }
 
     @Override
-    public SelenideElement delegate() {
+    public SelenideElement getDelegate() {
         return impl;
+    }
+
+    @Override
+    public By getBy() {
+        return by;
     }
 }

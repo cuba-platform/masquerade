@@ -12,8 +12,10 @@ import static com.haulmont.masquerade.Conditions.enabled;
 public class PasswordFieldImpl implements PasswordField {
 
     private final SelenideElement impl;
+    private final By by;
 
     public PasswordFieldImpl(By by) {
+        this.by = by;
         this.impl = $(by);
     }
 
@@ -41,7 +43,12 @@ public class PasswordFieldImpl implements PasswordField {
     }
 
     @Override
-    public SelenideElement delegate() {
+    public SelenideElement getDelegate() {
         return impl;
+    }
+
+    @Override
+    public By getBy() {
+        return by;
     }
 }
