@@ -14,10 +14,10 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Function;
 
 import static com.codeborne.selenide.Selenide.$;
-import static com.haulmont.masquerade.Selectors.*;
+import static com.haulmont.masquerade.Selectors.byChain;
+import static com.haulmont.masquerade.Selectors.byPath;
 
 public class Components {
-
     private static final Map<Class, Function<By, ?>> components = new ConcurrentHashMap<>();
 
     public static final String CUBA_VERSION_SYSTEM_PROPERTY = "cuba.version";
@@ -35,104 +35,96 @@ public class Components {
         }
     }
 
-    public static WireContext wire(By by) {
-        return new WireContext(by);
-    }
-
-    public static WireContext wire(String cubaId) {
-        return new WireContext(byCubaId(cubaId));
-    }
-
     public static <T> T wire(Class<T> clazz) {
-        return new WireContext(null).with(clazz);
+        return wireClassBy(clazz, null);
     }
 
-    public static class WireContext {
-        private final By by;
+    public static <T> T wire(Class<T> clazz, String... path) {
+        return wireClassBy(clazz, byPath(path));
+    }
 
-        public WireContext(By by) {
-            this.by = by;
-        }
+    public static <T> T wire(Class<T> clazz, By by) {
+        return wireClassBy(clazz, by);
+    }
 
-        @SuppressWarnings("unchecked")
-        public <T> T with(Class<T> clazz) {
-            Function<By, ?> component = Components.components.get(clazz);
-            if (by != null && component != null) {
-                return (T) component.apply(by);
-            } else {
-                // custom composite
+    protected static <T> T wireClassBy(Class<T> clazz, By by) {
+        Function<By, ?> component = components.get(clazz);
+        if (by != null && component != null) {
+            //noinspection unchecked
+            return (T) component.apply(by);
+        } else {
+            // custom composite
 
-                T instance;
-                try {
-                    instance = clazz.newInstance();
-                } catch (InstantiationException | IllegalAccessException e) {
-                    throw new RuntimeException("Unable to instantiate composite", e);
-                }
-
-                By targetBy = by;
-                if (targetBy == null) {
-                    Wire clazzWire = clazz.getAnnotation(Wire.class);
-                    if (clazzWire != null && clazzWire.path().length != 0) {
-                        targetBy = byPath(clazzWire.path());
-                    }
-                }
-
-                // connect fields
-
-                Field[] allFields = FieldUtils.getAllFields(clazz);
-                for (Field field : allFields) {
-                    Wire wire = field.getAnnotation(Wire.class);
-                    if (wire != null) {
-                        String fieldName = field.getName();
-
-                        Object fieldValue;
-                        if (field.getType() == SelenideElement.class) {
-                            By connectBy = targetBy;
-                            if (connectBy == null) {
-                                connectBy = By.tagName("body");
-                            }
-
-                            fieldValue = $(connectBy);
-                        } else if (field.getType() == By.class) {
-                            By connectBy = targetBy;
-                            if (connectBy == null) {
-                                connectBy = By.tagName("body");
-                            }
-
-                            fieldValue = connectBy;
-                        } else if (field.getType() == Logger.class) {
-                            fieldValue = LoggerFactory.getLogger(clazz);
-                        } else {
-                            String[] path = wire.path();
-                            if (path.length == 0) {
-                                path = new String[]{fieldName};
-                            }
-
-                            By fieldBy;
-                            if (targetBy != null) {
-                                fieldBy = byChain(targetBy, byPath(path));
-                            } else {
-                                fieldBy = byPath(path);
-                            }
-
-                            fieldValue = wire(fieldBy).with(field.getType());
-                        }
-
-                        try {
-                            field.setAccessible(true);
-                            field.set(instance, fieldValue);
-                        } catch (IllegalAccessException e) {
-                            throw new RuntimeException("Unable to set @Wire field " + fieldName, e);
-                        }
-                    }
-                }
-
-                return instance;
+            T instance;
+            try {
+                instance = clazz.newInstance();
+            } catch (InstantiationException | IllegalAccessException e) {
+                throw new RuntimeException("Unable to instantiate composite", e);
             }
+
+            By targetBy = by;
+            if (targetBy == null) {
+                Wire clazzWire = clazz.getAnnotation(Wire.class);
+                if (clazzWire != null && clazzWire.path().length != 0) {
+                    targetBy = byPath(clazzWire.path());
+                }
+            }
+
+            // connect fields
+
+            Field[] allFields = FieldUtils.getAllFields(clazz);
+            for (Field field : allFields) {
+                Wire wire = field.getAnnotation(Wire.class);
+                if (wire != null) {
+                    String fieldName = field.getName();
+
+                    Object fieldValue;
+                    if (field.getType() == SelenideElement.class) {
+                        By connectBy = targetBy;
+                        if (connectBy == null) {
+                            connectBy = By.tagName("body");
+                        }
+
+                        fieldValue = $(connectBy);
+                    } else if (field.getType() == By.class) {
+                        By connectBy = targetBy;
+                        if (connectBy == null) {
+                            connectBy = By.tagName("body");
+                        }
+
+                        fieldValue = connectBy;
+                    } else if (field.getType() == Logger.class) {
+                        fieldValue = LoggerFactory.getLogger(clazz);
+                    } else {
+                        String[] path = wire.path();
+                        if (path.length == 0) {
+                            path = new String[]{fieldName};
+                        }
+
+                        By fieldBy;
+                        if (targetBy != null) {
+                            fieldBy = byChain(targetBy, byPath(path));
+                        } else {
+                            fieldBy = byPath(path);
+                        }
+
+                        fieldValue = wire(field.getType(), fieldBy);
+                    }
+
+                    try {
+                        field.setAccessible(true);
+                        field.set(instance, fieldValue);
+                    } catch (IllegalAccessException e) {
+                        throw new RuntimeException("Unable to set @Wire field " + fieldName, e);
+                    }
+                }
+            }
+
+            return instance;
         }
     }
 
-    public static <T> void register(Class<T> clazz, Function<By, T> maskSupplier) {
-        components.put(clazz, maskSupplier);
+    public static <T> void register(Class<T> clazz, Function<By, T> componentSupplier) {
+        components.put(clazz, componentSupplier);
     }
 }

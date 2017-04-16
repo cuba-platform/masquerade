@@ -12,7 +12,7 @@ class GroovyLoginTest {
     void login() {
         open("http://localhost:8080/app");
 
-        def loginWindow = wire 'loginMainBox' with GroovyLoginWindow
+        def loginWindow = wire(GroovyLoginWindow, 'loginMainBox')
 
         assertNotNull(loginWindow.loginField)
         assertNotNull(loginWindow.passwordField)

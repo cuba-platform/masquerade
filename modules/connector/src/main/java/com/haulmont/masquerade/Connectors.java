@@ -7,11 +7,11 @@ import java.lang.reflect.Proxy;
 
 public class Connectors {
     public static <T> T jmx(Class<T> clazz) {
-        return jmx(new JmxHost(null, null, ":7777"), clazz);
+        return jmx(clazz, new JmxHost(null, null, ":7777"));
     }
 
     @SuppressWarnings("unchecked")
-    public static <T> T jmx(JmxHost hostInfo, Class<T> clazz) {
+    public static <T> T jmx(Class<T> clazz, JmxHost hostInfo) {
         JmxName jmxName = clazz.getAnnotation(JmxName.class);
         if (jmxName == null) {
             throw new RuntimeException("There is no @JmxName annotation for " + clazz);
