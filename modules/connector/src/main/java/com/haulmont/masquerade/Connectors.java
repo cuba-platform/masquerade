@@ -5,7 +5,7 @@ import com.haulmont.masquerade.jmx.JmxName;
 
 import java.lang.reflect.Proxy;
 
-public class Connector {
+public class Connectors {
     public static <T> T jmx(Class<T> clazz) {
         return jmx(new JmxHost(null, null, ":7777"), clazz);
     }
@@ -20,7 +20,7 @@ public class Connector {
             throw new RuntimeException("JmxName.value is empty for " + clazz);
         }
 
-        return (T) Proxy.newProxyInstance(Connector.class.getClassLoader(), new Class[]{clazz},
+        return (T) Proxy.newProxyInstance(Connectors.class.getClassLoader(), new Class[]{clazz},
                 new JmxCallHandler(hostInfo, jmxName.value()));
     }
 
