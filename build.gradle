@@ -9,6 +9,7 @@ allprojects {
 
 configure([project(':masquerade-web'), project(':masquerade-connector')]) {
     apply plugin: 'java'
+    apply plugin: 'maven'
 
     sourceCompatibility = 1.8
 
@@ -55,7 +56,6 @@ configure(project(':masquerade-connector')) {
 
 configure(project(':masquerade-web')) {
     apply plugin: 'groovy'
-    apply plugin: 'maven'
 
     dependencies {
         compile 'com.codeborne:selenide:4.4.2'

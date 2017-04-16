@@ -1,6 +1,6 @@
 package com.haulmont.masquerade.jmx;
 
-import com.haulmont.masquerade.Connector;
+import com.haulmont.masquerade.Connectors;
 
 import javax.management.MBeanServerConnection;
 import javax.management.MBeanServerInvocationHandler;
@@ -17,10 +17,10 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class JmxCallHandler implements InvocationHandler {
-    private final Connector.JmxHost hostInfo;
+    private final Connectors.JmxHost hostInfo;
     private final String objectName;
 
-    public JmxCallHandler(Connector.JmxHost hostInfo, String objectName) {
+    public JmxCallHandler(Connectors.JmxHost hostInfo, String objectName) {
         this.hostInfo = hostInfo;
         this.objectName = objectName;
     }

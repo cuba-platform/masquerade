@@ -3,7 +3,7 @@ package com.haulmont.masquerade;
 import com.haulmont.masquerade.jmx.ConfigStorage;
 import org.junit.Test;
 
-import static com.haulmont.masquerade.Connector.jmx;
+import static com.haulmont.masquerade.Connectors.jmx;
 import static org.junit.Assert.assertNotNull;
 
 public class JmxTest {
