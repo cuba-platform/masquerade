@@ -1,5 +1,6 @@
 package com.haulmont.masquerade;
 
+import com.haulmont.masquerade.components.Untyped;
 import com.haulmont.masquerade.composite.LoginWindow;
 import org.junit.Test;
 
@@ -35,6 +36,9 @@ public class LoginTest {
 
         String caption = loginWindow.getLoginButton().getCaption();
         boolean enabled = loginWindow.getLoginButton().isEnabled();
+
+        Untyped loginFormLayout = wire(Untyped.class, "loginFormLayout");
+        loginFormLayout.shouldBe(visible);
 
         loginWindow.getLoginButton().click();
     }

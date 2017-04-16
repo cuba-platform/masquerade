@@ -23,6 +23,7 @@ public class Components {
     public static final String CUBA_VERSION_SYSTEM_PROPERTY = "cuba.version";
 
     static {
+        components.put(Untyped.class, UntypedImpl::new);
         components.put(TextField.class, TextFieldImpl::new);
         components.put(TextArea.class, TextAreaImpl::new);
         components.put(PasswordField.class, PasswordFieldImpl::new);
