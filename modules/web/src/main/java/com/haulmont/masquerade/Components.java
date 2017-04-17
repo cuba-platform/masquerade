@@ -31,7 +31,7 @@ public class Components {
         components.put(CheckBox.class, CheckBoxImpl::new);
 
         String cubaVersion = System.getProperty(CUBA_VERSION_SYSTEM_PROPERTY);
-        if (cubaVersion == null || "5.x".equals(cubaVersion)) {
+        if (cubaVersion != null && "5.x".equals(cubaVersion)) {
             // import additional implementations or replace default
         }
     }

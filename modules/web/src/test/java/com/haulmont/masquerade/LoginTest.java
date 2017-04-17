@@ -26,7 +26,7 @@ public class LoginTest {
         loginWindow.getLoginField().setValue("masquerade");
         loginWindow.getPasswordField().setValue("rulezzz");
 
-        loginWindow.getRememberMeCheckBox().set();
+        loginWindow.getRememberMeCheckBox().setChecked(true);
         loginWindow.getRememberMeCheckBox().getCaption();
 
         loginWindow.getLoginButton()

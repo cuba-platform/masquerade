@@ -8,10 +8,12 @@ import org.openqa.selenium.By;
 
 import java.util.Objects;
 
-import static com.codeborne.selenide.Condition.enabled;
-import static com.codeborne.selenide.Condition.visible;
+import static com.codeborne.selenide.Condition.*;
 import static com.codeborne.selenide.Selenide.$;
+import static com.haulmont.masquerade.Conditions.editable;
 import static com.haulmont.masquerade.Selectors.byChain;
+import static com.haulmont.masquerade.sys.VaadinClassNames.DISABLED_CLASSNAME;
+import static com.haulmont.masquerade.sys.VaadinClassNames.READONLY_CLASSNAME;
 import static org.openqa.selenium.By.tagName;
 
 public class CheckBoxImpl implements CheckBox {
@@ -25,10 +27,21 @@ public class CheckBoxImpl implements CheckBox {
 
     @Override
     public boolean is(Condition condition) {
-        // todo Conditions.enabled
-        // todo Conditions.editable
-        // todo Conditions.checked
-        // todo Conditions.selected
+        if (condition == enabled) {
+            return !impl.has(cssClass(DISABLED_CLASSNAME));
+        }
+        if (condition == disabled) {
+            return impl.has(cssClass(DISABLED_CLASSNAME));
+        }
+        if (condition == checked || condition == selected) {
+            return $(byChain(by, tagName("input"))).is(condition);
+        }
+        if (condition == editable) {
+            return !impl.has(cssClass(READONLY_CLASSNAME));
+        }
+        if (condition == readonly) {
+            return impl.has(cssClass(READONLY_CLASSNAME));
+        }
         return CheckBox.super.is(condition);
     }
 
@@ -43,36 +56,61 @@ public class CheckBoxImpl implements CheckBox {
 
     @Override
     public CheckBox should(Condition... condition) {
-        // todo
-        return CheckBox.super.should(condition);
+        for (Condition c : condition) {
+            if (c == enabled) {
+                impl.shouldNotHave(cssClass(DISABLED_CLASSNAME));
+            } else if (c == disabled) {
+                impl.shouldHave(cssClass(DISABLED_CLASSNAME));
+            } else if (c == checked || c == selected) {
+                $(byChain(by, tagName("input"))).shouldBe(c);
+            } else if (c == editable) {
+                impl.shouldNotHave(cssClass(READONLY_CLASSNAME));
+            } else if (c == readonly) {
+                impl.shouldHave(cssClass(READONLY_CLASSNAME));
+            } else if (c instanceof Conditions.Caption) {
+                String caption = ((Conditions.Caption) c).getCaption();
+                $(byChain(by, tagName("label"))).shouldHave(text(caption));
+            } else {
+                CheckBox.super.should(c);
+            }
+        }
+        return this;
     }
 
     @Override
     public CheckBox shouldNot(Condition... condition) {
-        // todo
-        return CheckBox.super.shouldNot(condition);
+        for (Condition c : condition) {
+            if (c == enabled) {
+                impl.shouldHave(cssClass(DISABLED_CLASSNAME));
+            } else if (c == disabled) {
+                impl.shouldNotHave(cssClass(DISABLED_CLASSNAME));
+            } else if (c == checked || c == selected) {
+                $(byChain(by, tagName("input"))).shouldNotBe(c);
+            } else if (c == editable) {
+                impl.shouldHave(cssClass(READONLY_CLASSNAME));
+            } else if (c == readonly) {
+                impl.shouldNotHave(cssClass(READONLY_CLASSNAME));
+            } else if (c instanceof Conditions.Caption) {
+                String caption = ((Conditions.Caption) c).getCaption();
+                $(byChain(by, tagName("label"))).shouldNotHave(text(caption));
+            } else {
+                CheckBox.super.shouldNot(c);
+            }
+        }
+        return this;
     }
 
     @Override
-    public void set() {
+    public void setChecked(boolean checked) {
         $(byChain(by, tagName("input")))
                 .shouldBe(visible)
                 .shouldBe(enabled)
-                .setSelected(true);
+                .setSelected(checked);
     }
 
     @Override
-    public void unset() {
-        $(byChain(by, tagName("input")))
-                .shouldBe(visible)
-                .shouldBe(enabled)
-                .setSelected(true);
-    }
-
-    @Override
-    public boolean isSet() {
-        return $(byChain(by, tagName("input")))
-                .is(Conditions.checked);
+    public boolean isChecked() {
+        return $(byChain(by, tagName("input"))).is(checked);
     }
 
     @Override
@@ -92,7 +130,7 @@ public class CheckBoxImpl implements CheckBox {
 
     @Override
     public boolean isEditable() {
-        return is(Conditions.editable);
+        return is(editable);
     }
 
     @Override
