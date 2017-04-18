@@ -69,7 +69,7 @@ public class CheckBoxImpl implements CheckBox {
                 impl.shouldHave(cssClass(READONLY_CLASSNAME));
             } else if (c instanceof Conditions.Caption) {
                 String caption = ((Conditions.Caption) c).getCaption();
-                $(byChain(by, tagName("label"))).shouldHave(text(caption));
+                $(byChain(by, tagName("label"))).shouldHave(exactTextCaseSensitive(caption));
             } else {
                 CheckBox.super.should(c);
             }
@@ -92,7 +92,7 @@ public class CheckBoxImpl implements CheckBox {
                 impl.shouldNotHave(cssClass(READONLY_CLASSNAME));
             } else if (c instanceof Conditions.Caption) {
                 String caption = ((Conditions.Caption) c).getCaption();
-                $(byChain(by, tagName("label"))).shouldNotHave(text(caption));
+                $(byChain(by, tagName("label"))).shouldNotHave(exactTextCaseSensitive(caption));
             } else {
                 CheckBox.super.shouldNot(c);
             }

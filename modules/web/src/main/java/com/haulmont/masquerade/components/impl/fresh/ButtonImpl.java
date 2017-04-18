@@ -72,7 +72,7 @@ public class ButtonImpl implements Button {
                 impl.shouldHave(cssClass(DISABLED_CLASSNAME));
             } else if (c instanceof Conditions.Caption) {
                 String caption = ((Conditions.Caption) c).getCaption();
-                $(byChain(by, className(BUTTON_CAPTION_CLASSNAME))).shouldHave(text(caption));
+                $(byChain(by, className(BUTTON_CAPTION_CLASSNAME))).shouldHave(exactTextCaseSensitive(caption));
             } else {
                 Button.super.should(c);
             }
@@ -89,7 +89,7 @@ public class ButtonImpl implements Button {
                 impl.shouldNotHave(cssClass(DISABLED_CLASSNAME));
             } if (c instanceof Conditions.Caption) {
                 String caption = ((Conditions.Caption) c).getCaption();
-                $(byChain(by, className(BUTTON_CAPTION_CLASSNAME))).shouldNotHave(text(caption));
+                $(byChain(by, className(BUTTON_CAPTION_CLASSNAME))).shouldNotHave(exactTextCaseSensitive(caption));
             } else {
                 Button.super.shouldNot(c);
             }
