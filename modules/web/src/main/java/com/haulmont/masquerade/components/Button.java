@@ -17,5 +17,5 @@ import com.haulmont.masquerade.Conditions;
 public interface Button extends Component<Button> {
     String getCaption();
 
-    void click();
+    Button click();
 }

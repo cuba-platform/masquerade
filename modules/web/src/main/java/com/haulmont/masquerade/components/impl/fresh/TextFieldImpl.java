@@ -19,11 +19,12 @@ public class TextFieldImpl implements TextField {
     }
 
     @Override
-    public void setValue(String value) {
+    public TextField setValue(String value) {
         impl.shouldBe(visible)
                 .shouldBe(enabled)
                 .shouldBe(editable)
                 .setValue(value);
+        return this;
     }
 
     @Override

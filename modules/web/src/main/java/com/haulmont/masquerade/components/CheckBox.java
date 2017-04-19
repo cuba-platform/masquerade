@@ -19,7 +19,7 @@ import com.haulmont.masquerade.Conditions;
  * </ul>
  */
 public interface CheckBox extends Field<CheckBox> {
-    void setChecked(boolean checked);
+    CheckBox setChecked(boolean checked);
     boolean isChecked();
 
     String getCaption();

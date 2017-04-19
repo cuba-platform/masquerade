@@ -101,11 +101,12 @@ public class CheckBoxImpl implements CheckBox {
     }
 
     @Override
-    public void setChecked(boolean checked) {
+    public CheckBox setChecked(boolean checked) {
         $(byChain(by, tagName("input")))
                 .shouldBe(visible)
                 .shouldBe(enabled)
                 .setSelected(checked);
+        return this;
     }
 
     @Override

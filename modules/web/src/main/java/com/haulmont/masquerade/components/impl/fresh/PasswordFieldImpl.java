@@ -10,7 +10,6 @@ import static com.haulmont.masquerade.Conditions.editable;
 import static com.haulmont.masquerade.Conditions.enabled;
 
 public class PasswordFieldImpl implements PasswordField {
-
     private final SelenideElement impl;
     private final By by;
 
@@ -20,11 +19,12 @@ public class PasswordFieldImpl implements PasswordField {
     }
 
     @Override
-    public void setValue(String value) {
+    public PasswordField setValue(String value) {
         impl.shouldBe(visible)
                 .shouldBe(enabled)
                 .shouldBe(editable)
                 .setValue(value);
+        return this;
     }
 
     @Override

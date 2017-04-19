@@ -57,10 +57,11 @@ public class ButtonImpl implements Button {
     }
 
     @Override
-    public void click() {
+    public Button click() {
         impl.shouldBe(visible)
                 .shouldNotHave(cssClass(DISABLED_CLASSNAME))
                 .click();
+        return this;
     }
 
     @Override

@@ -19,11 +19,12 @@ public class TextAreaImpl implements TextArea {
     }
 
     @Override
-    public void setValue(String value) {
+    public TextArea setValue(String value) {
         impl.shouldBe(visible)
                 .shouldBe(enabled)
                 .shouldBe(editable)
                 .setValue(value);
+        return this;
     }
 
     @Override

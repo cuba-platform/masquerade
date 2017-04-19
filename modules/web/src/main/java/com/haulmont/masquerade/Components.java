@@ -29,6 +29,8 @@ public class Components {
         components.put(PasswordField.class, PasswordFieldImpl::new);
         components.put(Button.class, ButtonImpl::new);
         components.put(CheckBox.class, CheckBoxImpl::new);
+        components.put(LookupField.class, LookupFieldImpl::new);
+        components.put(Label.class, LabelImpl::new);
 
         String cubaVersion = System.getProperty(CUBA_VERSION_SYSTEM_PROPERTY);
         if (cubaVersion != null && "5.x".equals(cubaVersion)) {
