@@ -50,6 +50,18 @@ public class Components {
         return wireClassBy(clazz, by);
     }
 
+    public static <T> T _$(Class<T> clazz) {
+        return wire(clazz);
+    }
+
+    public static <T> T _$(Class<T> clazz, String... path) {
+        return wire(clazz, path);
+    }
+
+    public static <T> T _$(Class<T> clazz, By by) {
+        return wire(clazz, by);
+    }
+
     protected static <T> T wireClassBy(Class<T> clazz, By by) {
         Function<By, ?> component = components.get(clazz);
         if (by != null && component != null) {
