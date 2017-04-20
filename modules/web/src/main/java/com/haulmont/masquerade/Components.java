@@ -18,9 +18,10 @@ import static com.haulmont.masquerade.Selectors.byChain;
 import static com.haulmont.masquerade.Selectors.byPath;
 
 public class Components {
-    private static final Map<Class, Function<By, ?>> components = new ConcurrentHashMap<>();
+    private static final By BODY_MARKER_BY = By.tagName("body");
+    private static final String CUBA_VERSION_SYSTEM_PROPERTY = "cuba.version";
 
-    public static final String CUBA_VERSION_SYSTEM_PROPERTY = "cuba.version";
+    private static final Map<Class, Function<By, ?>> components = new ConcurrentHashMap<>();
 
     static {
         components.put(Untyped.class, UntypedImpl::new);
@@ -38,8 +39,20 @@ public class Components {
         }
     }
 
+    public static <T> void register(Class<T> clazz, Function<By, T> componentSupplier) {
+        components.put(clazz, componentSupplier);
+    }
+
     public static <T> T wire(Class<T> clazz) {
-        return wireClassBy(clazz, null);
+        Wire clazzWire = clazz.getAnnotation(Wire.class);
+        By targetBy;
+        if (clazzWire != null && clazzWire.path().length != 0) {
+            targetBy = byPath(clazzWire.path());
+        } else {
+            targetBy = BODY_MARKER_BY;
+        }
+
+        return wireClassBy(clazz, targetBy);
     }
 
     public static <T> T wire(Class<T> clazz, String... path) {
@@ -63,26 +76,24 @@ public class Components {
     }
 
     protected static <T> T wireClassBy(Class<T> clazz, By by) {
+        if (by == null) {
+            throw new IllegalArgumentException("By cannot be null");
+        }
+        if (clazz == null) {
+            throw new IllegalArgumentException("Class cannot be null");
+        }
+
         Function<By, ?> component = components.get(clazz);
-        if (by != null && component != null) {
+        if (component != null) {
             //noinspection unchecked
             return (T) component.apply(by);
         } else {
             // custom composite
-
             T instance;
             try {
                 instance = clazz.newInstance();
             } catch (InstantiationException | IllegalAccessException e) {
                 throw new RuntimeException("Unable to instantiate composite", e);
-            }
-
-            By targetBy = by;
-            if (targetBy == null) {
-                Wire clazzWire = clazz.getAnnotation(Wire.class);
-                if (clazzWire != null && clazzWire.path().length != 0) {
-                    targetBy = byPath(clazzWire.path());
-                }
             }
 
             // connect fields
@@ -95,19 +106,9 @@ public class Components {
 
                     Object fieldValue;
                     if (field.getType() == SelenideElement.class) {
-                        By connectBy = targetBy;
-                        if (connectBy == null) {
-                            connectBy = By.tagName("body");
-                        }
-
-                        fieldValue = $(connectBy);
+                        fieldValue = $(by);
                     } else if (field.getType() == By.class) {
-                        By connectBy = targetBy;
-                        if (connectBy == null) {
-                            connectBy = By.tagName("body");
-                        }
-
-                        fieldValue = connectBy;
+                        fieldValue = by;
                     } else if (field.getType() == Logger.class) {
                         fieldValue = LoggerFactory.getLogger(clazz);
                     } else {
@@ -117,13 +118,12 @@ public class Components {
                         }
 
                         By fieldBy;
-                        if (targetBy != null) {
-                            fieldBy = byChain(targetBy, byPath(path));
-                        } else {
+                        if (by == BODY_MARKER_BY) {
                             fieldBy = byPath(path);
+                        } else {
+                            fieldBy = byChain(by, byPath(path));
                         }
-
-                        fieldValue = wire(field.getType(), fieldBy);
+                        fieldValue = wireClassBy(field.getType(), fieldBy);
                     }
 
                     try {
@@ -139,7 +139,6 @@ public class Components {
         }
     }
 
-    public static <T> void register(Class<T> clazz, Function<By, T> componentSupplier) {
-        components.put(clazz, componentSupplier);
-    }
+    // todo implement _$$ and ComponentsCollection<T> wire(Class<T>, By by)
+    // todo ComponentsCollection<T> as analogue of ElementsCollection
 }

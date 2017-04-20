@@ -1,9 +1,15 @@
 package com.haulmont.masquerade;
 
+import com.codeborne.selenide.SelenideElement;
 import org.openqa.selenium.By;
+import org.openqa.selenium.SearchContext;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.pagefactory.ByChained;
 
+import java.util.List;
+
 import static com.google.common.base.Preconditions.checkNotNull;
+import static java.util.Collections.singletonList;
 
 public class Selectors extends com.codeborne.selenide.Selectors {
     public static final String CUBA_ID_ATTRIBUTE_NAME = "cuba-id";
@@ -35,4 +41,23 @@ public class Selectors extends com.codeborne.selenide.Selectors {
 
         return new ByChained(bys);
     }
+
+    public static By byTarget(SelenideElement target) {
+        return new ByTarget(target);
+    }
+
+    public static class ByTarget extends By {
+        private final SelenideElement target;
+
+        public ByTarget(SelenideElement target) {
+            this.target = target;
+        }
+
+        @Override
+        public List<WebElement> findElements(SearchContext context) {
+            return singletonList(target.getWrappedElement());
+        }
+    }
+
+    // todo components aware selectors: byCaption, ...
 }
