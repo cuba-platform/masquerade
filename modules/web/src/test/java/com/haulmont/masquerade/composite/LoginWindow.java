@@ -4,7 +4,7 @@ import com.haulmont.masquerade.Wire;
 import com.haulmont.masquerade.base.Composite;
 import com.haulmont.masquerade.components.*;
 
-@Wire(path = "loginMainBox")
+
 public class LoginWindow extends Composite<LoginWindow> {
     @Wire
     private TextField loginField;
@@ -15,8 +15,8 @@ public class LoginWindow extends Composite<LoginWindow> {
     @Wire(path = "rememberMeCheckBox")
     private CheckBox rememberMeCheckBox;
 
-    @Wire(path = {"loginFormLayout", "loginButton"})
-    private Button loginButton;
+    @Wire
+    private Button loginSubmitButton;
 
     @Wire
     private LookupField localesSelect;
@@ -33,7 +33,7 @@ public class LoginWindow extends Composite<LoginWindow> {
     }
 
     public Button getLoginButton() {
-        return loginButton;
+        return loginSubmitButton;
     }
 
     public CheckBox getRememberMeCheckBox() {
