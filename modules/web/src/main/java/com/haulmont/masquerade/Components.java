@@ -5,6 +5,8 @@ import com.haulmont.masquerade.components.*;
 import com.haulmont.masquerade.components.impl.fresh.*;
 import org.apache.commons.lang3.reflect.FieldUtils;
 import org.openqa.selenium.By;
+import org.openqa.selenium.support.FindBy;
+import org.openqa.selenium.support.pagefactory.Annotations;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -100,10 +102,10 @@ public class Components {
 
             Field[] allFields = FieldUtils.getAllFields(clazz);
             for (Field field : allFields) {
+                String fieldName = field.getName();
+
                 Wire wire = field.getAnnotation(Wire.class);
                 if (wire != null) {
-                    String fieldName = field.getName();
-
                     Object fieldValue;
                     if (field.getType() == SelenideElement.class) {
                         fieldValue = $(by);
@@ -131,6 +133,27 @@ public class Components {
                         field.set(instance, fieldValue);
                     } catch (IllegalAccessException e) {
                         throw new RuntimeException("Unable to set @Wire field " + fieldName, e);
+                    }
+                } else {
+                    FindBy findBy = field.getAnnotation(FindBy.class);
+                    if (findBy != null) {
+                        By selector = new Annotations(field).buildBy();
+
+                        By fieldBy;
+                        if (by == BODY_MARKER_BY) {
+                            fieldBy = selector;
+                        } else {
+                            fieldBy = byChain(by, selector);
+                        }
+
+                        Object fieldValue = wireClassBy(field.getType(), fieldBy);
+
+                        try {
+                            field.setAccessible(true);
+                            field.set(instance, fieldValue);
+                        } catch (IllegalAccessException e) {
+                            throw new RuntimeException("Unable to set @FindBy field " + fieldName, e);
+                        }
                     }
                 }
             }

@@ -3,6 +3,7 @@ package com.haulmont.masquerade.composite;
 import com.haulmont.masquerade.Wire;
 import com.haulmont.masquerade.base.Composite;
 import com.haulmont.masquerade.components.*;
+import org.openqa.selenium.support.FindBy;
 
 
 public class LoginWindow extends Composite<LoginWindow> {
@@ -15,7 +16,7 @@ public class LoginWindow extends Composite<LoginWindow> {
     @Wire(path = "rememberMeCheckBox")
     private CheckBox rememberMeCheckBox;
 
-    @Wire
+    @Wire(path = {"loginFormLayout", "loginButton"})
     private Button loginSubmitButton;
 
     @Wire
@@ -23,6 +24,9 @@ public class LoginWindow extends Composite<LoginWindow> {
 
     @Wire
     private Label welcomeLabel;
+
+    @FindBy(className = "c-login-caption")
+    private Label welcomeLabelTest;
 
     public TextField getLoginField() {
         return loginField;
@@ -46,5 +50,9 @@ public class LoginWindow extends Composite<LoginWindow> {
 
     public Label getWelcomeLabel() {
         return welcomeLabel;
+    }
+
+    public Label getWelcomeLabelTest() {
+        return welcomeLabelTest;
     }
 }

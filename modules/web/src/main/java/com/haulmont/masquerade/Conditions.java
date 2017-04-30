@@ -45,7 +45,4 @@ public abstract class Conditions extends Condition {
             return element.getAttribute("readonly") == null;
         }
     };
-
-    // todo public static class Value extends ComponentSpecificCondition
-    // todo public static Value value(String value)
 }

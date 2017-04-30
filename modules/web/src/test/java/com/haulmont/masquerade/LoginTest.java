@@ -30,6 +30,9 @@ public class LoginTest {
         loginWindow.getRememberMeCheckBox().setChecked(true);
         loginWindow.getRememberMeCheckBox().getCaption();
 
+        loginWindow.getWelcomeLabelTest()
+                .shouldBe(Conditions.visible);
+
         loginWindow.getLoginButton()
                 .shouldBe(visible)
                 .shouldBe(enabled)

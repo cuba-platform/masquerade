@@ -15,6 +15,9 @@ public interface LookupField extends Field<LookupField> {
     OptionsPopup getOptionsPopup();
     LookupField closeOptionsPopup();
 
+    /**
+     * todo {@code Conditions.visibleOptions(List<String>)}
+     */
     interface OptionsPopup extends SelenideElementWrapper<OptionsPopup>, ByLocator {
         List<String> getVisibleOptions();
 
