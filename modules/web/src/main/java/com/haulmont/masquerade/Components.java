@@ -85,8 +85,7 @@ public class Components {
 
         Function<By, ?> component = components.get(clazz);
         if (component != null) {
-            //noinspection unchecked
-            return (T) component.apply(by);
+            return clazz.cast(component.apply(by));
         } else {
             // custom composite
             T instance;

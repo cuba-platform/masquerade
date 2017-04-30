@@ -14,6 +14,10 @@ public interface SelenideElementWrapper<T> {
         return getDelegate().exists();
     }
 
+    /**
+     * @deprecated Will be removed after refactor. Use {@code #is(Conditions.visible)}
+     */
+    @Deprecated
     default boolean isVisible() {
         return is(visible);
     }
