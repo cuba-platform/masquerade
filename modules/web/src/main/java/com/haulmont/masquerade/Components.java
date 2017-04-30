@@ -29,6 +29,7 @@ public class Components {
         components.put(TextArea.class, TextAreaImpl::new);
         components.put(PasswordField.class, PasswordFieldImpl::new);
         components.put(Button.class, ButtonImpl::new);
+        components.put(Label.class, LabelImpl::new);
         components.put(CheckBox.class, CheckBoxImpl::new);
         components.put(AppMenu.class, AppMenuImpl::new);
         components.put(LookupField.class, LookupFieldImpl::new);
@@ -92,7 +93,7 @@ public class Components {
             try {
                 instance = clazz.newInstance();
             } catch (InstantiationException | IllegalAccessException e) {
-                throw new RuntimeException("Unable to instantiate composite", e);
+                throw new RuntimeException("Unable to instantiate composite " + clazz.getName(), e);
             }
 
             // connect fields

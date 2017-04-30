@@ -3,7 +3,6 @@ package com.haulmont.masquerade.base;
 import com.codeborne.selenide.Condition;
 import com.codeborne.selenide.SelenideElement;
 
-import static com.codeborne.selenide.Condition.not;
 import static com.codeborne.selenide.Condition.visible;
 
 @SuppressWarnings("unchecked")
