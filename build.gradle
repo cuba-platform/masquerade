@@ -58,8 +58,8 @@ configure(project(':masquerade-web')) {
     apply plugin: 'groovy'
 
     dependencies {
-        compile 'com.codeborne:selenide:4.4.2'
-        compile 'org.seleniumhq.selenium:selenium-java:3.3.1'
+        compile 'com.codeborne:selenide:4.4.3'
+        compile 'org.seleniumhq.selenium:selenium-java:3.4.0'
 
         testCompile 'org.codehaus.groovy:groovy-all:2.4.10'
         testCompile 'junit:junit:4.12'
