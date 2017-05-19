@@ -120,18 +120,8 @@ public class CheckBoxImpl implements CheckBox {
     }
 
     @Override
-    public boolean isEnabled() {
-        return is(enabled);
-    }
-
-    @Override
     public SelenideElement getDelegate() {
         return impl;
-    }
-
-    @Override
-    public boolean isEditable() {
-        return is(editable);
     }
 
     @Override

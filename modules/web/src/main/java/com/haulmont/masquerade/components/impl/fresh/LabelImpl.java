@@ -29,11 +29,6 @@ public class LabelImpl implements Label {
     }
 
     @Override
-    public boolean isEnabled() {
-        return is(enabled);
-    }
-
-    @Override
     public SelenideElement getDelegate() {
         return impl;
     }

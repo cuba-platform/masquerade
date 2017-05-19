@@ -40,13 +40,6 @@ public class AppMenuImpl implements AppMenu {
     }
 
     @Override
-    public boolean isEnabled() {
-        // todo check and implement should/shouldNot
-
-        return is(enabled);
-    }
-
-    @Override
     public SelenideElement getDelegate() {
         return impl;
     }

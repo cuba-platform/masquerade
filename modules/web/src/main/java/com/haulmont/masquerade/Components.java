@@ -163,7 +163,4 @@ public class Components {
             return instance;
         }
     }
-
-    // todo implement _$$ and ComponentsCollection<T> wire(Class<T>, By by)
-    // todo ComponentsCollection<T> as analogue of ElementsCollection
 }

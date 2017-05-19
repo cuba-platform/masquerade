@@ -52,11 +52,6 @@ public class ButtonImpl implements Button {
     }
 
     @Override
-    public boolean isEnabled() {
-        return is(enabled);
-    }
-
-    @Override
     public Button click() {
         impl.shouldBe(visible)
                 .shouldNotHave(cssClass(DISABLED_CLASSNAME))

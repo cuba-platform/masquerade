@@ -2,6 +2,7 @@ package com.haulmont.masquerade.components.impl.fresh;
 
 import com.codeborne.selenide.Condition;
 import com.codeborne.selenide.SelenideElement;
+import com.codeborne.selenide.collections.Texts;
 import com.haulmont.masquerade.components.LookupField;
 import org.openqa.selenium.By;
 
@@ -56,7 +57,8 @@ public class LookupFieldImpl implements LookupField {
     @Override
     public LookupField setFilter(String filter) {
         // todo may be replace with javascript set to speed up this call
-        $(byChain(by, tagName("input"))).shouldBe(visible)
+        $(byChain(by, tagName("input")))
+                .shouldBe(visible)
                 .shouldBe(enabled)
                 .shouldBe(editable)
                 .setValue(filter);
@@ -97,16 +99,6 @@ public class LookupFieldImpl implements LookupField {
     }
 
     @Override
-    public boolean isEditable() {
-        return is(editable);
-    }
-
-    @Override
-    public boolean isEnabled() {
-        return is(enabled);
-    }
-
-    @Override
     public LookupField should(Condition... condition) {
         // todo
         return LookupField.super.should(condition);
@@ -121,9 +113,6 @@ public class LookupFieldImpl implements LookupField {
     public class OptionsPopupImpl implements OptionsPopup {
         private final By by;
         private final SelenideElement impl;
-
-        // todo shouldHave/shouldNotHave visibleOptions(List<String> options)
-        // todo shouldHave/shouldNotHave visibleOptionsCount(int count)
 
         public OptionsPopupImpl(By by) {
             this.by = by;
@@ -147,13 +136,13 @@ public class LookupFieldImpl implements LookupField {
         @Override
         public OptionsPopup nextPage() {
             // todo implement
-            throw new UnsupportedOperationException("TODO");
+            throw new UnsupportedOperationException();
         }
 
         @Override
         public OptionsPopup previousPage() {
             // todo implement
-            throw new UnsupportedOperationException("TODO");
+            throw new UnsupportedOperationException();
         }
 
         @Override
@@ -164,6 +153,24 @@ public class LookupFieldImpl implements LookupField {
         @Override
         public By getBy() {
             return by;
+        }
+
+        @Override
+        public OptionsPopup should(Condition... condition) {
+            for (Condition c : condition) {
+                if (c instanceof Options) {
+                    Texts texts = new Texts(((Options) c).getOptions());
+                    $$(byChain(by, tagName("td"), tagName("span")))
+                            .shouldHave(texts);
+                } else if (c instanceof OptionsCount) {
+                    int count = ((OptionsCount) c).getCount();
+                    $$(byChain(by, tagName("td"), tagName("span")))
+                            .shouldHaveSize(count);
+                } else {
+                    OptionsPopup.super.should(c);
+                }
+            }
+            return this;
         }
     }
 }

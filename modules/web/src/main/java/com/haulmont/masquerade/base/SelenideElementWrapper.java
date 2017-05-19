@@ -3,22 +3,12 @@ package com.haulmont.masquerade.base;
 import com.codeborne.selenide.Condition;
 import com.codeborne.selenide.SelenideElement;
 
-import static com.codeborne.selenide.Condition.visible;
-
 @SuppressWarnings("unchecked")
 public interface SelenideElementWrapper<T> {
     SelenideElement getDelegate();
 
     default boolean exists() {
         return getDelegate().exists();
-    }
-
-    /**
-     * @deprecated Will be removed after refactor. Use {@code #is(Conditions.visible)}
-     */
-    @Deprecated
-    default boolean isVisible() {
-        return is(visible);
     }
 
     default boolean is(Condition condition) {

@@ -33,16 +33,6 @@ public class TextAreaImpl implements TextArea {
     }
 
     @Override
-    public boolean isEnabled() {
-        return is(enabled);
-    }
-
-    @Override
-    public boolean isEditable() {
-        return is(editable);
-    }
-
-    @Override
     public SelenideElement getDelegate() {
         return impl;
     }

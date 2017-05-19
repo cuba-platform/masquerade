@@ -30,18 +30,13 @@ public class Table56Impl implements Table {
     }
 
     public ElementsCollection getAllLines() {
-        //TODO wait for loading rows
+        // todo wait for loading rows
         return impl.findAll("tr");
     }
 
     @Override
     public By getBy() {
         return by;
-    }
-
-    @Override
-    public boolean isEnabled() {
-        return is(Condition.enabled);
     }
 
     @Override
