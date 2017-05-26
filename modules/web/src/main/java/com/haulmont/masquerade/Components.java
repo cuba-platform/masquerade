@@ -37,6 +37,7 @@ public class Components {
         components.put(AppMenu.class, AppMenuImpl::new);
         components.put(LookupField.class, LookupFieldImpl::new);
         components.put(Table.class, Table56Impl::new);
+        components.put(PopupButton.class, PopupButtonImpl::new);
 
         String cubaVersion = System.getProperty(CUBA_VERSION_SYSTEM_PROPERTY);
         if (cubaVersion != null && "5.x".equals(cubaVersion)) {
