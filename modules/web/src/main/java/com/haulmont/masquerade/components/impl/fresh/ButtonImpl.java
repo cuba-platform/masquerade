@@ -4,6 +4,7 @@ import com.codeborne.selenide.Condition;
 import com.codeborne.selenide.SelenideElement;
 import com.haulmont.masquerade.Conditions;
 import com.haulmont.masquerade.components.Button;
+import com.haulmont.masquerade.components.impl.AbstractComponent;
 import org.openqa.selenium.By;
 
 import java.util.Objects;
@@ -14,16 +15,12 @@ import static com.haulmont.masquerade.Selectors.byChain;
 import static com.haulmont.masquerade.sys.VaadinClassNames.DISABLED_CLASSNAME;
 import static org.openqa.selenium.By.className;
 
-public class ButtonImpl implements Button {
+public class ButtonImpl extends AbstractComponent<Button> implements Button {
 
     public static final String BUTTON_CAPTION_CLASSNAME = "v-button-caption";
 
-    private final By by;
-    private final SelenideElement impl;
-
     public ButtonImpl(By by) {
-        this.by = by;
-        this.impl = $(by);
+        super(by);
     }
 
     @Override
@@ -83,7 +80,8 @@ public class ButtonImpl implements Button {
                 impl.shouldHave(cssClass(DISABLED_CLASSNAME));
             } else if (c == disabled) {
                 impl.shouldNotHave(cssClass(DISABLED_CLASSNAME));
-            } if (c instanceof Conditions.Caption) {
+            }
+            if (c instanceof Conditions.Caption) {
                 String caption = ((Conditions.Caption) c).getCaption();
                 $(byChain(by, className(BUTTON_CAPTION_CLASSNAME))).shouldNotHave(exactTextCaseSensitive(caption));
             } else {
@@ -91,15 +89,5 @@ public class ButtonImpl implements Button {
             }
         }
         return this;
-    }
-
-    @Override
-    public SelenideElement getDelegate() {
-        return impl;
-    }
-
-    @Override
-    public By getBy() {
-        return by;
     }
 }

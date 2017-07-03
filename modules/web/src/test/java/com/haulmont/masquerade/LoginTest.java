@@ -39,7 +39,7 @@ public class LoginTest {
                 .shouldHave(caption("Submit"));
 
         String caption = loginWindow.getLoginButton().getCaption();
-        boolean enabled = loginWindow.getLoginButton().isEnabled();
+        boolean enabled = loginWindow.getLoginButton().is(Conditions.enabled);
 
         Untyped loginFormLayout = wire(Untyped.class, "loginFormLayout");
         loginFormLayout.shouldBe(visible);

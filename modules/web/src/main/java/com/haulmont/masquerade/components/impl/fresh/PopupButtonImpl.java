@@ -2,6 +2,7 @@ package com.haulmont.masquerade.components.impl.fresh;
 
 import com.codeborne.selenide.SelenideElement;
 import com.haulmont.masquerade.components.PopupButton;
+import com.haulmont.masquerade.components.impl.AbstractComponent;
 import org.openqa.selenium.By;
 
 import java.util.List;
@@ -11,36 +12,22 @@ import static com.codeborne.selenide.Selectors.byText;
 import static com.codeborne.selenide.Selenide.$;
 import static com.codeborne.selenide.Selenide.$$;
 import static com.haulmont.masquerade.Selectors.byChain;
+import static com.haulmont.masquerade.sys.TagNames.SPAN;
 import static org.openqa.selenium.By.className;
-import static org.openqa.selenium.By.tagName;
 
-/**
- * Created by razgonyaev on 25.05.2017.
- */
-public class PopupButtonImpl implements PopupButton {
-    private final By by;
-    private final SelenideElement impl;
+public class PopupButtonImpl extends AbstractComponent<PopupButton> implements PopupButton {
 
     public PopupButtonImpl(By by) {
-        this.by = by;
-        this.impl = $(by);
+        super(by);
     }
 
     @Override
-    public By getBy() {
-        return by;
-    }
-
-    @Override
-    public SelenideElement getDelegate() {
-        return impl;
-    }
-
     public void click(String option) {
         openPopupContent()
                 .select(option);
     }
 
+    @Override
     public PopupContent openPopupContent() {
         impl.shouldBe(visible)
                 .click();
@@ -51,6 +38,7 @@ public class PopupButtonImpl implements PopupButton {
         return popupContent;
     }
 
+    @Override
     public PopupContent getPopupContent() {
         PopupContentImpl popupContent = new PopupContentImpl(By.cssSelector("div.v-popupbutton-popup"));
         popupContent.shouldBe(visible);
@@ -58,8 +46,7 @@ public class PopupButtonImpl implements PopupButton {
         return popupContent;
     }
 
-
-    private class PopupContentImpl implements PopupContent {
+    public static class PopupContentImpl implements PopupContent {
         private final By by;
         private final SelenideElement impl;
 
@@ -80,14 +67,14 @@ public class PopupButtonImpl implements PopupButton {
 
         @Override
         public void select(String option) {
-            $(byChain(by, tagName("span"), byText(option)))
+            $(byChain(by, SPAN, byText(option)))
                     .shouldBe(visible)
                     .click();
         }
 
         @Override
         public List<String> getOptions() {
-            return $$(byChain(by, tagName("span"), className("v-button-caption"))).texts();
+            return $$(byChain(by, SPAN, className("v-button-caption"))).texts();
         }
     }
 }

@@ -5,9 +5,11 @@ import com.codeborne.selenide.SelenideElement;
 
 public interface Table extends Component<Table> {
 
-    public SelenideElement find(String cellValue);
+    SelenideElement find(String cellValue);
 
-    public SelenideElement getRow(int rowNumber);
+    SelenideElement getRow(int rowNumber);
 
-    public ElementsCollection getCells(int row);
+    ElementsCollection getCells(int row);
+
+    ElementsCollection getAllLines();
 }

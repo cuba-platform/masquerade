@@ -3,7 +3,6 @@ package com.haulmont.masquerade;
 import com.codeborne.selenide.SelenideElement;
 import com.haulmont.masquerade.components.*;
 import com.haulmont.masquerade.components.impl.fresh.*;
-import com.haulmont.masquerade.components.impl.legacy.Table56Impl;
 import org.apache.commons.lang3.reflect.FieldUtils;
 import org.openqa.selenium.By;
 import org.openqa.selenium.support.FindBy;
@@ -36,8 +35,22 @@ public class Components {
         components.put(CheckBox.class, CheckBoxImpl::new);
         components.put(AppMenu.class, AppMenuImpl::new);
         components.put(LookupField.class, LookupFieldImpl::new);
-        components.put(Table.class, Table56Impl::new);
+        components.put(Table.class, TableImpl::new);
         components.put(PopupButton.class, PopupButtonImpl::new);
+        // stubs
+        components.put(BoxLayout.class, BoxLayoutImpl::new);
+        components.put(DateField.class, DateFieldImpl::new);
+        components.put(DateTimeField.class, DateTimeFieldImpl::new);
+        components.put(DialogWindow.class, DialogWindowImpl::new);
+        components.put(FieldGroup.class, FieldGroupImpl::new);
+        components.put(GroupBox.class, GroupBoxImpl::new);
+        components.put(LookupPickerField.class, LookupPickerFieldImpl::new);
+        components.put(MaskedField.class, MaskedFieldImpl::new);
+        components.put(OptionsGroup.class, OptionsGroupImpl::new);
+        components.put(PickerField.class, PickerFieldImpl::new);
+        components.put(SourceCodeEditor.class, SourceCodeEditorImpl::new);
+        components.put(TimeField.class, TimeFieldImpl::new);
+        components.put(Tree.class, TreeImpl::new);
 
         String cubaVersion = System.getProperty(CUBA_VERSION_SYSTEM_PROPERTY);
         if (cubaVersion != null && "5.x".equals(cubaVersion)) {

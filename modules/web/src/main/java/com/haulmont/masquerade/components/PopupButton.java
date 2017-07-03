@@ -7,8 +7,10 @@ import java.util.List;
 
 public interface PopupButton extends Component<PopupButton> {
     void click(String option);
+
     PopupContent openPopupContent();
     PopupContent getPopupContent();
+
     interface PopupContent extends SelenideElementWrapper<PopupContent>, ByLocator {
         void select(String option);
 

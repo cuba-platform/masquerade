@@ -4,6 +4,7 @@ import com.codeborne.selenide.Condition;
 import com.codeborne.selenide.SelenideElement;
 import com.codeborne.selenide.collections.Texts;
 import com.haulmont.masquerade.components.LookupField;
+import com.haulmont.masquerade.components.impl.AbstractComponent;
 import org.openqa.selenium.By;
 
 import java.util.List;
@@ -13,32 +14,18 @@ import static com.codeborne.selenide.Selenide.$;
 import static com.codeborne.selenide.Selenide.$$;
 import static com.haulmont.masquerade.Conditions.*;
 import static com.haulmont.masquerade.Selectors.byChain;
-import static org.openqa.selenium.By.tagName;
+import static com.haulmont.masquerade.sys.TagNames.*;
 
-public class LookupFieldImpl implements LookupField {
+public class LookupFieldImpl extends AbstractComponent<LookupField> implements LookupField {
     public static final String VAADIN_COMBOBOX_OPTIONLIST = "VAADIN_COMBOBOX_OPTIONLIST";
 
-    private final By by;
-    private final SelenideElement impl;
-
     public LookupFieldImpl(By by) {
-        this.by = by;
-        this.impl = $(by);
-    }
-
-    @Override
-    public By getBy() {
-        return by;
-    }
-
-    @Override
-    public SelenideElement getDelegate() {
-        return impl;
+        super(by);
     }
 
     @Override
     public String getValue() {
-        return $(byChain(by, tagName("input")))
+        return $(byChain(by, INPUT))
                 .shouldBe(visible)
                 .shouldBe(enabled)
                 .shouldBe(editable)
@@ -49,7 +36,7 @@ public class LookupFieldImpl implements LookupField {
     public LookupField setValue(String value) {
         setFilter(value);
 
-        $(byChain(by, tagName("input"))).pressEnter();
+        $(byChain(by, INPUT)).pressEnter();
 
         return this;
     }
@@ -57,7 +44,7 @@ public class LookupFieldImpl implements LookupField {
     @Override
     public LookupField setFilter(String filter) {
         // todo may be replace with javascript set to speed up this call
-        $(byChain(by, tagName("input")))
+        $(byChain(by, INPUT))
                 .shouldBe(visible)
                 .shouldBe(enabled)
                 .shouldBe(editable)
@@ -68,7 +55,7 @@ public class LookupFieldImpl implements LookupField {
 
     @Override
     public OptionsPopup openOptionsPopup() {
-        $(byChain(by, tagName("div")))
+        $(byChain(by, DIV))
                 .shouldBe(visible)
                 .click();
 
@@ -91,7 +78,7 @@ public class LookupFieldImpl implements LookupField {
         OptionsPopupImpl optionsPopup = new OptionsPopupImpl(By.id(VAADIN_COMBOBOX_OPTIONLIST));
         optionsPopup.shouldBe(visible);
 
-        $(byChain(by, tagName("div")))
+        $(byChain(by, DIV))
                 .shouldBe(visible)
                 .click();
 
@@ -121,12 +108,12 @@ public class LookupFieldImpl implements LookupField {
 
         @Override
         public List<String> getVisibleOptions() {
-            return $$(byChain(by, tagName("td"), tagName("span"))).texts();
+            return $$(byChain(by, TD, SPAN)).texts();
         }
 
         @Override
         public LookupField select(String option) {
-            $(byChain(by, tagName("td"), byText(option)))
+            $(byChain(by, TD, byText(option)))
                     .shouldBe(visible)
                     .click();
 
@@ -160,11 +147,11 @@ public class LookupFieldImpl implements LookupField {
             for (Condition c : condition) {
                 if (c instanceof Options) {
                     Texts texts = new Texts(((Options) c).getOptions());
-                    $$(byChain(by, tagName("td"), tagName("span")))
+                    $$(byChain(by, TD, SPAN))
                             .shouldHave(texts);
                 } else if (c instanceof OptionsCount) {
                     int count = ((OptionsCount) c).getCount();
-                    $$(byChain(by, tagName("td"), tagName("span")))
+                    $$(byChain(by, TD, SPAN))
                             .shouldHaveSize(count);
                 } else {
                     OptionsPopup.super.should(c);
