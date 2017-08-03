@@ -24,6 +24,7 @@ public interface LookupField extends Field<LookupField> {
         LookupField select(String option);
 
         OptionsPopup nextPage();
+        boolean hasNextPage();
         OptionsPopup previousPage();
     }
 }

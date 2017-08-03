@@ -18,6 +18,8 @@ import static com.haulmont.masquerade.sys.TagNames.*;
 
 public class LookupFieldImpl extends AbstractComponent<LookupField> implements LookupField {
     public static final String VAADIN_COMBOBOX_OPTIONLIST = "VAADIN_COMBOBOX_OPTIONLIST";
+    public static final String V_FILTERSELECT_NEXTPAGE = "v-filterselect-nextpage";
+    public static final String V_FILTERSELECT_PREVPAGE = "v-filterselect-prevpage";
 
     public LookupFieldImpl(By by) {
         super(by);
@@ -36,7 +38,7 @@ public class LookupFieldImpl extends AbstractComponent<LookupField> implements L
     public LookupField setValue(String value) {
         setFilter(value);
 
-        $(byChain(by, INPUT)).pressEnter();
+        getOptionsPopup().select(value);
 
         return this;
     }
@@ -120,16 +122,31 @@ public class LookupFieldImpl extends AbstractComponent<LookupField> implements L
             return LookupFieldImpl.this;
         }
 
+
         @Override
         public OptionsPopup nextPage() {
-            // todo implement
-            throw new UnsupportedOperationException();
+            $(byChain(by, By.className(V_FILTERSELECT_NEXTPAGE)))
+                    .shouldBe(visible)
+                    .click();
+            OptionsPopupImpl optionsPopup = new OptionsPopupImpl(By.id(VAADIN_COMBOBOX_OPTIONLIST));
+            optionsPopup.shouldBe(visible);
+            return optionsPopup;
+        }
+
+        @Override
+        public boolean hasNextPage() {
+            return $(byChain(by, By.className(V_FILTERSELECT_NEXTPAGE))).isDisplayed();
         }
 
         @Override
         public OptionsPopup previousPage() {
-            // todo implement
-            throw new UnsupportedOperationException();
+            $(byChain(by, By.className(V_FILTERSELECT_PREVPAGE)))
+                    .shouldBe(visible)
+                    .click();
+            OptionsPopupImpl optionsPopup = new OptionsPopupImpl(By.id(VAADIN_COMBOBOX_OPTIONLIST));
+            optionsPopup.shouldBe(visible);
+
+            return optionsPopup;
         }
 
         @Override
