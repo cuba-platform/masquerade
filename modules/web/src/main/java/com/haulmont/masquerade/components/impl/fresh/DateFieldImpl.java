@@ -34,4 +34,5 @@ public class DateFieldImpl extends AbstractComponent<DateField> implements DateF
                 .setValue(value)
                 .pressEnter();
     }
+
 }
