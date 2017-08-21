@@ -13,13 +13,13 @@ It is based on:
 * Selenide
 * Selenium
 
-# Getting Started
+# Getting started
 
 Download the library to your computer. Install the library using gradle task  
 
-    gradle install
+    gradlew install
     
-## Test project creating
+## Creating test project 
     
 Create a simple Java project in IntelliJ Idea. The project should have the following structure:
 
@@ -28,11 +28,11 @@ Create a simple Java project in IntelliJ Idea. The project should have the follo
     * java
   * test
     * java
-      * com.company.demo
+      * com/company/demo
 * build.gradle
 * settings.gradle  
 
-Here’s the complete build file:
+Here’s the complete build.gradle file:
 
     apply plugin: 'java'
     
@@ -48,29 +48,27 @@ Here’s the complete build file:
     
     dependencies {
         testCompile group: 'junit', name: 'junit', version: '4.12'
+        testCompile('com.haulmont.masquerade:masquerade-web:0.1-SNAPSHOT') //the library for the UI testing
+        testCompile('com.haulmont.masquerade:masquerade-connector:0.1-SNAPSHOT') //the library provides an ability to 
+        access web-services, JMX and etc.
     }
-
-To use the library add the following dependencies to your project:
-
-    testCompile('com.haulmont.masquerade:masquerade-web:0.1-SNAPSHOT')
-    testCompile('com.haulmont.masquerade:masquerade-connector:0.1-SNAPSHOT')
     
-## Test creating
+## Creating the test
 
 Create a new package in the *com.company.demo* and name it *composite*. Create a new Java class into this package and 
 name it **LoginWindow**. This class should be inherited from the **Composite\<T>** where **T** is the name of your class. 
-This class will be used to declare all the components from the UI screen. Also, all the useful test methods can be 
-declared here.
+This class will be used as a helper class, usually it declares UI components of an application screen / frame / panel 
+that is shown in a web page. Also, all the useful test methods can be declared here.
  
 All class attributes need to be marked with the ```@Wire``` annotation. This annotation has optional 'path' element which 
 allows users to define the path to the component using the 'cuba-id' parameter. If the component does not have the 
-_cuba-id_ parameter you can use the ```@FindBy``` annotation instead. This annotation has a list of optional parameters, like 
-_name_, _className_, _id_ and so on, which help to identify the component.
+_cuba-id_ parameter you can use the ```@FindBy``` annotation instead. This annotation has a list of optional parameters, 
+like _name_, _className_, _id_ and so on, which help to identify the component.
 
 The type of the attribute in the class corresponds to the type of the screen component. If the component has a type 
 which is not defined in the library use the _Untyped_ type. 
 
-The name of the attribute corresponds to the _cuba-id_ parameter of the component. 
+The name of the attribute corresponds to the _cuba-id_ attribute of a DOM element that corresponds to the UI component. 
  
     public class LoginWindow extends Composite<LoginWindow> {
         @Wire
@@ -97,11 +95,11 @@ The name of the attribute corresponds to the _cuba-id_ parameter of the componen
  
 
  Create a Java class in the *com.company.demo* package. Name it **LoginTest**. 
- Create a new method and add ```@Test``` annotation to it. The Test annotation tells JUnit that the public void method to 
- which it is attached can be run as a test case. 
+ Create a new method and add ```@Test``` annotation to it. The ```@Test``` annotation tells JUnit that the public void 
+ method can be run as a test case. 
  
  You can use all JUnit annotations to improve the tests. Also, it is possible to use a set of assertion methods 
- provides by JUnit.
+ provided by JUnit.
      
         @Test
         public void login() {
@@ -140,33 +138,41 @@ The name of the attribute corresponds to the _cuba-id_ parameter of the componen
         }
  
 The _open()_ method is a standard Selenide method. It opens a browser window with the given URL.
-The second line creates an instance of the masquerade Component and binds it with the UI components on the screen.
-After that, you can access the screen components as class attributes. You can check the attributes visibility, get 
-captions, set values, click the buttons and so on.
+The second line creates an instance of the masquerade Component and binds it to the UI component (LoginWindow) on the 
+screen including all the annotated fields inside of the LoginWindow class. After that, you can access the screen 
+components as class attributes. You can check the attributes visibility, get captions, set values, click the buttons 
+and so on.
 
 
 # Tips & Tricks
 
-The useful tips for how to working with the library.
+Here are some useful tips on how to work with the library.
 
 ## How to work with screens
 
-The library provides an ability to create Groovy classes for the screens, to describe all the components on these
-screens and to implement the necessary methods.
+You can use any JVM language with the library including Groovy / Scala / Kotlin. Let's see how to improve your code.
 
 To do so, just create a new Groovy or Java class and name it as a screen. This class should be inherited from the 
 **Composite\<T>** where **T** is the name of your class.
 
 ## How to work with elements
 
-The library has a special method  *_$* to define any element in the screen. This method has three realisations:
-* The first realisation get the element by its class;
-* The second realisation get the element by its class and the path;
-* The third realisation get the element by its class and _by_ selector.
+The library has a special method  *_$* to define any element in the screen. This method has three implementations:
+* The first implementation gets the element by its class;
 
-For example, we need to click the button on the screen:
+    ```_$(Class<T> clazz)```
+* The second implementation gets the element by its class and the path;
 
-    _$(Button, '<button_name>').click()
+    ```_$(Class<T> clazz, String... path)```
+* The third implementation gets the element by its class and _by_ selector.
+
+    ```_$(Class<T> clazz, By by)```
+    
+For example, we need to click the button on the screen: 
+
+    import static com.haulmont.masquerade.Components._$
+
+    _$(Button, 'logoutButton').click()
 
 ## How to check the state of an element
 
@@ -182,6 +188,38 @@ To check if the element has some properties, use the _shouldHave_ element. Here 
 
     welcomeLabel.shouldHave(text('Welcome to CUBA!'))
     
+## How to find the element without _cuba-id_
+    
+## Useful tips for the Groovy tests
+
+There are some useful tips for those who use Groovy to write the tests. 
+
+* .with() method.
+
+This method allows you to assignment multiple values to multiple variables in one statement.  It allows you to use 
+methods/properties within a closure without having to repeat the object name each time.
+
+    loginWindow.with {
+        loginField.value = 'testUser'
+        passwordField.value = '1'
+        rememberMeCheckBox.checked = true
+    
+        commit()
+    }
+* Ability to set the value of the element without using getters and setters
+
+In Groovy, a getters and setters form what we call a "property", and offers a shortcut notation for accessing and 
+setting such properties. So instead of the Java-way of calling getters / setters, you can use a field-like access 
+notation:  
+    
+    loginField.value = 'testUser'
+
+* def
+
+When using ```def``` in Groovy, the actual type holder is ```Object``` (so you can assign any object to variables 
+defined with ```def```, and return any kind of object if a method is declared returning ```def```).
+
+    def loginWindow = _$(LoginWindow)
 
 ## Run tests
 
