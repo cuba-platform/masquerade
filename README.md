@@ -188,7 +188,6 @@ To check if the element has some properties, use the _shouldHave_ element. Here 
 
     welcomeLabel.shouldHave(text('Welcome to CUBA!'))
     
-## How to find the element without _cuba-id_
     
 ## Useful tips for the Groovy tests
 
