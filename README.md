@@ -63,7 +63,7 @@ that is shown in a web page. Also, all the useful test methods can be declared h
 All class attributes need to be marked with the ```@Wire``` annotation. This annotation has optional 'path' element which 
 allows users to define the path to the component using the 'cuba-id' parameter. If the component does not have the 
 _cuba-id_ parameter you can use the ```@FindBy``` annotation instead. This annotation has a list of optional parameters, 
-like _name_, _className_, _id_ and so on, which help to identify the component.
+like _name_, _className_, _id_ and so on, which helps to identify the component.
 
 The type of the attribute in the class corresponds to the type of the screen component. If the component has a type 
 which is not defined in the library use the _Untyped_ type. 
@@ -188,7 +188,33 @@ To check if the element has some properties, use the _shouldHave_ element. Here 
 
     welcomeLabel.shouldHave(text('Welcome to CUBA!'))
     
+## How to work with the Selenide elements
     
+If the component does not have the _cuba-id_ parameter you can use the ```@FindBy``` annotation. This annotation has a 
+list of optional parameters, like _name_, _className_, _id_ and so on, which helps to identify the component.
+
+    @FindBy(className = "c-login-caption")
+    public Label welcomeLabelTest; 
+    
+Also using this annotation you can define SelenideElement type for the attribute instead of the types, provides by 
+masquerade. After that, you can use all test methods provided by Selenide. The name of the attribute can be any.
+
+    import com.codeborne.selenide.SelenideElement;
+    
+    @FindBy(className = "c-login-caption")
+    public SelenideElement welcomeLabelTest;
+    
+Another way to define the SelenideElement type attribute is using the ```@Wire``` annotation. You can write the 
+SelenideElement type instead of masquerade types, but the name of the attribute should correspond to the _cuba-id_ 
+attribute of a DOM element that corresponds to the UI component.
+
+    @Wire
+    public SelenideElement loginField;
+    
+The third way to work with the Selenide elements is to use ```getDelegate()``` method. This method returns 
+the SelenideElement type component. After that you can use all test methods provided by Selenide.
+
+    loginWindow.getDelegate().exists()
 ## Useful tips for the Groovy tests
 
 There are some useful tips for those who use Groovy to write the tests. 
