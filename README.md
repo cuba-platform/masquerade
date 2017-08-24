@@ -23,14 +23,14 @@ Download the library to your computer. Install the library using gradle task
     
 Create a simple Java project in IntelliJ Idea. The project should have the following structure:
 
-* src
-  * main
-    * java
-  * test
-    * java
-      * com/company/demo
-* build.gradle
-* settings.gradle  
++ src
+  + main 
+    + java
+  + test
+    + java
+      + com/company/demo
+- build.gradle
+- settings.gradle  
 
 Here’s the complete build.gradle file:
 
@@ -148,13 +148,6 @@ and so on.
 
 Here are some useful tips on how to work with the library.
 
-## How to work with screens
-
-You can use any JVM language with the library including Groovy / Scala / Kotlin. Let's see how to improve your code.
-
-To do so, just create a new Groovy or Java class and name it as a screen. This class should be inherited from the 
-**Composite\<T>** where **T** is the name of your class.
-
 ## How to work with elements
 
 The library has a special method  *_$* to define any element in the screen. This method has three implementations:
@@ -215,14 +208,17 @@ The third way to work with the Selenide elements is to use ```getDelegate()``` m
 the SelenideElement type component. After that you can use all test methods provided by Selenide.
 
     loginWindow.getDelegate().exists()
+    
 ## Useful tips for the Groovy tests
 
-There are some useful tips for those who use Groovy to write the tests. 
+You can use any JVM language with the library including Groovy / Scala / Kotlin. There are some useful tips for those 
+who use Groovy to write the tests. 
 
 * .with() method.
 
-This method allows you to assignment multiple values to multiple variables in one statement.  It allows you to use 
-methods/properties within a closure without having to repeat the object name each time.
+Groovy closures have a delegate associated with them. The delegate is given an opportunity to respond to method calls 
+which happen inside of the closure. It allows you to use methods/properties within a closure without having to repeat 
+the object name each time.
 
     loginWindow.with {
         loginField.value = 'testUser'
@@ -231,7 +227,7 @@ methods/properties within a closure without having to repeat the object name eac
     
         commit()
     }
-* Ability to set the value of the element without using getters and setters
+* Ability to set the value of the element using "property access" syntax
 
 In Groovy, a getters and setters form what we call a "property", and offers a shortcut notation for accessing and 
 setting such properties. So instead of the Java-way of calling getters / setters, you can use a field-like access 
@@ -241,8 +237,8 @@ notation:
 
 * def
 
-When using ```def``` in Groovy, the actual type holder is ```Object``` (so you can assign any object to variables 
-defined with ```def```, and return any kind of object if a method is declared returning ```def```).
+```def``` means that the actual type of the value will be automatically inferred by compiler. It eliminates the 
+unnecessary boilerplate in variable declarations and makes your code shorter
 
     def loginWindow = _$(LoginWindow)
 
@@ -256,7 +252,7 @@ application with Gradle run the following tasks in the terminal:
 
 If you run your tests in the Mozilla Firefox browser, you need to edit standard test configuration for the test project 
 in Idea. To do so, click the **Select Run/Debug Configuration** button, select *Edit Configurations*  in the drop-down 
-list.In the VM options field add the following:
+list. In the VM options field add the following:
 
     -Dselenide.browser=marionette -Dwebdriver.gecko.driver=<your_path>/geckodriver.exe
 
