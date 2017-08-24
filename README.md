@@ -22,16 +22,16 @@ Download the library to your computer. Install the library using gradle task
 ## Creating test project 
     
 Create a simple Java project in IntelliJ Idea. The project should have the following structure:
-
+```
 + src
   + main 
     + java
   + test
     + java
       + com/company/demo
-- build.gradle
-- settings.gradle  
-
++ build.gradle
++ settings.gradle  
+```
 Here’s the complete build.gradle file:
 
     apply plugin: 'java'
@@ -237,7 +237,7 @@ notation:
 
 * def
 
-```def``` means that the actual type of the value will be automatically inferred by compiler. It eliminates the 
+```def``` means that the actual type of the value will be automatically inferred by the compiler. It eliminates the 
 unnecessary boilerplate in variable declarations and makes your code shorter
 
     def loginWindow = _$(LoginWindow)
