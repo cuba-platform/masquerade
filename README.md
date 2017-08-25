@@ -34,6 +34,7 @@ Create a simple Java project in IntelliJ Idea. The project should have the follo
 ```
 Here’s the complete build.gradle file:
 
+    ```java
     apply plugin: 'java'
     
     group = 'com.company.demo'
@@ -52,7 +53,7 @@ Here’s the complete build.gradle file:
         testCompile('com.haulmont.masquerade:masquerade-connector:0.1-SNAPSHOT') //the library provides an ability to 
         access web-services, JMX and etc.
     }
-    
+    ```
 ## Creating the test
 
 Create a new package in the *com.company.demo* and name it *composite*. Create a new Java class into this package and 
