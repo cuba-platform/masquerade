@@ -50,7 +50,7 @@ public class LookupFieldImpl extends AbstractComponent<LookupField> implements L
                 .shouldBe(visible)
                 .shouldBe(enabled)
                 .shouldBe(editable)
-                .setValue(filter);
+                .sendKeys(filter);
 
         return this;
     }
