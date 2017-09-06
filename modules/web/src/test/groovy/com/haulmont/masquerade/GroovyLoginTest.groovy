@@ -17,8 +17,14 @@ class GroovyLoginTest {
         assertNotNull(loginWindow.loginField)
         assertNotNull(loginWindow.passwordField)
 
-        loginWindow.loginField.value = "masquerade"
-        loginWindow.passwordField.value = "rulezzz"
-        loginWindow.loginButton.click()
+        loginWindow.with {
+            rememberMeCheckBox.checked = true
+            rememberMeCheckBox.checked = false
+
+            loginField.value = "masquerade"
+            passwordField.value = "rulezzz"
+
+            loginButton.click()
+        }
     }
 }
