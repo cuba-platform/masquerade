@@ -106,7 +106,7 @@ public class CheckBoxImpl extends AbstractComponent<CheckBox> implements CheckBo
                 .shouldBe(enabled);
 
         if (checked != checkBoxInput.is(Condition.checked)) {
-            $(by).click();
+            checkBoxInput.sendKeys(" ");
         }
 
         return this;
