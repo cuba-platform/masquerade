@@ -31,7 +31,6 @@ public class DateFieldImpl extends AbstractComponent<DateField> implements DateF
                 .shouldBe(visible)
                 .shouldBe(enabled)
                 .shouldBe(editable)
-                .setValue(value)
-                .pressEnter();
+                .sendKeys(value);
     }
 }
