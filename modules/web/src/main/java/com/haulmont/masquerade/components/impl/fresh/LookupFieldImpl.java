@@ -46,11 +46,12 @@ public class LookupFieldImpl extends AbstractComponent<LookupField> implements L
     @Override
     public LookupField setFilter(String filter) {
         // todo may be replace with javascript set to speed up this call
-        $(byChain(by, INPUT))
-                .shouldBe(visible)
-                .shouldBe(enabled)
+        $(byChain(by, INPUT)).shouldBe(visible)
                 .shouldBe(editable)
-                .setValue(filter);
+                .shouldBe(enabled)
+                .click();
+        $(byChain(by, INPUT)).clear();
+        $(byChain(by, INPUT)).sendKeys(filter);
 
         return this;
     }
