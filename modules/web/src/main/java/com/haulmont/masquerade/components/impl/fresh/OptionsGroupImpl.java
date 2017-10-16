@@ -7,6 +7,15 @@ import org.openqa.selenium.By;
 
 import java.util.List;
 
+import static com.codeborne.selenide.Condition.enabled;
+import static com.codeborne.selenide.Condition.visible;
+import static com.codeborne.selenide.Selectors.byXpath;
+import static com.codeborne.selenide.Selenide.$;
+import static com.haulmont.masquerade.Conditions.editable;
+import static com.haulmont.masquerade.Selectors.byChain;
+import static com.haulmont.masquerade.sys.TagNames.INPUT;
+import static com.haulmont.masquerade.sys.TagNames.SPAN;
+
 public class OptionsGroupImpl extends AbstractComponent<OptionsGroup> implements OptionsGroup {
     public OptionsGroupImpl(By by) {
         super(by);
@@ -14,8 +23,10 @@ public class OptionsGroupImpl extends AbstractComponent<OptionsGroup> implements
 
     @Override
     public String getSelectedValue() {
-        throw new NotImplementedException("This UI component still in development");
+        return $(byChain(by, byXpath(".//input[@checked]/following-sibling::label")))
+                .getText();
     }
+
 
     @Override
     public int getSelectedIndex() {
@@ -24,7 +35,9 @@ public class OptionsGroupImpl extends AbstractComponent<OptionsGroup> implements
 
     @Override
     public OptionsGroup select(String option) {
-        throw new NotImplementedException("This UI component still in development");
+        OptionsGroup optionsGroup = new OptionsGroupImpl(byChain(by, SPAN));
+        $(byXpath(".//div[@cuba-id='type']//label[text()='" + option + "']")).click();
+        return optionsGroup;
     }
 
     @Override

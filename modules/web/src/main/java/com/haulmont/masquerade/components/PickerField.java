@@ -7,6 +7,7 @@ public interface PickerField extends Field<PickerField> {
         public Action(String id) {
             this.id = id;
         }
+
     }
 
     Action OPEN = new Action("open");
@@ -15,4 +16,6 @@ public interface PickerField extends Field<PickerField> {
 
     void triggerAction(Action action);
     <T> T triggerAction(Class<T> clazz, Action action);
+
+    String getValue();
 }
