@@ -8,6 +8,9 @@ public interface PickerField extends Field<PickerField> {
             this.id = id;
         }
 
+        public String getId() {
+            return id;
+        }
     }
 
     Action OPEN = new Action("open");
