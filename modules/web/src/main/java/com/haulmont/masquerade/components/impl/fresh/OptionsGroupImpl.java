@@ -8,6 +8,7 @@ import org.openqa.selenium.By;
 
 import java.util.List;
 
+import static com.codeborne.selenide.Condition.visible;
 import static com.codeborne.selenide.Selectors.byXpath;
 import static com.codeborne.selenide.Selenide.$;
 import static com.haulmont.masquerade.Selectors.byChain;
@@ -20,10 +21,11 @@ public class OptionsGroupImpl extends AbstractComponent<OptionsGroup> implements
 
     @Override
     public String getSelectedValue() {
+        impl.shouldBe(visible);
+
         return $(byChain(by, byXpath(".//input[@checked]/following-sibling::label")))
                 .getText();
     }
-
 
     @Override
     public int getSelectedIndex() {
@@ -32,9 +34,10 @@ public class OptionsGroupImpl extends AbstractComponent<OptionsGroup> implements
 
     @Override
     public OptionsGroup select(String option) {
-        OptionsGroup optionsGroup = new OptionsGroupImpl(byChain(by, SPAN));
-        $(byChain(by, SPAN, Selectors.byText(option))).click();
-        return optionsGroup;
+        $(byChain(by, SPAN, Selectors.byText(option)))
+                .shouldBe(visible)
+                .click();
+        return this;
     }
 
     @Override
