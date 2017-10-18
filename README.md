@@ -35,24 +35,27 @@ Create a simple Java project in IntelliJ Idea. The project should have the follo
 Here’s the complete build.gradle file:
 
 ```groovy
-    apply plugin: 'java'
+apply plugin: 'java'
+
+group = 'com.company.demo'
+version = '0.1'
+
+sourceCompatibility = 1.8
+
+repositories {
+    mavenCentral()
+    mavenLocal()
+}
+
+dependencies {
+    testCompile group: 'junit', name: 'junit', version: '4.12'
     
-    group = 'com.company.demo'
-    version = '0.1'
+     //the library for the UI testing
+    testCompile('com.haulmont.masquerade:masquerade-web:0.1-SNAPSHOT')
     
-    sourceCompatibility = 1.8
-    
-    repositories {
-        mavenCentral()
-        mavenLocal()
-    }
-    
-    dependencies {
-        testCompile group: 'junit', name: 'junit', version: '4.12'
-        testCompile('com.haulmont.masquerade:masquerade-web:0.1-SNAPSHOT') //the library for the UI testing
-        testCompile('com.haulmont.masquerade:masquerade-connector:0.1-SNAPSHOT') //the library provides an ability to 
-        access web-services, JMX and etc.
-    }
+    //the library provides an ability to access web-services, JMX and etc.
+    testCompile('com.haulmont.masquerade:masquerade-connector:0.1-SNAPSHOT') 
+}
 ```
 ## Creating the test
 
@@ -71,28 +74,28 @@ which is not defined in the library use the _Untyped_ type.
 
 The name of the attribute corresponds to the _cuba-id_ attribute of a DOM element that corresponds to the UI component. 
 ```java 
-    public class LoginWindow extends Composite<LoginWindow> {
-        @Wire
-        public TextField loginField; 
-    
-        @Wire
-        public PasswordField passwordField;
-    
-        @Wire(path = "rememberMeCheckBox")
-        public CheckBox rememberMeCheckBox;
-    
-        @Wire(path = {"loginFormLayout", "loginButton"})
-        public Button loginSubmitButton;
-    
-        @Wire
-        public LookupField localesSelect;
-    
-        @Wire
-        public Label welcomeLabel;
-    
-        @FindBy(className = "c-login-caption")
-        public Label welcomeLabelTest;    
-    }
+public class LoginWindow extends Composite<LoginWindow> {
+    @Wire
+    public TextField loginField; 
+
+    @Wire
+    public PasswordField passwordField;
+
+    @Wire(path = "rememberMeCheckBox")
+    public CheckBox rememberMeCheckBox;
+
+    @Wire(path = {"loginFormLayout", "loginButton"})
+    public Button loginSubmitButton;
+
+    @Wire
+    public LookupField localesSelect;
+
+    @Wire
+    public Label welcomeLabel;
+
+    @FindBy(className = "c-login-caption")
+    public Label welcomeLabelTest;    
+}
 ``` 
 
  Create a Java class in the *com.company.demo* package. Name it **LoginTest**. 
@@ -102,41 +105,41 @@ The name of the attribute corresponds to the _cuba-id_ attribute of a DOM elemen
  You can use all JUnit annotations to improve the tests. Also, it is possible to use a set of assertion methods 
  provided by JUnit.
 ```java     
-        @Test
-        public void login() {
-            open("http://localhost:8080/app");
-    
-            LoginWindow loginWindow = _$(LoginWindow.class);
-    
-            assertNotNull(loginWindow.loginField);
-            assertNotNull(loginWindow.passwordField);
-    
-            loginWindow.loginField
-                    .shouldBe(editable)
-                    .shouldBe(enabled);
-    
-            loginWindow.loginField.setValue("masquerade");
-            loginWindow.passwordField.setValue("rulezzz");
-    
-            loginWindow.rememberMeCheckBox.setChecked(true);
-            loginWindow.rememberMeCheckBox.getCaption();
-    
-            loginWindow.welcomeLabelTest
-                    .shouldBe(Conditions.visible);
-    
-            loginWindow.loginSubmitButton
-                    .shouldBe(visible)
-                    .shouldBe(enabled)
-                    .shouldHave(caption("Submit"));
-    
-            String caption = loginWindow.loginSubmitButton.getCaption();
-            boolean enabled = loginWindow.loginSubmitButton.is(Conditions.enabled);
-    
-            Untyped loginFormLayout = wire(Untyped.class, "loginFormLayout");
-            loginFormLayout.shouldBe(visible);
-    
-            loginWindow.loginSubmitButton.click();
-        }
+@Test
+public void login() {
+    open("http://localhost:8080/app");
+
+    LoginWindow loginWindow = _$(LoginWindow.class);
+
+    assertNotNull(loginWindow.loginField);
+    assertNotNull(loginWindow.passwordField);
+
+    loginWindow.loginField
+            .shouldBe(editable)
+            .shouldBe(enabled);
+
+    loginWindow.loginField.setValue("masquerade");
+    loginWindow.passwordField.setValue("rulezzz");
+
+    loginWindow.rememberMeCheckBox.setChecked(true);
+    loginWindow.rememberMeCheckBox.getCaption();
+
+    loginWindow.welcomeLabelTest
+            .shouldBe(Conditions.visible);
+
+    loginWindow.loginSubmitButton
+            .shouldBe(visible)
+            .shouldBe(enabled)
+            .shouldHave(caption("Submit"));
+
+    String caption = loginWindow.loginSubmitButton.getCaption();
+    boolean enabled = loginWindow.loginSubmitButton.is(Conditions.enabled);
+
+    Untyped loginFormLayout = wire(Untyped.class, "loginFormLayout");
+    loginFormLayout.shouldBe(visible);
+
+    loginWindow.loginSubmitButton.click();
+}
 ``` 
 The ```open()``` method is a standard Selenide method. It opens a browser window with the given URL.
 The second line creates an instance of the masquerade Component and binds it to the UI component (LoginWindow) on the 
@@ -164,9 +167,9 @@ The library has a special method  ```_$``` to define any element in the screen. 
     
 For example, we need to click the button on the screen: 
 ```java
-    import static com.haulmont.masquerade.Components._$
+import static com.haulmont.masquerade.Components._$
 
-    _$(Button, 'logoutButton').click()
+_$(Button, 'logoutButton').click()
 ```
 ## How to check the state of an element
 
@@ -174,13 +177,13 @@ There is an ability provided by Selenide to check some conditions.
 
 To check if the element is enabled, visible or checked, use the _shouldBe_ element. Here the example of the usage:
 ```java
-    loginButton
-       .shouldBe(visible)
-       .shouldBe(enabled)
+loginButton
+   .shouldBe(visible)
+   .shouldBe(enabled)
 ```
 To check if the element has some properties, use the _shouldHave_ element. Here the example of the usage:
 ```java
-    welcomeLabel.shouldHave(text('Welcome to CUBA!'));
+welcomeLabel.shouldHave(text('Welcome to CUBA!'));
 ```    
 ## How to work with the Selenide elements
     
@@ -193,22 +196,22 @@ list of optional parameters, like _name_, _className_, _id_ and so on, which hel
 Also using this annotation you can define SelenideElement type for the attribute instead of the types, provides by 
 masquerade. After that, you can use all test methods provided by Selenide. The name of the attribute can be any.
 ```java
-    import com.codeborne.selenide.SelenideElement;
-    
-    @FindBy(className = "c-login-caption")
-    public SelenideElement welcomeLabelTest;
+import com.codeborne.selenide.SelenideElement;
+
+@FindBy(className = "c-login-caption")
+public SelenideElement welcomeLabelTest;
 ```   
 Another way to define the SelenideElement type attribute is using the ```@Wire``` annotation. You can write the 
 SelenideElement type instead of masquerade types, but the name of the attribute should correspond to the _cuba-id_ 
 attribute of a DOM element that corresponds to the UI component.
 ```java
-    @Wire
-    public SelenideElement loginField;
+@Wire
+public SelenideElement loginField;
 ```    
 The third way to work with the Selenide elements is to use ```getDelegate()``` method. This method returns 
 the SelenideElement type component. After that you can use all test methods provided by Selenide.
 ```java
-    loginWindow.getDelegate().exists()
+loginWindow.getDelegate().exists()
 ```    
 ## Useful tips for the Groovy tests
 
@@ -221,13 +224,13 @@ Groovy closures have a delegate associated with them. The delegate is given an o
 which happen inside of the closure. It allows you to use methods/properties within a closure without having to repeat 
 the object name each time.
 ```groovy
-    loginWindow.with {
-        loginField.value = 'testUser'
-        passwordField.value = '1'
-        rememberMeCheckBox.checked = true
-    
-        commit()
-    }
+loginWindow.with {
+    loginField.value = 'testUser'
+    passwordField.value = '1'
+    rememberMeCheckBox.checked = true
+
+    commit()
+}
 ```
 * Ability to set the value of the element using "property access" syntax
 
@@ -235,14 +238,14 @@ In Groovy, a getters and setters form what we call a "property", and offers a sh
 setting such properties. So instead of the Java-way of calling getters / setters, you can use a field-like access 
 notation:  
 ```groovy   
-    loginField.value = 'testUser'
+loginField.value = 'testUser'
 ```
 * def
 
 ```def``` means that the actual type of the value will be automatically inferred by the compiler. It eliminates the 
 unnecessary boilerplate in variable declarations and makes your code shorter
 ```groovy
-    def loginWindow = _$(LoginWindow)
+def loginWindow = _$(LoginWindow)
 ```
 ## Run tests
 
@@ -266,9 +269,9 @@ After that, select the simple test or the test class you want to run, right clic
 
 To run the tests using Gradle add the following task in the ```build.gradle``` file:
 ```groovy
-    test {
-         systemProperties = System.getProperties()
-    }
+test {
+     systemProperties = System.getProperties()
+}
 ```   
 After that, run the following task in the terminal:
 
