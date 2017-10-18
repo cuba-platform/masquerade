@@ -73,7 +73,7 @@ The type of the attribute in the class corresponds to the type of the screen com
 which is not defined in the library use the _Untyped_ type. 
 
 The name of the attribute corresponds to the _cuba-id_ attribute of a DOM element that corresponds to the UI component. 
-```java 
+```java
 public class LoginWindow extends Composite<LoginWindow> {
     @Wire
     public TextField loginField; 
@@ -104,7 +104,7 @@ public class LoginWindow extends Composite<LoginWindow> {
  
  You can use all JUnit annotations to improve the tests. Also, it is possible to use a set of assertion methods 
  provided by JUnit.
-```java     
+```java
 @Test
 public void login() {
     open("http://localhost:8080/app");
@@ -190,8 +190,8 @@ welcomeLabel.shouldHave(text('Welcome to CUBA!'));
 If the component does not have the _cuba-id_ parameter you can use the ```@FindBy``` annotation. This annotation has a 
 list of optional parameters, like _name_, _className_, _id_ and so on, which helps to identify the component.
 ```java
-    @FindBy(className = "c-login-caption")
-    public Label welcomeLabelTest; 
+@FindBy(className = "c-login-caption")
+public Label welcomeLabelTest; 
 ```    
 Also using this annotation you can define SelenideElement type for the attribute instead of the types, provides by 
 masquerade. After that, you can use all test methods provided by Selenide. The name of the attribute can be any.
@@ -237,7 +237,7 @@ loginWindow.with {
 In Groovy, a getters and setters form what we call a "property", and offers a shortcut notation for accessing and 
 setting such properties. So instead of the Java-way of calling getters / setters, you can use a field-like access 
 notation:  
-```groovy   
+```groovy
 loginField.value = 'testUser'
 ```
 * def
