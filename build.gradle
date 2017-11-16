@@ -59,9 +59,9 @@ configure(project(':masquerade-web')) {
 
     dependencies {
         compile 'com.codeborne:selenide:4.8'
-        compile 'org.seleniumhq.selenium:selenium-java:3.6.0'
+        compile 'org.seleniumhq.selenium:selenium-java:3.7.1'
 
-        testCompile 'org.codehaus.groovy:groovy-all:2.4.10'
+        testCompile 'org.codehaus.groovy:groovy-all:2.4.12'
         testCompile 'junit:junit:4.12'
     }
 }
