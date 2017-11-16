@@ -7,6 +7,8 @@ import com.haulmont.masquerade.components.Table;
 import com.haulmont.masquerade.components.impl.AbstractComponent;
 import org.openqa.selenium.By;
 
+import static java.lang.String.format;
+
 public class TableImpl extends AbstractComponent<Table> implements Table {
     public TableImpl(By by) {
         super(by);
@@ -32,4 +34,21 @@ public class TableImpl extends AbstractComponent<Table> implements Table {
         // todo wait for loading rows
         return impl.findAll("tr");
     }
+
+//    the order can be asc or desc
+    @Override
+    public Table sort(String columnId, String order) throws Exception{
+        SelenideElement cell = this.getDelegate().$(By.xpath(format("//td[@cuba-id='%s']", columnId)));
+        if (cell.getAttribute("class").contains("v-table-header-sortable")) {
+            while (!(cell.getAttribute("class").contains("v-table-header-cell-" + order))) {
+                cell.click();
+            }
+        }
+        else {
+            throw new Exception("The table header is not sortable");
+        }
+        return this;
+    }
+
+
 }

@@ -12,4 +12,8 @@ public interface Table extends Component<Table> {
     ElementsCollection getCells(int row);
 
     ElementsCollection getAllLines();
+
+//    the order can be asc or desc
+    Table sort(String columnId, String order) throws Exception;
+
 }
