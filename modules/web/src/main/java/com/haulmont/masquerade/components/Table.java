@@ -13,7 +13,22 @@ public interface Table extends Component<Table> {
 
     ElementsCollection getAllLines();
 
-//    the order can be asc or desc
-    Table sort(String columnId, String order) throws Exception;
+    Table sort(String columnId, SortDirection direction);
 
+    enum SortDirection {
+        /**
+         * Ascending (e.g. A-Z, 1..9) sort order
+         */
+        ASCENDING,
+
+        /**
+         * Descending (e.g. Z-A, 9..1) sort order
+         */
+        DESCENDING,
+
+        /**
+         * None
+         */
+        NONE
+    }
 }
