@@ -3,7 +3,7 @@ package com.haulmont.masquerade;
 import com.haulmont.masquerade.jmx.JmxCallHandler;
 import com.haulmont.masquerade.jmx.JmxName;
 import com.haulmont.masquerade.restapi.AccessToken;
-import com.haulmont.masquerade.restapi.OAuthTokenEndPoint;
+import com.haulmont.masquerade.restapi.OAuthTokenService;
 import com.haulmont.masquerade.restapi.ServiceGenerator;
 import retrofit2.Call;
 
@@ -32,6 +32,11 @@ public class Connectors {
                 new JmxCallHandler(hostInfo, jmxName.value()));
     }
 
+    public static OAuthTokenService restApiOAuthService(RestApiHost hostInfo) {
+        return ServiceGenerator.createService(hostInfo.getBaseUrl(),
+                OAuthTokenService.class, hostInfo.getClientId(), hostInfo.getClientSecret());
+    }
+
     public static <T> T restApi(Class<T> clazz) {
         return restApi(clazz, new RestApiHost("admin", "admin", REST_API_BASE_URL));
     }
@@ -39,18 +44,22 @@ public class Connectors {
     @SuppressWarnings("unchecked")
     public static <T> T restApi(Class<T> clazz, RestApiHost hostInfo) {
         // authenticate
-        OAuthTokenEndPoint tokenEndPoint = ServiceGenerator.createService(hostInfo.getBaseUrl(),
-                OAuthTokenEndPoint.class, hostInfo.getClientId(), hostInfo.getClientSecret());
-        Call<AccessToken> token = tokenEndPoint.token(hostInfo.getUser(), hostInfo.getPassword(), hostInfo
-                .getGrantType());
+        OAuthTokenService oAuthTokenService = restApiOAuthService(hostInfo);
+        Call<AccessToken> token = oAuthTokenService.token(
+                hostInfo.getUser(), hostInfo.getPassword(),
+                hostInfo.getGrantType());
 
         AccessToken accessToken;
         try {
             accessToken = token.execute().body();
         } catch (IOException e) {
-            throw new RuntimeException("Unable to obtain OAuth token");
+            throw new RuntimeException("Unable to obtain OAuth2 token");
         }
 
+        return restApi(clazz, hostInfo, accessToken);
+    }
+
+    public static <T> T restApi(Class<T> clazz, RestApiHost hostInfo, AccessToken accessToken) {
         return ServiceGenerator.createService(hostInfo.getBaseUrl(), clazz, accessToken);
     }
 

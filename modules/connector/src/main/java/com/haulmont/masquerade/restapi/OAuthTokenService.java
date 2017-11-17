@@ -5,7 +5,7 @@ import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.POST;
 
-public interface OAuthTokenEndPoint {
+public interface OAuthTokenService {
     @FormUrlEncoded
     @POST("oauth/token")
     Call<AccessToken> token(@Field("username") String username, @Field("password") String password,

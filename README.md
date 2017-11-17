@@ -65,7 +65,7 @@ This class will be used as a helper class, usually it declares UI components of 
 that is shown in a web page. Also, all the useful test methods can be declared here.
  
 All class attributes need to be marked with the ```@Wire``` annotation. This annotation has optional 'path' element which 
-allows users to define the path to the component using the 'cuba-id' parameter. If the component does not have the 
+allows userService to define the path to the component using the 'cuba-id' parameter. If the component does not have the 
 _cuba-id_ parameter you can use the ```@FindBy``` annotation instead. This annotation has a list of optional parameters, 
 like _name_, _className_, _id_ and so on, which helps to identify the component.
 
