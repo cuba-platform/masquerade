@@ -10,12 +10,15 @@ import retrofit2.Call;
 import java.io.IOException;
 import java.lang.reflect.Proxy;
 
+/**
+ * Factory that provides proxy objects for remote services.
+ */
 public class Connectors {
-    public static final String JXM_BASE_ADRESS = ":7777";
+    public static final String JXM_BASE_ADDRESS = ":7777";
     public static final String REST_API_BASE_URL = "http://localhost:8080/app/rest/v2/";
 
     public static <T> T jmx(Class<T> clazz) {
-        return jmx(clazz, new JmxHost(null, null, JXM_BASE_ADRESS));
+        return jmx(clazz, new JmxHost(null, null, JXM_BASE_ADDRESS));
     }
 
     @SuppressWarnings("unchecked")
