@@ -50,6 +50,10 @@ configure([project(':masquerade-web'), project(':masquerade-connector')]) {
 
 configure(project(':masquerade-connector')) {
     dependencies {
+        compile 'com.squareup.retrofit2:retrofit:2.3.0'
+        compile 'com.squareup.retrofit2:converter-gson:2.3.0'
+        compile 'com.google.guava:guava:23.0'
+
         testCompile 'junit:junit:4.12'
     }
 }
