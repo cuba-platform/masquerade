@@ -7,7 +7,6 @@ import org.openqa.selenium.Keys;
 
 import static com.codeborne.selenide.Condition.enabled;
 import static com.codeborne.selenide.Condition.visible;
-import static com.codeborne.selenide.Selenide.$;
 import static com.haulmont.masquerade.Conditions.editable;
 
 public class MaskedFieldImpl extends AbstractComponent<MaskedField> implements MaskedField {
@@ -15,21 +14,21 @@ public class MaskedFieldImpl extends AbstractComponent<MaskedField> implements M
         super(by);
     }
 
-
     @Override
     public MaskedField setValue(String value) {
-        $(impl)
-                .shouldBe(visible)
+        impl.shouldBe(visible)
                 .shouldBe(enabled)
                 .shouldBe(editable)
                 .click();
-        $(impl).sendKeys(Keys.HOME, value);
+
+        impl.sendKeys(Keys.HOME, value);
+
         return this;
     }
 
     @Override
     public String getValue() {
-        return $(impl)
+        return impl
                 .shouldBe(visible)
                 .shouldBe(enabled)
                 .getValue();
