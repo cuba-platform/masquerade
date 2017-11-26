@@ -12,6 +12,7 @@ import org.slf4j.LoggerFactory;
 
 import java.lang.reflect.Field;
 import java.util.Map;
+import java.util.ServiceLoader;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Function;
 
@@ -55,6 +56,15 @@ public class Components {
         String cubaVersion = System.getProperty(CUBA_VERSION_SYSTEM_PROPERTY);
         if (cubaVersion != null && "5.x".equals(cubaVersion)) {
             // import additional implementations or replace default
+        }
+
+        // import implementations from project
+        ServiceLoader<ComponentConfig> configs = ServiceLoader.load(ComponentConfig.class);
+        for (ComponentConfig componentConfig : configs) {
+            LoggerFactory.getLogger(Components.class)
+                    .info("Loading components from {}", componentConfig.getClass());
+
+            components.putAll(componentConfig.getComponents());
         }
     }
 
