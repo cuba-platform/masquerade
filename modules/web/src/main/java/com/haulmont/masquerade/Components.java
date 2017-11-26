@@ -38,11 +38,13 @@ public class Components {
         components.put(LookupField.class, LookupFieldImpl::new);
         components.put(Table.class, TableImpl::new);
         components.put(PopupButton.class, PopupButtonImpl::new);
+        components.put(DateField.class, DateFieldImpl::new);
+        components.put(DateTimeField.class, DateTimeFieldImpl::new);
+        components.put(TimeField.class, TimeFieldImpl::new);
+        components.put(FileUploadField.class, FileUploadFieldImpl::new);
         // stubs
         components.put(BoxLayout.class, BoxLayoutImpl::new);
         components.put(TabSheet.class, TabSheetImpl::new);
-        components.put(DateField.class, DateFieldImpl::new);
-        components.put(DateTimeField.class, DateTimeFieldImpl::new);
         components.put(DialogWindow.class, DialogWindowImpl::new);
         components.put(FieldGroup.class, FieldGroupImpl::new);
         components.put(GroupBox.class, GroupBoxImpl::new);
@@ -51,7 +53,6 @@ public class Components {
         components.put(OptionsGroup.class, OptionsGroupImpl::new);
         components.put(PickerField.class, PickerFieldImpl::new);
         components.put(SourceCodeEditor.class, SourceCodeEditorImpl::new);
-        components.put(TimeField.class, TimeFieldImpl::new);
         components.put(Tree.class, TreeImpl::new);
 
         String cubaVersion = System.getProperty(CUBA_VERSION_SYSTEM_PROPERTY);
