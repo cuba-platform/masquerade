@@ -40,6 +40,7 @@ public class Components {
         components.put(PopupButton.class, PopupButtonImpl::new);
         // stubs
         components.put(BoxLayout.class, BoxLayoutImpl::new);
+        components.put(TabSheet.class, TabSheetImpl::new);
         components.put(DateField.class, DateFieldImpl::new);
         components.put(DateTimeField.class, DateTimeFieldImpl::new);
         components.put(DialogWindow.class, DialogWindowImpl::new);

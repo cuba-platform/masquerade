@@ -3,6 +3,7 @@ package com.haulmont.masquerade.components.impl.fresh;
 import com.haulmont.masquerade.components.DateField;
 import com.haulmont.masquerade.components.impl.AbstractComponent;
 import org.openqa.selenium.By;
+import org.openqa.selenium.Keys;
 
 import static com.codeborne.selenide.Condition.enabled;
 import static com.codeborne.selenide.Condition.visible;
@@ -27,11 +28,11 @@ public class DateFieldImpl extends AbstractComponent<DateField> implements DateF
 
     @Override
     public void setDateValue(String value) {
-        $(byChain(by, INPUT))
-                .shouldBe(visible)
+        impl.shouldBe(visible)
                 .shouldBe(enabled)
                 .shouldBe(editable)
-                .sendKeys(value);
-    }
+                .click();
 
+        impl.sendKeys(Keys.HOME, value);
+    }
 }

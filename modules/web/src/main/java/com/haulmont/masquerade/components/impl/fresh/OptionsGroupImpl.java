@@ -3,7 +3,7 @@ package com.haulmont.masquerade.components.impl.fresh;
 import com.haulmont.masquerade.Selectors;
 import com.haulmont.masquerade.components.OptionsGroup;
 import com.haulmont.masquerade.components.impl.AbstractComponent;
-import org.apache.commons.lang3.NotImplementedException;
+import com.haulmont.masquerade.util.NotImplementedException;
 import org.openqa.selenium.By;
 
 import java.util.List;
@@ -29,7 +29,7 @@ public class OptionsGroupImpl extends AbstractComponent<OptionsGroup> implements
 
     @Override
     public int getSelectedIndex() {
-        throw new NotImplementedException("This UI component still in development");
+        throw new NotImplementedException();
     }
 
     @Override
@@ -42,6 +42,6 @@ public class OptionsGroupImpl extends AbstractComponent<OptionsGroup> implements
 
     @Override
     public List<String> getOptions() {
-        throw new NotImplementedException("This UI component still in development");
+        throw new NotImplementedException();
     }
 }

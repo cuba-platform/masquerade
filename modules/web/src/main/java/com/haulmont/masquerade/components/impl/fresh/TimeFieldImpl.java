@@ -2,10 +2,12 @@ package com.haulmont.masquerade.components.impl.fresh;
 
 import com.haulmont.masquerade.components.TimeField;
 import com.haulmont.masquerade.components.impl.AbstractComponent;
-import org.apache.commons.lang3.NotImplementedException;
 import org.openqa.selenium.By;
+import org.openqa.selenium.Keys;
 
-import java.time.LocalTime;
+import static com.codeborne.selenide.Condition.enabled;
+import static com.codeborne.selenide.Condition.visible;
+import static com.haulmont.masquerade.Conditions.editable;
 
 public class TimeFieldImpl extends AbstractComponent<TimeField> implements TimeField {
     public TimeFieldImpl(By by) {
@@ -13,17 +15,20 @@ public class TimeFieldImpl extends AbstractComponent<TimeField> implements TimeF
     }
 
     @Override
-    public LocalTime getConvertedValue() {
-        throw new NotImplementedException("This UI component still in development");
-    }
-
-    @Override
     public String getValue() {
-        throw new NotImplementedException("This UI component still in development");
+        return impl
+                .shouldBe(visible)
+                .shouldBe(enabled)
+                .getValue();
     }
 
     @Override
     public void setValue(String value) {
-        throw new NotImplementedException("This UI component still in development");
+        impl.shouldBe(visible)
+                .shouldBe(enabled)
+                .shouldBe(editable)
+                .click();
+
+        impl.sendKeys(Keys.HOME, value);
     }
 }
