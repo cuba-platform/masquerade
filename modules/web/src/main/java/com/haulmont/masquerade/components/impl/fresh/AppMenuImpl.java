@@ -5,11 +5,16 @@ import com.haulmont.masquerade.components.AppMenu;
 import com.haulmont.masquerade.components.impl.AbstractComponent;
 import org.openqa.selenium.By;
 
+import static com.codeborne.selenide.Condition.enabled;
 import static com.codeborne.selenide.Condition.visible;
+import static com.codeborne.selenide.Selectors.byClassName;
 import static com.codeborne.selenide.Selenide.$;
+import static com.haulmont.masquerade.Selectors.byChain;
 import static com.haulmont.masquerade.Selectors.byCubaId;
 
 public class AppMenuImpl extends AbstractComponent<AppMenu> implements AppMenu {
+
+    public static final String MENUITEM_CAPTION_CLASS = "v-menubar-menuitem-caption";
 
     public AppMenuImpl(By by) {
         super(by);
@@ -17,16 +22,17 @@ public class AppMenuImpl extends AbstractComponent<AppMenu> implements AppMenu {
 
     @Override
     public <T> T openItem(Class<T> clazz, String... path) {
-        for (String s : path) {
-            $(byCubaId(s)).shouldBe(visible).click();
-        }
+        openItem(path);
         return Components.wire(clazz);
     }
 
     @Override
     public void openItem(String... path) {
         for (String s : path) {
-            $(byCubaId(s)).shouldBe(visible).click();
+            $(byChain(byCubaId(s), byClassName(MENUITEM_CAPTION_CLASS)))
+                    .shouldBe(visible)
+                    .shouldBe(enabled)
+                    .click();
         }
     }
 }
