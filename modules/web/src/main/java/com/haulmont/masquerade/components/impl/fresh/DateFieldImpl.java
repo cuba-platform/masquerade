@@ -27,12 +27,13 @@ public class DateFieldImpl extends AbstractComponent<DateField> implements DateF
     }
 
     @Override
-    public void setDateValue(String value) {
+    public DateField setDateValue(String value) {
         impl.shouldBe(visible)
                 .shouldBe(enabled)
                 .shouldBe(editable)
                 .click();
 
         impl.sendKeys(Keys.HOME, value);
+        return this;
     }
 }

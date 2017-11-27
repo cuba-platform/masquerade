@@ -15,7 +15,7 @@ import com.haulmont.masquerade.Conditions;
  *     <li>{@link Conditions#editable}</li>
  *     <li>{@link Conditions#checked}</li>
  *     <li>{@link Conditions#selected}</li>
- *     <li>{@link Conditions.Caption}</li>
+ *     <li>{@link Conditions#caption(String)}</li>
  * </ul>
  */
 public interface CheckBox extends Field<CheckBox> {

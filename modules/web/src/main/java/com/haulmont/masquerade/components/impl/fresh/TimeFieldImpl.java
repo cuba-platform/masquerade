@@ -23,12 +23,13 @@ public class TimeFieldImpl extends AbstractComponent<TimeField> implements TimeF
     }
 
     @Override
-    public void setValue(String value) {
+    public TimeField setValue(String value) {
         impl.shouldBe(visible)
                 .shouldBe(enabled)
                 .shouldBe(editable)
                 .click();
 
         impl.sendKeys(Keys.HOME, value);
+        return this;
     }
 }

@@ -2,9 +2,9 @@ package com.haulmont.masquerade.components.impl.fresh;
 
 import com.codeborne.selenide.Condition;
 import com.codeborne.selenide.SelenideElement;
-import com.haulmont.masquerade.Conditions;
 import com.haulmont.masquerade.components.CheckBox;
 import com.haulmont.masquerade.components.impl.AbstractComponent;
+import com.haulmont.masquerade.conditions.Caption;
 import org.openqa.selenium.By;
 
 import java.util.Objects;
@@ -46,8 +46,8 @@ public class CheckBoxImpl extends AbstractComponent<CheckBox> implements CheckBo
 
     @Override
     public boolean has(Condition condition) {
-        if (condition instanceof Conditions.Caption) {
-            String expectedCaption = ((Conditions.Caption) condition).getCaption();
+        if (condition instanceof Caption) {
+            String expectedCaption = ((Caption) condition).getCaption();
             return Objects.equals(getCaption(), expectedCaption);
         }
         return CheckBox.super.has(condition);
@@ -66,8 +66,8 @@ public class CheckBoxImpl extends AbstractComponent<CheckBox> implements CheckBo
                 impl.shouldNotHave(cssClass(READONLY_CLASSNAME));
             } else if (c == readonly) {
                 impl.shouldHave(cssClass(READONLY_CLASSNAME));
-            } else if (c instanceof Conditions.Caption) {
-                String caption = ((Conditions.Caption) c).getCaption();
+            } else if (c instanceof Caption) {
+                String caption = ((Caption) c).getCaption();
                 $(byChain(by, LABEL)).shouldHave(exactTextCaseSensitive(caption));
             } else {
                 CheckBox.super.should(c);
@@ -89,8 +89,8 @@ public class CheckBoxImpl extends AbstractComponent<CheckBox> implements CheckBo
                 impl.shouldHave(cssClass(READONLY_CLASSNAME));
             } else if (c == readonly) {
                 impl.shouldNotHave(cssClass(READONLY_CLASSNAME));
-            } else if (c instanceof Conditions.Caption) {
-                String caption = ((Conditions.Caption) c).getCaption();
+            } else if (c instanceof Caption) {
+                String caption = ((Caption) c).getCaption();
                 $(byChain(by, LABEL)).shouldNotHave(exactTextCaseSensitive(caption));
             } else {
                 CheckBox.super.shouldNot(c);

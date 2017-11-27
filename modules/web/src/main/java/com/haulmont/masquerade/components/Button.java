@@ -11,7 +11,7 @@ import com.haulmont.masquerade.Conditions;
  *     <li>{@link Conditions#hidden}</li>
  *     <li>{@link Conditions#enabled}</li>
  *     <li>{@link Conditions#disabled}</li>
- *     <li>{@link Conditions.Caption}</li>
+ *     <li>{@link Conditions#caption(String)}</li>
  * </ul>
  */
 public interface Button extends Component<Button> {

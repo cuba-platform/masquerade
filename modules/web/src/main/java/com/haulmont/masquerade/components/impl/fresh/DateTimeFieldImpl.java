@@ -32,7 +32,7 @@ public class DateTimeFieldImpl extends AbstractComponent<DateTimeField> implemen
     }
 
     @Override
-    public void setDateValue(String value) {
+    public DateTimeField setDateValue(String value) {
         SelenideElement dateFieldImpl = $(byChain(by, DATEPART));
         dateFieldImpl
                 .shouldBe(visible)
@@ -41,6 +41,7 @@ public class DateTimeFieldImpl extends AbstractComponent<DateTimeField> implemen
                 .click();
 
         dateFieldImpl.sendKeys(Keys.HOME, value);
+        return this;
     }
 
     @Override
@@ -52,7 +53,7 @@ public class DateTimeFieldImpl extends AbstractComponent<DateTimeField> implemen
     }
 
     @Override
-    public void setTimeValue(String value) {
+    public DateTimeField setTimeValue(String value) {
         SelenideElement timeFieldImpl = $(byChain(by, TIMEPART));
 
         timeFieldImpl
@@ -62,5 +63,6 @@ public class DateTimeFieldImpl extends AbstractComponent<DateTimeField> implemen
                 .click();
 
         timeFieldImpl.sendKeys(Keys.HOME, value);
+        return this;
     }
 }

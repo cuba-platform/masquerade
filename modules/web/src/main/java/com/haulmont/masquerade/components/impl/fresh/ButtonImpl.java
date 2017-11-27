@@ -1,10 +1,9 @@
 package com.haulmont.masquerade.components.impl.fresh;
 
 import com.codeborne.selenide.Condition;
-import com.codeborne.selenide.SelenideElement;
-import com.haulmont.masquerade.Conditions;
 import com.haulmont.masquerade.components.Button;
 import com.haulmont.masquerade.components.impl.AbstractComponent;
+import com.haulmont.masquerade.conditions.Caption;
 import org.openqa.selenium.By;
 
 import java.util.Objects;
@@ -41,8 +40,8 @@ public class ButtonImpl extends AbstractComponent<Button> implements Button {
 
     @Override
     public boolean has(Condition condition) {
-        if (condition instanceof Conditions.Caption) {
-            String expectedCaption = ((Conditions.Caption) condition).getCaption();
+        if (condition instanceof Caption) {
+            String expectedCaption = ((Caption) condition).getCaption();
             return Objects.equals(getCaption(), expectedCaption);
         }
         return Button.super.has(condition);
@@ -63,9 +62,11 @@ public class ButtonImpl extends AbstractComponent<Button> implements Button {
                 impl.shouldNotHave(cssClass(DISABLED_CLASSNAME));
             } else if (c == disabled) {
                 impl.shouldHave(cssClass(DISABLED_CLASSNAME));
-            } else if (c instanceof Conditions.Caption) {
-                String caption = ((Conditions.Caption) c).getCaption();
-                $(byChain(by, className(BUTTON_CAPTION_CLASSNAME))).shouldHave(exactTextCaseSensitive(caption));
+            } else if (c instanceof Caption) {
+                String caption = ((Caption) c).getCaption();
+
+                $(byChain(by, className(BUTTON_CAPTION_CLASSNAME)))
+                        .shouldHave(exactTextCaseSensitive(caption));
             } else {
                 Button.super.should(c);
             }
@@ -80,10 +81,11 @@ public class ButtonImpl extends AbstractComponent<Button> implements Button {
                 impl.shouldHave(cssClass(DISABLED_CLASSNAME));
             } else if (c == disabled) {
                 impl.shouldNotHave(cssClass(DISABLED_CLASSNAME));
-            }
-            if (c instanceof Conditions.Caption) {
-                String caption = ((Conditions.Caption) c).getCaption();
-                $(byChain(by, className(BUTTON_CAPTION_CLASSNAME))).shouldNotHave(exactTextCaseSensitive(caption));
+            } else if (c instanceof Caption) {
+                String caption = ((Caption) c).getCaption();
+
+                $(byChain(by, className(BUTTON_CAPTION_CLASSNAME)))
+                        .shouldNotHave(exactTextCaseSensitive(caption));
             } else {
                 Button.super.shouldNot(c);
             }

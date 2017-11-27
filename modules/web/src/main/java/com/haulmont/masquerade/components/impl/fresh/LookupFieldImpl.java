@@ -5,21 +5,31 @@ import com.codeborne.selenide.SelenideElement;
 import com.codeborne.selenide.collections.Texts;
 import com.haulmont.masquerade.components.LookupField;
 import com.haulmont.masquerade.components.impl.AbstractComponent;
+import com.haulmont.masquerade.conditions.Options;
+import com.haulmont.masquerade.conditions.OptionsCount;
+import com.haulmont.masquerade.conditions.Value;
 import org.openqa.selenium.By;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
+import static com.codeborne.selenide.Condition.exactValue;
 import static com.codeborne.selenide.Selectors.byText;
 import static com.codeborne.selenide.Selenide.$;
 import static com.codeborne.selenide.Selenide.$$;
+import static com.google.common.base.Strings.isNullOrEmpty;
 import static com.haulmont.masquerade.Conditions.*;
 import static com.haulmont.masquerade.Selectors.byChain;
 import static com.haulmont.masquerade.sys.TagNames.*;
 
 public class LookupFieldImpl extends AbstractComponent<LookupField> implements LookupField {
-    public static final String VAADIN_COMBOBOX_OPTIONLIST = "VAADIN_COMBOBOX_OPTIONLIST";
+    public static final String EMPTY_OPTION_VALUE = "\u00a0";
+
     public static final String V_FILTERSELECT_NEXTPAGE = "v-filterselect-nextpage";
     public static final String V_FILTERSELECT_PREVPAGE = "v-filterselect-prevpage";
+
+    public static final By VAADIN_COMBOBOX_OPTIONLIST = By.id("VAADIN_COMBOBOX_OPTIONLIST");
+    public static final By EMPTY_OPTION = byText(EMPTY_OPTION_VALUE);
 
     public LookupFieldImpl(By by) {
         super(by);
@@ -36,22 +46,33 @@ public class LookupFieldImpl extends AbstractComponent<LookupField> implements L
 
     @Override
     public LookupField setValue(String value) {
+        // todo support textInputAllowed = false
         setFilter(value);
 
-        getOptionsPopup().select(value);
+        if (isNullOrEmpty(value)) {
+            openOptionsPopup().select(value);
+        } else {
+            getOptionsPopup().select(value);
+        }
 
         return this;
     }
 
     @Override
     public LookupField setFilter(String filter) {
-        // todo may be replace with javascript set to speed up this call
-        $(byChain(by, INPUT)).shouldBe(visible)
+        SelenideElement inputImpl = $(byChain(by, INPUT));
+
+        inputImpl.shouldBe(visible)
                 .shouldBe(editable)
                 .shouldBe(enabled)
                 .click();
-        $(byChain(by, INPUT)).clear();
-        $(byChain(by, INPUT)).sendKeys(filter);
+
+        inputImpl.clear();
+
+        if (!isNullOrEmpty(filter)) {
+            // todo may be replace with javascript set to speed up this call
+            inputImpl.sendKeys(filter);
+        }
 
         return this;
     }
@@ -62,7 +83,7 @@ public class LookupFieldImpl extends AbstractComponent<LookupField> implements L
                 .shouldBe(visible)
                 .click();
 
-        OptionsPopupImpl optionsPopup = new OptionsPopupImpl(By.id(VAADIN_COMBOBOX_OPTIONLIST));
+        OptionsPopupImpl optionsPopup = new OptionsPopupImpl(VAADIN_COMBOBOX_OPTIONLIST);
         optionsPopup.shouldBe(visible);
 
         return optionsPopup;
@@ -70,7 +91,7 @@ public class LookupFieldImpl extends AbstractComponent<LookupField> implements L
 
     @Override
     public OptionsPopup getOptionsPopup() {
-        OptionsPopupImpl optionsPopup = new OptionsPopupImpl(By.id(VAADIN_COMBOBOX_OPTIONLIST));
+        OptionsPopupImpl optionsPopup = new OptionsPopupImpl(VAADIN_COMBOBOX_OPTIONLIST);
         optionsPopup.shouldBe(visible);
 
         return optionsPopup;
@@ -78,7 +99,7 @@ public class LookupFieldImpl extends AbstractComponent<LookupField> implements L
 
     @Override
     public LookupField closeOptionsPopup() {
-        OptionsPopupImpl optionsPopup = new OptionsPopupImpl(By.id(VAADIN_COMBOBOX_OPTIONLIST));
+        OptionsPopupImpl optionsPopup = new OptionsPopupImpl(VAADIN_COMBOBOX_OPTIONLIST);
         optionsPopup.shouldBe(visible);
 
         $(byChain(by, DIV))
@@ -89,15 +110,55 @@ public class LookupFieldImpl extends AbstractComponent<LookupField> implements L
     }
 
     @Override
+    public boolean has(Condition condition) {
+        if (condition instanceof Value) {
+            String expectedValue = ((Value) condition).getExpectedValue();
+            if (isNullOrEmpty(expectedValue)) {
+                expectedValue = "";
+            }
+
+            return $(byChain(by, INPUT))
+                    .has(exactValue(expectedValue));
+        }
+        return LookupField.super.has(condition);
+    }
+
+    @Override
     public LookupField should(Condition... condition) {
-        // todo
-        return LookupField.super.should(condition);
+        for (Condition c : condition) {
+            if (c instanceof Value) {
+                String expectedValue = ((Value) c).getExpectedValue();
+                if (isNullOrEmpty(expectedValue)) {
+                    expectedValue = "";
+                }
+
+                $(byChain(by, INPUT))
+                        .shouldBe(visible)
+                        .shouldHave(exactValue(expectedValue));
+            } else {
+                return LookupField.super.should(c);
+            }
+        }
+        return this;
     }
 
     @Override
     public LookupField shouldNot(Condition... condition) {
-        // todo
-        return LookupField.super.shouldNot(condition);
+        for (Condition c : condition) {
+            if (c instanceof Value) {
+                String expectedValue = ((Value) c).getExpectedValue();
+                if (isNullOrEmpty(expectedValue)) {
+                    expectedValue = "";
+                }
+
+                $(byChain(by, INPUT))
+                        .shouldBe(visible)
+                        .shouldNotHave(exactValue(expectedValue));
+            } else {
+                return LookupField.super.shouldNot(c);
+            }
+        }
+        return this;
     }
 
     public class OptionsPopupImpl implements OptionsPopup {
@@ -116,20 +177,25 @@ public class LookupFieldImpl extends AbstractComponent<LookupField> implements L
 
         @Override
         public LookupField select(String option) {
-            $(byChain(by, TD, byText(option)))
-                    .shouldBe(visible)
-                    .click();
+            if (isNullOrEmpty(option)) {
+                $(byChain(by, TD, EMPTY_OPTION))
+                        .shouldBe(visible)
+                        .click();
+            } else {
+                $(byChain(by, TD, byText(option)))
+                        .shouldBe(visible)
+                        .click();
+            }
 
             return LookupFieldImpl.this;
         }
-
 
         @Override
         public OptionsPopup nextPage() {
             $(byChain(by, By.className(V_FILTERSELECT_NEXTPAGE)))
                     .shouldBe(visible)
                     .click();
-            OptionsPopupImpl optionsPopup = new OptionsPopupImpl(By.id(VAADIN_COMBOBOX_OPTIONLIST));
+            OptionsPopupImpl optionsPopup = new OptionsPopupImpl(VAADIN_COMBOBOX_OPTIONLIST);
             optionsPopup.shouldBe(visible);
             return optionsPopup;
         }
@@ -144,7 +210,7 @@ public class LookupFieldImpl extends AbstractComponent<LookupField> implements L
             $(byChain(by, By.className(V_FILTERSELECT_PREVPAGE)))
                     .shouldBe(visible)
                     .click();
-            OptionsPopupImpl optionsPopup = new OptionsPopupImpl(By.id(VAADIN_COMBOBOX_OPTIONLIST));
+            OptionsPopupImpl optionsPopup = new OptionsPopupImpl(VAADIN_COMBOBOX_OPTIONLIST);
             optionsPopup.shouldBe(visible);
 
             return optionsPopup;
@@ -164,7 +230,11 @@ public class LookupFieldImpl extends AbstractComponent<LookupField> implements L
         public OptionsPopup should(Condition... condition) {
             for (Condition c : condition) {
                 if (c instanceof Options) {
-                    Texts texts = new Texts(((Options) c).getOptions());
+                    List<String> options = ((Options) c).getOptions().stream()
+                            .map(o -> isNullOrEmpty(o) ? EMPTY_OPTION_VALUE : o)
+                            .collect(Collectors.toList());
+
+                    Texts texts = new Texts(options);
                     $$(byChain(by, TD, SPAN))
                             .shouldHave(texts);
                 } else if (c instanceof OptionsCount) {

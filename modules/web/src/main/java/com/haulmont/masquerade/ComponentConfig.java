@@ -14,7 +14,7 @@ import java.util.function.Function;
  * <pre><code>
  * public class CustomComponentConfig implements ComponentConfig {
  *    {@literal @}Override
- *     public Map<Class, Function<By, ?>> getComponents() {
+ *     public Map&lt;Class, Function&lt;By, ?&gt;&gt; getComponents() {
  *         return ImmutableMap.of(Untyped.class, UntypedImpl::new);
  *     }
  * }</code></pre>
