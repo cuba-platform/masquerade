@@ -3,6 +3,8 @@ masquerade
 
 Cuba Platform UI testing library.
 
+<a href="https://gitter.im/cuba-platform/masquerade-ru"><img src="https://badges.gitter.im/Join%20Chat.svg" alt="Join the chat at https://gitter.im/cuba-platform/masquerade-ru" title=""></a>
+
 ## Overview
 
 Library provides an ability to create UI tests for the CUBA based applications. It can help you to write better tests.
