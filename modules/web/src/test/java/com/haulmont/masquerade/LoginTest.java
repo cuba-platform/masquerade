@@ -2,6 +2,7 @@ package com.haulmont.masquerade;
 
 import com.haulmont.masquerade.components.Untyped;
 import com.haulmont.masquerade.composite.LoginWindow;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import static com.codeborne.selenide.Selenide.open;
@@ -10,6 +11,7 @@ import static com.haulmont.masquerade.Components.wire;
 import static com.haulmont.masquerade.Conditions.*;
 import static org.junit.Assert.assertNotNull;
 
+@Ignore
 public class LoginTest {
     @Test
     public void login() {

@@ -46,6 +46,8 @@ configure([project(':masquerade-web'), project(':masquerade-connector')]) {
             }
         }
     }
+
+    build.dependsOn javadoc
 }
 
 configure(project(':masquerade-connector')) {

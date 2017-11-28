@@ -3,6 +3,7 @@ package com.haulmont.masquerade;
 import com.haulmont.masquerade.restapi.User;
 import com.haulmont.masquerade.restapi.UserService;
 import okhttp3.ResponseBody;
+import org.junit.Ignore;
 import org.junit.Test;
 import retrofit2.Call;
 
@@ -11,6 +12,7 @@ import java.util.List;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
+@Ignore
 public class RestApiTest {
     // see https://futurestud.io/tutorials/oauth-2-on-android-with-retrofit
 

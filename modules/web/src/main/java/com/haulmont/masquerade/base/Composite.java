@@ -4,10 +4,9 @@ import com.codeborne.selenide.SelenideElement;
 import com.haulmont.masquerade.Wire;
 import org.openqa.selenium.By;
 
-public abstract class Composite<T extends Composite> implements SelenideElementWrapper<T>, ByLocator {
+public abstract class Composite<T> implements SelenideElementWrapper<T>, ByLocator {
     @Wire
     private SelenideElement impl;
-
     @Wire
     private By by;
 
