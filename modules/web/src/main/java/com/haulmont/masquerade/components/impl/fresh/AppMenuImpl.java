@@ -27,6 +27,12 @@ public class AppMenuImpl extends AbstractComponent<AppMenu> implements AppMenu {
     }
 
     @Override
+    public <T> T openItem(Menu<T> menu) {
+        openItem(menu.getPath());
+        return Components.wire(menu.getScreenClass());
+    }
+
+    @Override
     public void openItem(String... path) {
         for (String s : path) {
             $(byChain(byCubaId(s), byClassName(MENUITEM_CAPTION_CLASS)))
