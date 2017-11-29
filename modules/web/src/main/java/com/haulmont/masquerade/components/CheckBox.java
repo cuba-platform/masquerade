@@ -1,6 +1,7 @@
 package com.haulmont.masquerade.components;
 
 import com.haulmont.masquerade.Conditions;
+import com.haulmont.masquerade.util.Log;
 
 /**
  * CheckBox component.
@@ -19,6 +20,7 @@ import com.haulmont.masquerade.Conditions;
  * </ul>
  */
 public interface CheckBox extends Field<CheckBox> {
+    @Log
     CheckBox setChecked(boolean checked);
     boolean isChecked();
 

@@ -1,5 +1,7 @@
 package com.haulmont.masquerade.components;
 
+import com.haulmont.masquerade.util.Log;
+
 public interface PickerField extends Field<PickerField> {
     class Action {
         private final String id;
@@ -17,7 +19,9 @@ public interface PickerField extends Field<PickerField> {
     Action CLEAR = new Action("clear");
     Action LOOKUP = new Action("lookup");
 
+    @Log
     void triggerAction(Action action);
+    @Log
     <T> T triggerAction(Class<T> clazz, Action action);
 
     String getValue();

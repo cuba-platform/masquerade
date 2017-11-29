@@ -1,8 +1,10 @@
 package com.haulmont.masquerade;
 
 import com.codeborne.selenide.SelenideElement;
-import com.haulmont.masquerade.components.*;
-import com.haulmont.masquerade.components.impl.fresh.*;
+import com.haulmont.masquerade.base.SelenideElementWrapper;
+import com.haulmont.masquerade.config.ComponentConfig;
+import com.haulmont.masquerade.config.DefaultComponentConfig;
+import com.haulmont.masquerade.sys.LoggingInvocationHandler;
 import org.apache.commons.lang3.reflect.FieldUtils;
 import org.openqa.selenium.By;
 import org.openqa.selenium.support.FindBy;
@@ -11,6 +13,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.lang.reflect.Field;
+import java.lang.reflect.Proxy;
 import java.util.Map;
 import java.util.ServiceLoader;
 import java.util.concurrent.ConcurrentHashMap;
@@ -27,33 +30,8 @@ public class Components {
     private static final Map<Class, Function<By, ?>> components = new ConcurrentHashMap<>();
 
     static {
-        components.put(Untyped.class, UntypedImpl::new);
-        components.put(TextField.class, TextFieldImpl::new);
-        components.put(TextArea.class, TextAreaImpl::new);
-        components.put(PasswordField.class, PasswordFieldImpl::new);
-        components.put(Button.class, ButtonImpl::new);
-        components.put(Label.class, LabelImpl::new);
-        components.put(CheckBox.class, CheckBoxImpl::new);
-        components.put(AppMenu.class, AppMenuImpl::new);
-        components.put(LookupField.class, LookupFieldImpl::new);
-        components.put(Table.class, TableImpl::new);
-        components.put(PopupButton.class, PopupButtonImpl::new);
-        components.put(DateField.class, DateFieldImpl::new);
-        components.put(DateTimeField.class, DateTimeFieldImpl::new);
-        components.put(TimeField.class, TimeFieldImpl::new);
-        components.put(FileUploadField.class, FileUploadFieldImpl::new);
-        // stubs
-        components.put(BoxLayout.class, BoxLayoutImpl::new);
-        components.put(TabSheet.class, TabSheetImpl::new);
-        components.put(DialogWindow.class, DialogWindowImpl::new);
-        components.put(FieldGroup.class, FieldGroupImpl::new);
-        components.put(GroupBox.class, GroupBoxImpl::new);
-        components.put(LookupPickerField.class, LookupPickerFieldImpl::new);
-        components.put(MaskedField.class, MaskedFieldImpl::new);
-        components.put(OptionsGroup.class, OptionsGroupImpl::new);
-        components.put(PickerField.class, PickerFieldImpl::new);
-        components.put(SourceCodeEditor.class, SourceCodeEditorImpl::new);
-        components.put(Tree.class, TreeImpl::new);
+        ComponentConfig defaultConfig = new DefaultComponentConfig();
+        components.putAll(defaultConfig.getComponents());
 
         String cubaVersion = System.getProperty(CUBA_VERSION_SYSTEM_PROPERTY);
         if (cubaVersion != null && "5.x".equals(cubaVersion)) {
@@ -116,7 +94,10 @@ public class Components {
 
         Function<By, ?> component = components.get(clazz);
         if (component != null) {
-            return clazz.cast(component.apply(by));
+            // if it is an interface - we can proxy it and add logging automatically
+            T instance = clazz.cast(component.apply(by));
+
+            return proxyComponent(clazz, instance);
         } else {
             // custom composite
             T instance;
@@ -127,66 +108,87 @@ public class Components {
             }
 
             // connect fields
-
             Field[] allFields = FieldUtils.getAllFields(clazz);
             for (Field field : allFields) {
-                String fieldName = field.getName();
+                Object fieldValue = getTargetFieldValue(clazz, field, by);
 
-                Wire wire = field.getAnnotation(Wire.class);
-                if (wire != null) {
-                    Object fieldValue;
-                    if (field.getType() == SelenideElement.class) {
-                        fieldValue = $(by);
-                    } else if (field.getType() == By.class) {
-                        fieldValue = by;
-                    } else if (field.getType() == Logger.class) {
-                        fieldValue = LoggerFactory.getLogger(clazz);
-                    } else {
-                        String[] path = wire.path();
-                        if (path.length == 0) {
-                            path = new String[]{fieldName};
-                        }
-
-                        By fieldBy;
-                        if (by == BODY_MARKER_BY) {
-                            fieldBy = byPath(path);
-                        } else {
-                            fieldBy = byChain(by, byPath(path));
-                        }
-                        fieldValue = wireClassBy(field.getType(), fieldBy);
-                    }
-
+                if (fieldValue != null) {
                     try {
                         field.setAccessible(true);
                         field.set(instance, fieldValue);
                     } catch (IllegalAccessException e) {
-                        throw new RuntimeException("Unable to set @Wire field " + fieldName, e);
-                    }
-                } else {
-                    FindBy findBy = field.getAnnotation(FindBy.class);
-                    if (findBy != null) {
-                        By selector = new Annotations(field).buildBy();
-
-                        By fieldBy;
-                        if (by == BODY_MARKER_BY) {
-                            fieldBy = selector;
-                        } else {
-                            fieldBy = byChain(by, selector);
-                        }
-
-                        Object fieldValue = wireClassBy(field.getType(), fieldBy);
-
-                        try {
-                            field.setAccessible(true);
-                            field.set(instance, fieldValue);
-                        } catch (IllegalAccessException e) {
-                            throw new RuntimeException("Unable to set @FindBy field " + fieldName, e);
-                        }
+                        throw new RuntimeException("Unable to inject field " + field.getName(), e);
                     }
                 }
             }
 
             return instance;
         }
+    }
+
+    protected static Object getTargetFieldValue(Class clazz, Field field, By parentBy) {
+        String fieldName = field.getName();
+
+        Wire wire = field.getAnnotation(Wire.class);
+
+        Object fieldValue;
+        if (wire != null) {
+            if (field.getType() == SelenideElement.class) {
+                fieldValue = $(parentBy);
+            } else if (field.getType() == By.class) {
+                fieldValue = parentBy;
+            } else if (field.getType() == Logger.class) {
+                fieldValue = LoggerFactory.getLogger(clazz);
+            } else {
+                String[] path = wire.path();
+                if (path.length == 0) {
+                    path = new String[]{fieldName};
+                }
+
+                By fieldBy;
+                if (parentBy == BODY_MARKER_BY) {
+                    fieldBy = byPath(path);
+                } else {
+                    fieldBy = byChain(parentBy, byPath(path));
+                }
+                fieldValue = wireClassBy(field.getType(), fieldBy);
+            }
+        } else {
+            FindBy findBy = field.getAnnotation(FindBy.class);
+            if (findBy != null) {
+                By selector = new Annotations(field).buildBy();
+
+                By fieldBy;
+                if (parentBy == BODY_MARKER_BY) {
+                    fieldBy = selector;
+                } else {
+                    fieldBy = byChain(parentBy, selector);
+                }
+
+                fieldValue = wireClassBy(field.getType(), fieldBy);
+            } else {
+                fieldValue = null;
+            }
+        }
+
+        return fieldValue;
+    }
+
+    @SuppressWarnings("unchecked")
+    public static <T> T proxyComponent(Class<T> componentClass, T target) {
+        LoggingInvocationHandler invocationHandler = new LoggingInvocationHandler(componentClass, target);
+        invocationHandler.setProxyFactory((interfaceClass, object) -> {
+            if (SelenideElementWrapper.class.isAssignableFrom(interfaceClass)
+                    && interfaceClass.isInterface()) {
+                return proxyComponent(interfaceClass, object);
+            }
+
+            return object;
+        });
+
+        return (T) Proxy.newProxyInstance(
+                componentClass.getClassLoader(),
+                new Class<?>[]{componentClass},
+                invocationHandler);
     }
 }

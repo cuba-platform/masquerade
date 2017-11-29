@@ -1,6 +1,7 @@
 package com.haulmont.masquerade.components;
 
 import com.haulmont.masquerade.Conditions;
+import com.haulmont.masquerade.util.Log;
 import com.haulmont.masquerade.base.ByLocator;
 import com.haulmont.masquerade.base.SelenideElementWrapper;
 
@@ -17,13 +18,17 @@ import java.util.List;
  * </ul>
  */
 public interface LookupField extends Field<LookupField> {
-    String getValue();
+    @Log
     LookupField setValue(String value);
+    String getValue();
 
+    @Log
     LookupField setFilter(String filter);
 
-    OptionsPopup openOptionsPopup();
     OptionsPopup getOptionsPopup();
+    @Log
+    OptionsPopup openOptionsPopup();
+    @Log
     LookupField closeOptionsPopup();
 
     /**
@@ -32,10 +37,14 @@ public interface LookupField extends Field<LookupField> {
     interface OptionsPopup extends SelenideElementWrapper<OptionsPopup>, ByLocator {
         List<String> getVisibleOptions();
 
+        @Log
         LookupField select(String option);
 
+        @Log
         OptionsPopup nextPage();
-        boolean hasNextPage();
+        @Log
         OptionsPopup previousPage();
+
+        boolean hasNextPage();
     }
 }

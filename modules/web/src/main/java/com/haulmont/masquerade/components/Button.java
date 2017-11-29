@@ -1,6 +1,7 @@
 package com.haulmont.masquerade.components;
 
 import com.haulmont.masquerade.Conditions;
+import com.haulmont.masquerade.util.Log;
 
 /**
  * Button component.
@@ -17,5 +18,6 @@ import com.haulmont.masquerade.Conditions;
 public interface Button extends Component<Button> {
     String getCaption();
 
+    @Log
     Button click();
 }

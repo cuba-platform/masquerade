@@ -1,9 +1,13 @@
 package com.haulmont.masquerade.components;
 
-public interface DateTimeField extends Field<DateTimeField> {
-    String getDateValue();
-    DateTimeField setDateValue(String value);
+import com.haulmont.masquerade.util.Log;
 
-    String getTimeValue();
+public interface DateTimeField extends Field<DateTimeField> {
+    @Log
+    DateTimeField setDateValue(String value);
+    String getDateValue();
+
+    @Log
     DateTimeField setTimeValue(String value);
+    String getTimeValue();
 }

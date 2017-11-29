@@ -1,5 +1,6 @@
-package com.haulmont.masquerade;
+package com.haulmont.masquerade.config;
 
+import com.haulmont.masquerade.Components;
 import org.openqa.selenium.By;
 
 import java.util.Map;
@@ -9,7 +10,7 @@ import java.util.function.Function;
  * SPI interface for {@link Components} factory.
  *
  * Implement this interface in your project and create file
- * "META-INF/services/com.haulmont.masquerade.ComponentConfig" in your classpath with FQN of your implementation.
+ * "META-INF/services/com.haulmont.masquerade.config.ComponentConfig" in your classpath with FQN of your implementation.
  *
  * <pre><code>
  * public class CustomComponentConfig implements ComponentConfig {
