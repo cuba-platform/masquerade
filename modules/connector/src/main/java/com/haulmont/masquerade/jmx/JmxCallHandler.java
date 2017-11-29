@@ -1,6 +1,8 @@
 package com.haulmont.masquerade.jmx;
 
 import com.haulmont.masquerade.Connectors;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.management.MBeanServerConnection;
 import javax.management.MBeanServerInvocationHandler;
@@ -17,6 +19,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class JmxCallHandler implements InvocationHandler {
+    private static final Logger log = LoggerFactory.getLogger(JmxCallHandler.class);
+
     private final Connectors.JmxHost hostInfo;
     private final String objectName;
 
@@ -50,6 +54,13 @@ public class JmxCallHandler implements InvocationHandler {
             }
 
             MBeanServerInvocationHandler wrappedHandler = new MBeanServerInvocationHandler(mbsc, mbeanName);
+
+            if (args != null) {
+                log.info("Invoke method {} of {} with parameters {}", method.getName(), objectName, args);
+            } else {
+                log.info("Invoke method {} of {}", method.getName(), objectName);
+            }
+
             return wrappedHandler.invoke(proxy, method, args);
         } catch (IOException e) {
             throw new RuntimeException("Unable to perform JMX call", e);

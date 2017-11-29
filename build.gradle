@@ -55,8 +55,10 @@ configure(project(':masquerade-connector')) {
         compile 'com.squareup.retrofit2:retrofit:2.3.0'
         compile 'com.squareup.retrofit2:converter-gson:2.3.0'
         compile 'com.google.guava:guava:23.0'
+        compile 'org.slf4j:slf4j-api:1.7.25'
 
         testCompile 'junit:junit:4.12'
+        testCompile 'org.slf4j:slf4j-simple:1.7.25'
     }
 }
 
