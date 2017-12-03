@@ -2,9 +2,15 @@ package com.haulmont.masquerade.base;
 
 import com.codeborne.selenide.SelenideElement;
 import com.haulmont.masquerade.Wire;
+import com.haulmont.masquerade.components.Container;
 import org.openqa.selenium.By;
 
-public abstract class Composite<T> implements SelenideElementWrapper<T>, ByLocator {
+/**
+ * Convenient parent class for composite UI components: panels, screens, tabs, etc.
+ *
+ * @param <T> type of class
+ */
+public abstract class Composite<T> implements Container<T> {
     @Wire
     private SelenideElement impl;
     @Wire

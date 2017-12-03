@@ -25,18 +25,12 @@ import static com.haulmont.masquerade.Selectors.byPath;
 
 public class Components {
     private static final By BODY_MARKER_BY = By.tagName("body");
-    private static final String CUBA_VERSION_SYSTEM_PROPERTY = "cuba.version";
 
     private static final Map<Class, Function<By, ?>> components = new ConcurrentHashMap<>();
 
     static {
         ComponentConfig defaultConfig = new DefaultComponentConfig();
         components.putAll(defaultConfig.getComponents());
-
-        String cubaVersion = System.getProperty(CUBA_VERSION_SYSTEM_PROPERTY);
-        if (cubaVersion != null && "5.x".equals(cubaVersion)) {
-            // import additional implementations or replace default
-        }
 
         // import implementations from project
         ServiceLoader<ComponentConfig> configs = ServiceLoader.load(ComponentConfig.class);
@@ -46,6 +40,9 @@ public class Components {
 
             components.putAll(componentConfig.getComponents());
         }
+    }
+
+    protected Components() {
     }
 
     public static <T> void register(Class<T> clazz, Function<By, T> componentSupplier) {

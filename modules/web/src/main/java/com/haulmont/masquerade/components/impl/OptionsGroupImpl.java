@@ -1,8 +1,7 @@
-package com.haulmont.masquerade.components.impl.fresh;
+package com.haulmont.masquerade.components.impl;
 
 import com.haulmont.masquerade.Selectors;
 import com.haulmont.masquerade.components.OptionsGroup;
-import com.haulmont.masquerade.components.impl.AbstractComponent;
 import com.haulmont.masquerade.util.NotImplementedException;
 import org.openqa.selenium.By;
 

@@ -4,27 +4,27 @@ import com.codeborne.selenide.Condition;
 import com.codeborne.selenide.impl.Html;
 import org.openqa.selenium.WebElement;
 
-public class Value extends Condition {
+public class ValueContains extends Condition {
 
-    private String expectedValue;
+    private String expectedValueSubstring;
 
-    public Value(String expectedValue) {
-        super("value");
-        this.expectedValue = expectedValue;
+    public ValueContains(String expectedValueSubstring) {
+        super("valueContains");
+        this.expectedValueSubstring = expectedValueSubstring;
     }
 
     @Override
     public boolean apply(WebElement element) {
-        return Html.text.equalsCaseSensitive(getAttributeValue(element, "value"), expectedValue);
+        return Html.text.contains(getAttributeValue(element, "value"), expectedValueSubstring);
     }
 
     @Override
     public String toString() {
-        return name + " '" + expectedValue + "'";
+        return name + " '" + expectedValueSubstring + "'";
     }
 
-    public String getExpectedValue() {
-        return expectedValue;
+    public String getExpectedValueSubstring() {
+        return expectedValueSubstring;
     }
 
     protected String getAttributeValue(WebElement element, String attributeName) {

@@ -1,8 +1,17 @@
 package com.haulmont.masquerade.components;
 
+import com.haulmont.masquerade.Components;
 import org.openqa.selenium.By;
 
-public interface Container<T extends Container> extends Component<T> {
-    <C> C child(Class<C> clazz, String... childPath);
-    <C> C child(Class<C> childClazz, By childBy);
+import static com.haulmont.masquerade.Selectors.byChain;
+import static com.haulmont.masquerade.Selectors.byPath;
+
+public interface Container<T> extends Component<T> {
+    default <C> C child(Class<C> childClazz, String... childPath) {
+        return child(childClazz, byPath(childPath));
+    }
+
+    default <C> C child(Class<C> childClazz, By childBy) {
+        return Components.wire(childClazz, byChain(getBy(), childBy));
+    }
 }

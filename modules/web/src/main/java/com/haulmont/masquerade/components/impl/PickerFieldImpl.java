@@ -1,8 +1,7 @@
-package com.haulmont.masquerade.components.impl.fresh;
+package com.haulmont.masquerade.components.impl;
 
 import com.haulmont.masquerade.Components;
 import com.haulmont.masquerade.components.PickerField;
-import com.haulmont.masquerade.components.impl.AbstractComponent;
 import org.openqa.selenium.By;
 
 import static com.codeborne.selenide.Condition.*;

@@ -1,7 +1,6 @@
-package com.haulmont.masquerade.components.impl.fresh;
+package com.haulmont.masquerade.components.impl;
 
 import com.haulmont.masquerade.components.GroupBox;
-import com.haulmont.masquerade.components.impl.AbstractComponent;
 import com.haulmont.masquerade.util.NotImplementedException;
 import org.openqa.selenium.By;
 
@@ -22,16 +21,6 @@ public class GroupBoxImpl extends AbstractComponent<GroupBox> implements GroupBo
 
     @Override
     public String getCaption() {
-        throw new NotImplementedException();
-    }
-
-    @Override
-    public <C> C child(Class<C> clazz, String... childPath) {
-        throw new NotImplementedException();
-    }
-
-    @Override
-    public <C> C child(Class<C> childClazz, By childBy) {
         throw new NotImplementedException();
     }
 }

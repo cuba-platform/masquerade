@@ -1,7 +1,6 @@
-package com.haulmont.masquerade.components.impl.fresh;
+package com.haulmont.masquerade.components.impl;
 
 import com.haulmont.masquerade.components.LookupPickerField;
-import com.haulmont.masquerade.components.impl.AbstractComponent;
 import org.openqa.selenium.By;
 
 public class LookupPickerFieldImpl extends AbstractComponent<LookupPickerField> implements LookupPickerField {

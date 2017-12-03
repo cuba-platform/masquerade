@@ -1,19 +1,19 @@
 package com.haulmont.masquerade.conditions;
 
-import java.util.ArrayList;
-import java.util.Collections;
+import com.google.common.collect.ImmutableList;
+
 import java.util.List;
 
-public class Options extends ComponentSpecificCondition {
+public class Options extends SpecificCondition {
     private List<String> options;
 
     public Options(List<String> options) {
         super("options");
 
-        this.options = new ArrayList<>(options);
+        this.options = ImmutableList.copyOf(options);
     }
 
     public List<String> getOptions() {
-        return Collections.unmodifiableList(options);
+        return options;
     }
 }

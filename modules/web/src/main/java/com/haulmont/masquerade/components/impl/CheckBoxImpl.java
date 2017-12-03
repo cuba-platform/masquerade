@@ -1,9 +1,8 @@
-package com.haulmont.masquerade.components.impl.fresh;
+package com.haulmont.masquerade.components.impl;
 
 import com.codeborne.selenide.Condition;
 import com.codeborne.selenide.SelenideElement;
 import com.haulmont.masquerade.components.CheckBox;
-import com.haulmont.masquerade.components.impl.AbstractComponent;
 import com.haulmont.masquerade.conditions.Caption;
 import org.openqa.selenium.By;
 

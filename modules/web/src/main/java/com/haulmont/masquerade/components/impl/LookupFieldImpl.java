@@ -1,10 +1,9 @@
-package com.haulmont.masquerade.components.impl.fresh;
+package com.haulmont.masquerade.components.impl;
 
 import com.codeborne.selenide.Condition;
 import com.codeborne.selenide.SelenideElement;
 import com.codeborne.selenide.collections.Texts;
 import com.haulmont.masquerade.components.LookupField;
-import com.haulmont.masquerade.components.impl.AbstractComponent;
 import com.haulmont.masquerade.conditions.Options;
 import com.haulmont.masquerade.conditions.OptionsCount;
 import com.haulmont.masquerade.conditions.Value;
@@ -136,7 +135,7 @@ public class LookupFieldImpl extends AbstractComponent<LookupField> implements L
                         .shouldBe(visible)
                         .shouldHave(exactValue(expectedValue));
             } else {
-                return LookupField.super.should(c);
+                LookupField.super.should(c);
             }
         }
         return this;
@@ -155,7 +154,7 @@ public class LookupFieldImpl extends AbstractComponent<LookupField> implements L
                         .shouldBe(visible)
                         .shouldNotHave(exactValue(expectedValue));
             } else {
-                return LookupField.super.shouldNot(c);
+                LookupField.super.shouldNot(c);
             }
         }
         return this;

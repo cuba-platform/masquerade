@@ -15,7 +15,7 @@ import java.util.List;
 
 import static org.apache.commons.lang3.StringUtils.splitByCharacterTypeCamelCase;
 
-public final class LoggingInvocationHandler implements InvocationHandler {
+public class LoggingInvocationHandler implements InvocationHandler {
     private final Logger log;
     private final String targetId;
     private final Object target;

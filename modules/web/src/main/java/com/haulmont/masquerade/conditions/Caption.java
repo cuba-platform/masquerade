@@ -1,6 +1,6 @@
 package com.haulmont.masquerade.conditions;
 
-public class Caption extends ComponentSpecificCondition {
+public class Caption extends SpecificCondition {
     private final String caption;
 
     public Caption(String caption) {

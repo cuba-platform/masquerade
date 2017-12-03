@@ -1,7 +1,7 @@
 package com.haulmont.masquerade.config;
 
 import com.haulmont.masquerade.components.*;
-import com.haulmont.masquerade.components.impl.fresh.*;
+import com.haulmont.masquerade.components.impl.*;
 import org.openqa.selenium.By;
 
 import java.util.HashMap;
@@ -28,6 +28,7 @@ public class DefaultComponentConfig implements ComponentConfig {
         components.put(DateTimeField.class, DateTimeFieldImpl::new);
         components.put(TimeField.class, TimeFieldImpl::new);
         components.put(FileUploadField.class, FileUploadFieldImpl::new);
+        components.put(MaskedField.class, MaskedFieldImpl::new);
         // stubs
         components.put(BoxLayout.class, BoxLayoutImpl::new);
         components.put(TabSheet.class, TabSheetImpl::new);
@@ -35,7 +36,6 @@ public class DefaultComponentConfig implements ComponentConfig {
         components.put(FieldGroup.class, FieldGroupImpl::new);
         components.put(GroupBox.class, GroupBoxImpl::new);
         components.put(LookupPickerField.class, LookupPickerFieldImpl::new);
-        components.put(MaskedField.class, MaskedFieldImpl::new);
         components.put(OptionsGroup.class, OptionsGroupImpl::new);
         components.put(PickerField.class, PickerFieldImpl::new);
         components.put(SourceCodeEditor.class, SourceCodeEditorImpl::new);

@@ -1,7 +1,6 @@
-package com.haulmont.masquerade.components.impl.fresh;
+package com.haulmont.masquerade.components.impl;
 
 import com.haulmont.masquerade.components.TextField;
-import com.haulmont.masquerade.components.impl.AbstractComponent;
 import org.openqa.selenium.By;
 
 import static com.codeborne.selenide.Condition.visible;

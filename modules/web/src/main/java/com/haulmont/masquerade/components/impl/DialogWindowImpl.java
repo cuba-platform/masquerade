@@ -1,7 +1,6 @@
-package com.haulmont.masquerade.components.impl.fresh;
+package com.haulmont.masquerade.components.impl;
 
 import com.haulmont.masquerade.components.DialogWindow;
-import com.haulmont.masquerade.components.impl.AbstractComponent;
 import com.haulmont.masquerade.util.NotImplementedException;
 import org.openqa.selenium.By;
 
@@ -17,16 +16,6 @@ public class DialogWindowImpl extends AbstractComponent<DialogWindow> implements
 
     @Override
     public void close() {
-        throw new NotImplementedException();
-    }
-
-    @Override
-    public <C> C child(Class<C> clazz, String... childPath) {
-        throw new NotImplementedException();
-    }
-
-    @Override
-    public <C> C child(Class<C> childClazz, By childBy) {
         throw new NotImplementedException();
     }
 }

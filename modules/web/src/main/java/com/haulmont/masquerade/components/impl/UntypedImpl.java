@@ -1,4 +1,4 @@
-package com.haulmont.masquerade.components.impl.fresh;
+package com.haulmont.masquerade.components.impl;
 
 import com.codeborne.selenide.SelenideElement;
 import com.haulmont.masquerade.components.Untyped;

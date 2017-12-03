@@ -1,14 +1,11 @@
-package com.haulmont.masquerade.components.impl.fresh;
+package com.haulmont.masquerade.components.impl;
 
 import com.haulmont.masquerade.components.FileUploadField;
-import com.haulmont.masquerade.components.impl.AbstractComponent;
-import com.haulmont.masquerade.util.NotImplementedException;
 import org.openqa.selenium.By;
 
 import java.io.File;
 
 import static com.codeborne.selenide.Condition.enabled;
-import static com.codeborne.selenide.Condition.visible;
 import static com.codeborne.selenide.Selenide.$;
 import static com.haulmont.masquerade.Selectors.byChain;
 import static com.haulmont.masquerade.sys.TagNames.INPUT;

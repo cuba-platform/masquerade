@@ -1,7 +1,6 @@
-package com.haulmont.masquerade.components.impl.fresh;
+package com.haulmont.masquerade.components.impl;
 
 import com.haulmont.masquerade.components.TimeField;
-import com.haulmont.masquerade.components.impl.AbstractComponent;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
 

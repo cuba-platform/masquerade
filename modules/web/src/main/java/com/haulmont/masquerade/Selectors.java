@@ -14,8 +14,15 @@ import static java.util.Collections.singletonList;
 public class Selectors extends com.codeborne.selenide.Selectors {
     public static final String CUBA_ID_ATTRIBUTE_NAME = "cuba-id";
 
+    protected Selectors() {
+    }
+
     public static By byPath(String... path) {
         checkNotNull(path);
+
+        if (path.length == 1) {
+            return byCubaId(path[0]);
+        }
 
         By[] bys = new By[path.length];
 
