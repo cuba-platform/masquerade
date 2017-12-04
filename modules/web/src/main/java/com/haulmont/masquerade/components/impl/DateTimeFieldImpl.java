@@ -10,13 +10,12 @@ import static com.codeborne.selenide.Condition.visible;
 import static com.codeborne.selenide.Selenide.$;
 import static com.haulmont.masquerade.Conditions.editable;
 import static com.haulmont.masquerade.Selectors.byChain;
-import static com.haulmont.masquerade.Selectors.byCubaId;
-import static com.haulmont.masquerade.sys.TagNames.INPUT;
+import static org.openqa.selenium.By.cssSelector;
 
 public class DateTimeFieldImpl extends AbstractComponent<DateTimeField> implements DateTimeField {
 
-    public static final By DATEPART = byCubaId("datepart");
-    public static final By TIMEPART = byCubaId("timepart");
+    public static final By DATEPART = cssSelector("div[class*='popupcalendar'] > input");
+    public static final By TIMEPART = cssSelector("input[class*='maskedfield']");
 
     public DateTimeFieldImpl(By by) {
         super(by);
@@ -24,7 +23,7 @@ public class DateTimeFieldImpl extends AbstractComponent<DateTimeField> implemen
 
     @Override
     public String getDateValue() {
-        return $(byChain(by, DATEPART, INPUT))
+        return $(byChain(by, DATEPART))
                 .shouldBe(visible)
                 .shouldBe(enabled)
                 .getValue();
