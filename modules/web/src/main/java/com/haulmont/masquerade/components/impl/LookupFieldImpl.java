@@ -17,9 +17,12 @@ import static com.codeborne.selenide.Selectors.byText;
 import static com.codeborne.selenide.Selenide.$;
 import static com.codeborne.selenide.Selenide.$$;
 import static com.google.common.base.Strings.isNullOrEmpty;
+import static com.google.common.base.Strings.nullToEmpty;
 import static com.haulmont.masquerade.Conditions.*;
 import static com.haulmont.masquerade.Selectors.byChain;
 import static com.haulmont.masquerade.sys.TagNames.*;
+import static com.haulmont.masquerade.sys.matchers.InstanceOfCases.hasType;
+import static com.leacox.motif.Motif.match;
 
 public class LookupFieldImpl extends AbstractComponent<LookupField> implements LookupField {
     public static final String EMPTY_OPTION_VALUE = "\u00a0";
@@ -125,18 +128,16 @@ public class LookupFieldImpl extends AbstractComponent<LookupField> implements L
     @Override
     public LookupField should(Condition... condition) {
         for (Condition c : condition) {
-            if (c instanceof Value) {
-                String expectedValue = ((Value) c).getExpectedValue();
-                if (isNullOrEmpty(expectedValue)) {
-                    expectedValue = "";
-                }
 
-                $(byChain(by, INPUT))
-                        .shouldBe(visible)
-                        .shouldHave(exactValue(expectedValue));
-            } else {
-                LookupField.super.should(c);
-            }
+            match(c)
+                .when(hasType(Value.class))
+                    .then(v -> {
+                        String expectedValue = nullToEmpty(v.getExpectedValue());
+                        $(byChain(by, INPUT))
+                                .shouldBe(visible)
+                                .shouldHave(exactValue(expectedValue));
+                    })
+                .orElse(cc -> LookupField.super.should(cc));
         }
         return this;
     }

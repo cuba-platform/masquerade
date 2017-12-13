@@ -66,6 +66,7 @@ configure(project(':masquerade-web')) {
     apply plugin: 'groovy'
 
     dependencies {
+        compile 'com.leacox.motif:motif:0.1'
         compile 'com.codeborne:selenide:4.8'
         compile 'org.seleniumhq.selenium:selenium-java:3.7.1'
 
