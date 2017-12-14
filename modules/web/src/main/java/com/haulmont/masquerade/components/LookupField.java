@@ -2,10 +2,6 @@ package com.haulmont.masquerade.components;
 
 import com.haulmont.masquerade.Conditions;
 import com.haulmont.masquerade.util.Log;
-import com.haulmont.masquerade.base.ByLocator;
-import com.haulmont.masquerade.base.SelenideElementWrapper;
-
-import java.util.List;
 
 /**
  * LookupField component.
@@ -14,47 +10,20 @@ import java.util.List;
  * <ul>
  *     <li>{@link Conditions#visible}</li>
  *     <li>{@link Conditions#hidden}</li>
+ *     <li>{@link Conditions#enabled}</li>
+ *     <li>{@link Conditions#disabled}</li>
  *     <li>{@link Conditions#required}</li>
  *     <li>{@link Conditions#readonly}</li>
  *     <li>{@link Conditions#editable}</li>
  *     <li>{@link Conditions#value(String)}</li>
+ *     <li>{@link Conditions#valueContains(String)}</li>
  * </ul>
  */
-public interface LookupField extends Field<LookupField> {
+public interface LookupField extends Field<LookupField>, HasOptionsPopup<LookupField> {
     @Log
     LookupField setValue(String value);
     String getValue();
 
     @Log
     LookupField setFilter(String filter);
-
-    OptionsPopup getOptionsPopup();
-    @Log
-    OptionsPopup openOptionsPopup();
-    @Log
-    LookupField closeOptionsPopup();
-
-    /**
-     * Options popup.
-     * <br>
-     * Supported conditions:
-     * <ul>
-     *     <li>{@link Conditions#visible}</li>
-     *     <li>{@link Conditions#hidden}</li>
-     *     <li>{@link Conditions#visibleOptions(String...)}</li>
-     * </ul>
-     */
-    interface OptionsPopup extends SelenideElementWrapper<OptionsPopup>, ByLocator {
-        List<String> getVisibleOptions();
-
-        @Log
-        LookupField select(String option);
-
-        @Log
-        OptionsPopup nextPage();
-        @Log
-        OptionsPopup previousPage();
-
-        boolean hasNextPage();
-    }
 }

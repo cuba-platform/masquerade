@@ -9,16 +9,14 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import static com.codeborne.selenide.CollectionCondition.texts;
-import static com.codeborne.selenide.Condition.exactValue;
+import static com.codeborne.selenide.Selectors.byClassName;
 import static com.codeborne.selenide.Selectors.byText;
 import static com.codeborne.selenide.Selenide.$;
 import static com.codeborne.selenide.Selenide.$$;
 import static com.google.common.base.Strings.isNullOrEmpty;
-import static com.google.common.base.Strings.nullToEmpty;
 import static com.haulmont.masquerade.Conditions.*;
 import static com.haulmont.masquerade.Selectors.byChain;
 import static com.haulmont.masquerade.sys.TagNames.*;
-import static com.haulmont.masquerade.sys.VaadinClassNames.requiredClass;
 import static com.haulmont.masquerade.sys.matchers.ConditionCases.*;
 import static com.haulmont.masquerade.sys.matchers.Matchers.matchAll;
 import static com.leacox.motif.Motif.match;
@@ -29,6 +27,8 @@ public class LookupFieldImpl extends AbstractComponent<LookupField> implements L
 
     public static final String V_FILTERSELECT_NEXTPAGE = "v-filterselect-nextpage";
     public static final String V_FILTERSELECT_PREVPAGE = "v-filterselect-prevpage";
+
+    public static final String V_FILTERSELECT_BUTTON = "v-filterselect-button";
 
     public static final By VAADIN_COMBOBOX_OPTIONLIST = By.id("VAADIN_COMBOBOX_OPTIONLIST");
     public static final By EMPTY_OPTION = byText(EMPTY_OPTION_VALUE);
@@ -45,7 +45,6 @@ public class LookupFieldImpl extends AbstractComponent<LookupField> implements L
     public String getValue() {
         return inputImpl()
                 .shouldBe(visible)
-                .shouldBe(enabled)
                 .getValue();
     }
 
@@ -83,8 +82,8 @@ public class LookupFieldImpl extends AbstractComponent<LookupField> implements L
     }
 
     @Override
-    public OptionsPopup openOptionsPopup() {
-        $(byChain(by, DIV))
+    public OptionsPopup<LookupField> openOptionsPopup() {
+        $(byChain(by, byClassName(V_FILTERSELECT_BUTTON)))
                 .shouldBe(visible)
                 .click();
 
@@ -95,7 +94,7 @@ public class LookupFieldImpl extends AbstractComponent<LookupField> implements L
     }
 
     @Override
-    public OptionsPopup getOptionsPopup() {
+    public OptionsPopup<LookupField> getOptionsPopup() {
         OptionsPopupImpl optionsPopup = new OptionsPopupImpl(VAADIN_COMBOBOX_OPTIONLIST);
         optionsPopup.shouldBe(visible);
 
@@ -116,22 +115,14 @@ public class LookupFieldImpl extends AbstractComponent<LookupField> implements L
 
     @Override
     public boolean is(Condition condition) {
-        return match(condition)
-                .when(isRequired()).get(() ->
-                        inputImpl().has(requiredClass)
-                )
+        return fieldIs(match(condition), inputImpl())
                 .orElse(c -> LookupField.super.has(condition))
                 .getMatch();
     }
 
     @Override
     public boolean has(Condition condition) {
-        return match(condition)
-                .when(isValue()).get(v -> {
-                    String expectedValue = nullToEmpty(v.getExpectedValue());
-                    return inputImpl()
-                            .has(exactValue(expectedValue));
-                })
+        return fieldHas(match(condition), inputImpl())
                 .orElse(c -> LookupField.super.has(condition))
                 .getMatch();
     }
@@ -139,16 +130,7 @@ public class LookupFieldImpl extends AbstractComponent<LookupField> implements L
     @SuppressWarnings("CodeBlock2Expr")
     @Override
     public LookupField should(Condition... conditions) {
-        matchAll(conditions, m -> m
-                .when(isValue()).then(v -> {
-                    String expectedValue = nullToEmpty(v.getExpectedValue());
-                    inputImpl()
-                            .shouldBe(visible)
-                            .shouldNotHave(exactValue(expectedValue));
-                })
-                .when(isRequired()).then(() -> {
-                    inputImpl().shouldHave(requiredClass);
-                })
+        matchAll(conditions, m -> fieldShould(m, inputImpl())
                 .orElse(c -> LookupField.super.should(c)));
 
         return this;
@@ -157,22 +139,13 @@ public class LookupFieldImpl extends AbstractComponent<LookupField> implements L
     @SuppressWarnings("CodeBlock2Expr")
     @Override
     public LookupField shouldNot(Condition... conditions) {
-        matchAll(conditions, m -> m
-                .when(isValue()).then(v -> {
-                    String expectedValue = nullToEmpty(v.getExpectedValue());
-                    inputImpl()
-                            .shouldBe(visible)
-                            .shouldHave(exactValue(expectedValue));
-                })
-                .when(isRequired()).then(() -> {
-                    inputImpl().shouldNotHave(requiredClass);
-                })
+        matchAll(conditions, m -> fieldShouldNot(m, inputImpl())
                 .orElse(c -> LookupField.super.shouldNot(c)));
 
         return this;
     }
 
-    public class OptionsPopupImpl implements OptionsPopup {
+    public class OptionsPopupImpl implements OptionsPopup<LookupField> {
         private final By by;
         private final SelenideElement impl;
 
@@ -202,7 +175,7 @@ public class LookupFieldImpl extends AbstractComponent<LookupField> implements L
         }
 
         @Override
-        public OptionsPopup nextPage() {
+        public OptionsPopup<LookupField> nextPage() {
             $(byChain(by, className(V_FILTERSELECT_NEXTPAGE)))
                     .shouldBe(visible)
                     .click();
@@ -217,7 +190,7 @@ public class LookupFieldImpl extends AbstractComponent<LookupField> implements L
         }
 
         @Override
-        public OptionsPopup previousPage() {
+        public OptionsPopup<LookupField> previousPage() {
             $(byChain(by, className(V_FILTERSELECT_PREVPAGE)))
                     .shouldBe(visible)
                     .click();

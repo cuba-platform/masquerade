@@ -1,28 +1,23 @@
 package com.haulmont.masquerade.components;
 
-import com.haulmont.masquerade.util.Log;
+import com.haulmont.masquerade.Conditions;
 
-public interface PickerField extends Field<PickerField> {
-    class Action {
-        private final String id;
-
-        public Action(String id) {
-            this.id = id;
-        }
-
-        public String getId() {
-            return id;
-        }
-    }
-
-    Action OPEN = new Action("open");
-    Action CLEAR = new Action("clear");
-    Action LOOKUP = new Action("lookup");
-
-    @Log
-    void triggerAction(Action action);
-    @Log
-    <T> T triggerAction(Class<T> clazz, Action action);
-
+/**
+ * PickerField component.
+ * <br>
+ * Supported conditions:
+ * <ul>
+ *     <li>{@link Conditions#visible}</li>
+ *     <li>{@link Conditions#hidden}</li>
+ *     <li>{@link Conditions#enabled}</li>
+ *     <li>{@link Conditions#disabled}</li>
+ *     <li>{@link Conditions#required}</li>
+ *     <li>{@link Conditions#readonly}</li>
+ *     <li>{@link Conditions#editable}</li>
+ *     <li>{@link Conditions#value(String)}</li>
+ *     <li>{@link Conditions#valueContains(String)}</li>
+ * </ul>
+ */
+public interface PickerField extends Field<PickerField>, HasActions {
     String getValue();
 }

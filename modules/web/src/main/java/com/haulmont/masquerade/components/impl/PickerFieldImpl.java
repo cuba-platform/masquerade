@@ -1,17 +1,21 @@
 package com.haulmont.masquerade.components.impl;
 
+import com.codeborne.selenide.Condition;
+import com.codeborne.selenide.SelenideElement;
 import com.haulmont.masquerade.Components;
 import com.haulmont.masquerade.components.PickerField;
 import org.openqa.selenium.By;
 
-import static com.codeborne.selenide.Condition.enabled;
-import static com.codeborne.selenide.Condition.visible;
 import static com.codeborne.selenide.Selenide.$;
+import static com.haulmont.masquerade.Conditions.visible;
 import static com.haulmont.masquerade.Selectors.byChain;
 import static com.haulmont.masquerade.Selectors.byCubaId;
 import static com.haulmont.masquerade.sys.TagNames.DIV;
 import static com.haulmont.masquerade.sys.TagNames.INPUT;
 import static com.haulmont.masquerade.sys.VaadinClassNames.disabledClass;
+import static com.haulmont.masquerade.sys.matchers.ConditionCases.*;
+import static com.haulmont.masquerade.sys.matchers.Matchers.matchAll;
+import static com.leacox.motif.Motif.match;
 
 public class PickerFieldImpl extends AbstractComponent<PickerField> implements PickerField {
     public PickerFieldImpl(By by) {
@@ -34,9 +38,44 @@ public class PickerFieldImpl extends AbstractComponent<PickerField> implements P
 
     @Override
     public String getValue() {
-        return $(byChain(by, INPUT))
+        return inputImpl()
                 .shouldBe(visible)
-                .shouldBe(enabled)
                 .getValue();
+    }
+
+    protected SelenideElement inputImpl() {
+        return $(byChain(by, INPUT));
+    }
+
+    @Override
+    public boolean is(Condition condition) {
+        return fieldIs(match(condition), inputImpl())
+                .orElse(c -> PickerField.super.has(condition))
+                .getMatch();
+    }
+
+    @Override
+    public boolean has(Condition condition) {
+        return fieldHas(match(condition), inputImpl())
+                .orElse(c -> PickerField.super.has(condition))
+                .getMatch();
+    }
+
+    @SuppressWarnings("CodeBlock2Expr")
+    @Override
+    public PickerField should(Condition... conditions) {
+        matchAll(conditions, m -> fieldShould(m, inputImpl())
+                .orElse(c -> PickerField.super.should(c)));
+
+        return this;
+    }
+
+    @SuppressWarnings("CodeBlock2Expr")
+    @Override
+    public PickerField shouldNot(Condition... conditions) {
+        matchAll(conditions, m -> fieldShouldNot(m, inputImpl())
+                .orElse(c -> PickerField.super.shouldNot(c)));
+
+        return this;
     }
 }
