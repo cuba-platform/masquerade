@@ -4,13 +4,14 @@ import com.haulmont.masquerade.Components;
 import com.haulmont.masquerade.components.PickerField;
 import org.openqa.selenium.By;
 
-import static com.codeborne.selenide.Condition.*;
+import static com.codeborne.selenide.Condition.enabled;
+import static com.codeborne.selenide.Condition.visible;
 import static com.codeborne.selenide.Selenide.$;
 import static com.haulmont.masquerade.Selectors.byChain;
 import static com.haulmont.masquerade.Selectors.byCubaId;
 import static com.haulmont.masquerade.sys.TagNames.DIV;
 import static com.haulmont.masquerade.sys.TagNames.INPUT;
-import static com.haulmont.masquerade.sys.VaadinClassNames.DISABLED_CLASSNAME;
+import static com.haulmont.masquerade.sys.VaadinClassNames.disabledClass;
 
 public class PickerFieldImpl extends AbstractComponent<PickerField> implements PickerField {
     public PickerFieldImpl(By by) {
@@ -21,7 +22,7 @@ public class PickerFieldImpl extends AbstractComponent<PickerField> implements P
     public void triggerAction(Action action) {
         $(byChain(by, DIV, byCubaId(action.getId())))
                 .shouldBe(visible)
-                .shouldNotHave(cssClass(DISABLED_CLASSNAME))
+                .shouldNotHave(disabledClass)
                 .click();
     }
 
@@ -38,5 +39,4 @@ public class PickerFieldImpl extends AbstractComponent<PickerField> implements P
                 .shouldBe(enabled)
                 .getValue();
     }
-
 }

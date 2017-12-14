@@ -10,7 +10,7 @@ import java.util.Objects;
 import static com.codeborne.selenide.Condition.*;
 import static com.codeborne.selenide.Selenide.$;
 import static com.haulmont.masquerade.Selectors.byChain;
-import static com.haulmont.masquerade.sys.VaadinClassNames.DISABLED_CLASSNAME;
+import static com.haulmont.masquerade.sys.VaadinClassNames.disabledClass;
 import static org.openqa.selenium.By.className;
 
 public class ButtonImpl extends AbstractComponent<Button> implements Button {
@@ -29,10 +29,10 @@ public class ButtonImpl extends AbstractComponent<Button> implements Button {
     @Override
     public boolean is(Condition c) {
         if (c == enabled) {
-            return !impl.has(cssClass(DISABLED_CLASSNAME));
+            return !impl.has(disabledClass);
         }
         if (c == disabled) {
-            return impl.has(cssClass(DISABLED_CLASSNAME));
+            return impl.has(disabledClass);
         }
         return Button.super.is(c);
     }
@@ -49,7 +49,7 @@ public class ButtonImpl extends AbstractComponent<Button> implements Button {
     @Override
     public Button click() {
         impl.shouldBe(visible)
-                .shouldNotHave(cssClass(DISABLED_CLASSNAME))
+                .shouldNotHave(disabledClass)
                 .click();
         return this;
     }
@@ -58,9 +58,9 @@ public class ButtonImpl extends AbstractComponent<Button> implements Button {
     public Button should(Condition... condition) {
         for (Condition c : condition) {
             if (c == enabled) {
-                impl.shouldNotHave(cssClass(DISABLED_CLASSNAME));
+                impl.shouldNotHave(disabledClass);
             } else if (c == disabled) {
-                impl.shouldHave(cssClass(DISABLED_CLASSNAME));
+                impl.shouldHave(disabledClass);
             } else if (c instanceof Caption) {
                 String caption = ((Caption) c).getCaption();
 
@@ -77,9 +77,9 @@ public class ButtonImpl extends AbstractComponent<Button> implements Button {
     public Button shouldNot(Condition... condition) {
         for (Condition c : condition) {
             if (c == enabled) {
-                impl.shouldHave(cssClass(DISABLED_CLASSNAME));
+                impl.shouldHave(disabledClass);
             } else if (c == disabled) {
-                impl.shouldNotHave(cssClass(DISABLED_CLASSNAME));
+                impl.shouldNotHave(disabledClass);
             } else if (c instanceof Caption) {
                 String caption = ((Caption) c).getCaption();
 

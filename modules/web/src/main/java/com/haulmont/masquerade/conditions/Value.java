@@ -15,7 +15,7 @@ public class Value extends Condition {
 
     @Override
     public boolean apply(WebElement element) {
-        return Html.text.equalsCaseSensitive(getAttributeValue(element, "value"), expectedValue);
+        return Html.text.equalsCaseSensitive(getAttributeValue(element), expectedValue);
     }
 
     @Override
@@ -27,8 +27,8 @@ public class Value extends Condition {
         return expectedValue;
     }
 
-    protected String getAttributeValue(WebElement element, String attributeName) {
-        String attr = element.getAttribute(attributeName);
+    protected String getAttributeValue(WebElement element) {
+        String attr = element.getAttribute("value");
         return attr == null ? "" : attr;
     }
 }

@@ -14,6 +14,9 @@ import java.util.List;
  * <ul>
  *     <li>{@link Conditions#visible}</li>
  *     <li>{@link Conditions#hidden}</li>
+ *     <li>{@link Conditions#required}</li>
+ *     <li>{@link Conditions#readonly}</li>
+ *     <li>{@link Conditions#editable}</li>
  *     <li>{@link Conditions#value(String)}</li>
  * </ul>
  */
@@ -32,7 +35,14 @@ public interface LookupField extends Field<LookupField> {
     LookupField closeOptionsPopup();
 
     /**
-     * todo {@code Conditions.visibleOptions(List<String>)}
+     * Options popup.
+     * <br>
+     * Supported conditions:
+     * <ul>
+     *     <li>{@link Conditions#visible}</li>
+     *     <li>{@link Conditions#hidden}</li>
+     *     <li>{@link Conditions#visibleOptions(String...)}</li>
+     * </ul>
      */
     interface OptionsPopup extends SelenideElementWrapper<OptionsPopup>, ByLocator {
         List<String> getVisibleOptions();

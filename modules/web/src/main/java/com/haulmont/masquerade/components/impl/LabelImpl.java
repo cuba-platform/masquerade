@@ -7,7 +7,7 @@ import com.haulmont.masquerade.conditions.ValueContains;
 import org.openqa.selenium.By;
 
 import static com.codeborne.selenide.Condition.*;
-import static com.haulmont.masquerade.sys.VaadinClassNames.DISABLED_CLASSNAME;
+import static com.haulmont.masquerade.sys.VaadinClassNames.disabledClass;
 
 public class LabelImpl extends AbstractComponent<Label> implements Label {
     public LabelImpl(By by) {
@@ -22,10 +22,10 @@ public class LabelImpl extends AbstractComponent<Label> implements Label {
     @Override
     public boolean is(Condition condition) {
         if (condition == Condition.enabled) {
-            return !impl.has(cssClass(DISABLED_CLASSNAME));
+            return !impl.has(disabledClass);
         }
         if (condition == Condition.disabled) {
-            return impl.has(cssClass(DISABLED_CLASSNAME));
+            return impl.has(disabledClass);
         }
 
         return Label.super.is(condition);
@@ -49,9 +49,9 @@ public class LabelImpl extends AbstractComponent<Label> implements Label {
     public Label should(Condition... condition) {
         for (Condition c : condition) {
             if (c == enabled) {
-                impl.shouldNotHave(cssClass(DISABLED_CLASSNAME));
+                impl.shouldNotHave(disabledClass);
             } else if (c == disabled) {
-                impl.shouldHave(cssClass(DISABLED_CLASSNAME));
+                impl.shouldHave(disabledClass);
             } else if (c instanceof Value) {
                 String value = ((Value) c).getExpectedValue();
                 impl.shouldHave(exactTextCaseSensitive(value));
@@ -69,9 +69,9 @@ public class LabelImpl extends AbstractComponent<Label> implements Label {
     public Label shouldNot(Condition... condition) {
         for (Condition c : condition) {
             if (c == enabled) {
-                impl.shouldHave(cssClass(DISABLED_CLASSNAME));
+                impl.shouldHave(disabledClass);
             } else if (c == disabled) {
-                impl.shouldNotHave(cssClass(DISABLED_CLASSNAME));
+                impl.shouldNotHave(disabledClass);
             } else if (c instanceof Value) {
                 String value = ((Value) c).getExpectedValue();
                 impl.shouldNotHave(exactTextCaseSensitive(value));

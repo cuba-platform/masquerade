@@ -14,8 +14,8 @@ import static com.haulmont.masquerade.Conditions.editable;
 import static com.haulmont.masquerade.Selectors.byChain;
 import static com.haulmont.masquerade.sys.TagNames.INPUT;
 import static com.haulmont.masquerade.sys.TagNames.LABEL;
-import static com.haulmont.masquerade.sys.VaadinClassNames.DISABLED_CLASSNAME;
-import static com.haulmont.masquerade.sys.VaadinClassNames.READONLY_CLASSNAME;
+import static com.haulmont.masquerade.sys.VaadinClassNames.disabledClass;
+import static com.haulmont.masquerade.sys.VaadinClassNames.readonlyClass;
 
 public class CheckBoxImpl extends AbstractComponent<CheckBox> implements CheckBox {
 
@@ -26,19 +26,19 @@ public class CheckBoxImpl extends AbstractComponent<CheckBox> implements CheckBo
     @Override
     public boolean is(Condition condition) {
         if (condition == enabled) {
-            return !impl.has(cssClass(DISABLED_CLASSNAME));
+            return !impl.has(disabledClass);
         }
         if (condition == disabled) {
-            return impl.has(cssClass(DISABLED_CLASSNAME));
+            return impl.has(disabledClass);
         }
         if (condition == checked || condition == selected) {
             return $(byChain(by, INPUT)).is(condition);
         }
         if (condition == editable) {
-            return !impl.has(cssClass(READONLY_CLASSNAME));
+            return !impl.has(readonlyClass);
         }
         if (condition == readonly) {
-            return impl.has(cssClass(READONLY_CLASSNAME));
+            return impl.has(readonlyClass);
         }
         return CheckBox.super.is(condition);
     }
@@ -56,15 +56,15 @@ public class CheckBoxImpl extends AbstractComponent<CheckBox> implements CheckBo
     public CheckBox should(Condition... condition) {
         for (Condition c : condition) {
             if (c == enabled) {
-                impl.shouldNotHave(cssClass(DISABLED_CLASSNAME));
+                impl.shouldNotHave(disabledClass);
             } else if (c == disabled) {
-                impl.shouldHave(cssClass(DISABLED_CLASSNAME));
+                impl.shouldHave(disabledClass);
             } else if (c == checked || c == selected) {
                 $(byChain(by, INPUT)).shouldBe(c);
             } else if (c == editable) {
-                impl.shouldNotHave(cssClass(READONLY_CLASSNAME));
+                impl.shouldNotHave(readonlyClass);
             } else if (c == readonly) {
-                impl.shouldHave(cssClass(READONLY_CLASSNAME));
+                impl.shouldHave(readonlyClass);
             } else if (c instanceof Caption) {
                 String caption = ((Caption) c).getCaption();
                 $(byChain(by, LABEL)).shouldHave(exactTextCaseSensitive(caption));
@@ -79,15 +79,15 @@ public class CheckBoxImpl extends AbstractComponent<CheckBox> implements CheckBo
     public CheckBox shouldNot(Condition... condition) {
         for (Condition c : condition) {
             if (c == enabled) {
-                impl.shouldHave(cssClass(DISABLED_CLASSNAME));
+                impl.shouldHave(disabledClass);
             } else if (c == disabled) {
-                impl.shouldNotHave(cssClass(DISABLED_CLASSNAME));
+                impl.shouldNotHave(disabledClass);
             } else if (c == checked || c == selected) {
                 $(byChain(by, INPUT)).shouldNotBe(c);
             } else if (c == editable) {
-                impl.shouldHave(cssClass(READONLY_CLASSNAME));
+                impl.shouldHave(readonlyClass);
             } else if (c == readonly) {
-                impl.shouldNotHave(cssClass(READONLY_CLASSNAME));
+                impl.shouldNotHave(readonlyClass);
             } else if (c instanceof Caption) {
                 String caption = ((Caption) c).getCaption();
                 $(byChain(by, LABEL)).shouldNotHave(exactTextCaseSensitive(caption));
