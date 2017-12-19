@@ -67,4 +67,36 @@ public abstract class AbstractComponent<T extends Component> implements Componen
         );
         return (T) this;
     }
+
+    @Override
+    public T waitUntil(Condition condition, long timeoutMilliseconds) {
+        SpecificConditionContext.with(this, () ->
+                getDelegate().waitUntil(condition, timeoutMilliseconds)
+        );
+        return (T) this;
+    }
+
+    @Override
+    public T waitUntil(Condition condition, long timeoutMilliseconds, long pollingIntervalMilliseconds) {
+        SpecificConditionContext.with(this, () ->
+                getDelegate().waitUntil(condition, timeoutMilliseconds, pollingIntervalMilliseconds)
+        );
+        return (T) this;
+    }
+
+    @Override
+    public T waitWhile(Condition condition, long timeoutMilliseconds) {
+        SpecificConditionContext.with(this, () ->
+                getDelegate().waitWhile(condition, timeoutMilliseconds)
+        );
+        return (T) this;
+    }
+
+    @Override
+    public T waitWhile(Condition condition, long timeoutMilliseconds, long pollingIntervalMilliseconds) {
+        SpecificConditionContext.with(this, () ->
+                getDelegate().waitWhile(condition, timeoutMilliseconds, pollingIntervalMilliseconds)
+        );
+        return (T) this;
+    }
 }
