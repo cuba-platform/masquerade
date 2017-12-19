@@ -66,7 +66,7 @@ public class LoggingInvocationHandler implements InvocationHandler {
 
                 log.info("Set '{}' of '{}' to '{}'", propertyName, targetId, args[0]);
             } else {
-                log.info("{} of '{}' with {}", formatMethodName(method), args);
+                log.info("{} of '{}' with {}", formatMethodName(method), targetId, args);
             }
         } else {
             log.info("{} '{}'", formatMethodName(method), targetId);
