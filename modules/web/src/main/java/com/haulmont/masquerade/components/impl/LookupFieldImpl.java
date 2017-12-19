@@ -2,30 +2,36 @@ package com.haulmont.masquerade.components.impl;
 
 import com.codeborne.selenide.Condition;
 import com.codeborne.selenide.SelenideElement;
-import com.codeborne.selenide.collections.Texts;
 import com.haulmont.masquerade.components.LookupField;
 import com.haulmont.masquerade.conditions.Options;
 import com.haulmont.masquerade.conditions.OptionsCount;
-import com.haulmont.masquerade.conditions.Value;
+import com.haulmont.masquerade.sys.matchers.InstanceOfCases;
 import org.openqa.selenium.By;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static com.codeborne.selenide.Condition.exactValue;
+import static com.codeborne.selenide.CollectionCondition.texts;
+import static com.codeborne.selenide.Condition.readonly;
+import static com.codeborne.selenide.Selectors.byClassName;
 import static com.codeborne.selenide.Selectors.byText;
 import static com.codeborne.selenide.Selenide.$;
 import static com.codeborne.selenide.Selenide.$$;
 import static com.google.common.base.Strings.isNullOrEmpty;
-import static com.haulmont.masquerade.Conditions.*;
+import static com.haulmont.masquerade.Conditions.enabled;
+import static com.haulmont.masquerade.Conditions.visible;
 import static com.haulmont.masquerade.Selectors.byChain;
 import static com.haulmont.masquerade.sys.TagNames.*;
+import static com.haulmont.masquerade.sys.matchers.Matchers.matchAll;
+import static org.openqa.selenium.By.className;
 
-public class LookupFieldImpl extends AbstractComponent<LookupField> implements LookupField {
+public class LookupFieldImpl extends AbstractInputComponent<LookupField> implements LookupField {
     public static final String EMPTY_OPTION_VALUE = "\u00a0";
 
     public static final String V_FILTERSELECT_NEXTPAGE = "v-filterselect-nextpage";
     public static final String V_FILTERSELECT_PREVPAGE = "v-filterselect-prevpage";
+
+    public static final String V_FILTERSELECT_BUTTON = "v-filterselect-button";
 
     public static final By VAADIN_COMBOBOX_OPTIONLIST = By.id("VAADIN_COMBOBOX_OPTIONLIST");
     public static final By EMPTY_OPTION = byText(EMPTY_OPTION_VALUE);
@@ -36,10 +42,8 @@ public class LookupFieldImpl extends AbstractComponent<LookupField> implements L
 
     @Override
     public String getValue() {
-        return $(byChain(by, INPUT))
+        return getInputDelegate()
                 .shouldBe(visible)
-                .shouldBe(enabled)
-                .shouldBe(editable)
                 .getValue();
     }
 
@@ -59,10 +63,10 @@ public class LookupFieldImpl extends AbstractComponent<LookupField> implements L
 
     @Override
     public LookupField setFilter(String filter) {
-        SelenideElement inputImpl = $(byChain(by, INPUT));
+        SelenideElement inputImpl = getInputDelegate();
 
         inputImpl.shouldBe(visible)
-                .shouldBe(editable)
+                .shouldNotBe(readonly)
                 .shouldBe(enabled)
                 .click();
 
@@ -77,8 +81,8 @@ public class LookupFieldImpl extends AbstractComponent<LookupField> implements L
     }
 
     @Override
-    public OptionsPopup openOptionsPopup() {
-        $(byChain(by, DIV))
+    public OptionsPopup<LookupField> openOptionsPopup() {
+        $(byChain(by, byClassName(V_FILTERSELECT_BUTTON)))
                 .shouldBe(visible)
                 .click();
 
@@ -89,7 +93,7 @@ public class LookupFieldImpl extends AbstractComponent<LookupField> implements L
     }
 
     @Override
-    public OptionsPopup getOptionsPopup() {
+    public OptionsPopup<LookupField> getOptionsPopup() {
         OptionsPopupImpl optionsPopup = new OptionsPopupImpl(VAADIN_COMBOBOX_OPTIONLIST);
         optionsPopup.shouldBe(visible);
 
@@ -108,59 +112,7 @@ public class LookupFieldImpl extends AbstractComponent<LookupField> implements L
         return this;
     }
 
-    @Override
-    public boolean has(Condition condition) {
-        if (condition instanceof Value) {
-            String expectedValue = ((Value) condition).getExpectedValue();
-            if (isNullOrEmpty(expectedValue)) {
-                expectedValue = "";
-            }
-
-            return $(byChain(by, INPUT))
-                    .has(exactValue(expectedValue));
-        }
-        return LookupField.super.has(condition);
-    }
-
-    @Override
-    public LookupField should(Condition... condition) {
-        for (Condition c : condition) {
-            if (c instanceof Value) {
-                String expectedValue = ((Value) c).getExpectedValue();
-                if (isNullOrEmpty(expectedValue)) {
-                    expectedValue = "";
-                }
-
-                $(byChain(by, INPUT))
-                        .shouldBe(visible)
-                        .shouldHave(exactValue(expectedValue));
-            } else {
-                LookupField.super.should(c);
-            }
-        }
-        return this;
-    }
-
-    @Override
-    public LookupField shouldNot(Condition... condition) {
-        for (Condition c : condition) {
-            if (c instanceof Value) {
-                String expectedValue = ((Value) c).getExpectedValue();
-                if (isNullOrEmpty(expectedValue)) {
-                    expectedValue = "";
-                }
-
-                $(byChain(by, INPUT))
-                        .shouldBe(visible)
-                        .shouldNotHave(exactValue(expectedValue));
-            } else {
-                LookupField.super.shouldNot(c);
-            }
-        }
-        return this;
-    }
-
-    public class OptionsPopupImpl implements OptionsPopup {
+    public class OptionsPopupImpl implements OptionsPopup<LookupField> {
         private final By by;
         private final SelenideElement impl;
 
@@ -190,8 +142,8 @@ public class LookupFieldImpl extends AbstractComponent<LookupField> implements L
         }
 
         @Override
-        public OptionsPopup nextPage() {
-            $(byChain(by, By.className(V_FILTERSELECT_NEXTPAGE)))
+        public OptionsPopup<LookupField> nextPage() {
+            $(byChain(by, className(V_FILTERSELECT_NEXTPAGE)))
                     .shouldBe(visible)
                     .click();
             OptionsPopupImpl optionsPopup = new OptionsPopupImpl(VAADIN_COMBOBOX_OPTIONLIST);
@@ -201,12 +153,12 @@ public class LookupFieldImpl extends AbstractComponent<LookupField> implements L
 
         @Override
         public boolean hasNextPage() {
-            return $(byChain(by, By.className(V_FILTERSELECT_NEXTPAGE))).isDisplayed();
+            return $(byChain(by, className(V_FILTERSELECT_NEXTPAGE))).isDisplayed();
         }
 
         @Override
-        public OptionsPopup previousPage() {
-            $(byChain(by, By.className(V_FILTERSELECT_PREVPAGE)))
+        public OptionsPopup<LookupField> previousPage() {
+            $(byChain(by, className(V_FILTERSELECT_PREVPAGE)))
                     .shouldBe(visible)
                     .click();
             OptionsPopupImpl optionsPopup = new OptionsPopupImpl(VAADIN_COMBOBOX_OPTIONLIST);
@@ -225,25 +177,24 @@ public class LookupFieldImpl extends AbstractComponent<LookupField> implements L
             return by;
         }
 
+        @SuppressWarnings("CodeBlock2Expr")
         @Override
-        public OptionsPopup should(Condition... condition) {
-            for (Condition c : condition) {
-                if (c instanceof Options) {
-                    List<String> options = ((Options) c).getOptions().stream()
-                            .map(o -> isNullOrEmpty(o) ? EMPTY_OPTION_VALUE : o)
-                            .collect(Collectors.toList());
+        public OptionsPopup should(Condition... conditions) {
+            matchAll(conditions, m -> m
+                    .when(InstanceOfCases.hasType(Options.class)).then(opts -> {
+                        List<String> options = opts.getOptions().stream()
+                                .map(o -> isNullOrEmpty(o) ? EMPTY_OPTION_VALUE : o)
+                                .collect(Collectors.toList());
 
-                    Texts texts = new Texts(options);
-                    $$(byChain(by, TD, SPAN))
-                            .shouldHave(texts);
-                } else if (c instanceof OptionsCount) {
-                    int count = ((OptionsCount) c).getCount();
-                    $$(byChain(by, TD, SPAN))
-                            .shouldHaveSize(count);
-                } else {
-                    OptionsPopup.super.should(c);
-                }
-            }
+                        $$(byChain(by, TD, SPAN))
+                                .shouldHave(texts(options));
+                    })
+                    .when(InstanceOfCases.hasType(OptionsCount.class)).then(optsCount -> {
+                        $$(byChain(by, TD, SPAN))
+                                .shouldHaveSize(optsCount.getCount());
+                    })
+                    .orElse(c -> OptionsPopup.super.should(c)));
+
             return this;
         }
     }

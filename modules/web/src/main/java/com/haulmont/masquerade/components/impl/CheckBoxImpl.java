@@ -2,20 +2,24 @@ package com.haulmont.masquerade.components.impl;
 
 import com.codeborne.selenide.Condition;
 import com.codeborne.selenide.SelenideElement;
+import com.haulmont.masquerade.Conditions;
 import com.haulmont.masquerade.components.CheckBox;
 import com.haulmont.masquerade.conditions.Caption;
+import com.haulmont.masquerade.conditions.SpecificCondition;
 import org.openqa.selenium.By;
 
 import java.util.Objects;
 
-import static com.codeborne.selenide.Condition.*;
+import static com.codeborne.selenide.Condition.enabled;
+import static com.codeborne.selenide.Condition.visible;
 import static com.codeborne.selenide.Selenide.$;
-import static com.haulmont.masquerade.Conditions.editable;
 import static com.haulmont.masquerade.Selectors.byChain;
 import static com.haulmont.masquerade.sys.TagNames.INPUT;
 import static com.haulmont.masquerade.sys.TagNames.LABEL;
-import static com.haulmont.masquerade.sys.VaadinClassNames.DISABLED_CLASSNAME;
-import static com.haulmont.masquerade.sys.VaadinClassNames.READONLY_CLASSNAME;
+import static com.haulmont.masquerade.sys.matchers.ConditionCases.componentApply;
+import static com.haulmont.masquerade.sys.matchers.InstanceOfCases.hasType;
+import static com.leacox.motif.MatchesExact.eq;
+import static com.leacox.motif.Motif.match;
 
 public class CheckBoxImpl extends AbstractComponent<CheckBox> implements CheckBox {
 
@@ -24,78 +28,18 @@ public class CheckBoxImpl extends AbstractComponent<CheckBox> implements CheckBo
     }
 
     @Override
-    public boolean is(Condition condition) {
-        if (condition == enabled) {
-            return !impl.has(cssClass(DISABLED_CLASSNAME));
-        }
-        if (condition == disabled) {
-            return impl.has(cssClass(DISABLED_CLASSNAME));
-        }
-        if (condition == checked || condition == selected) {
-            return $(byChain(by, INPUT)).is(condition);
-        }
-        if (condition == editable) {
-            return !impl.has(cssClass(READONLY_CLASSNAME));
-        }
-        if (condition == readonly) {
-            return impl.has(cssClass(READONLY_CLASSNAME));
-        }
-        return CheckBox.super.is(condition);
-    }
-
-    @Override
-    public boolean has(Condition condition) {
-        if (condition instanceof Caption) {
-            String expectedCaption = ((Caption) condition).getCaption();
-            return Objects.equals(getCaption(), expectedCaption);
-        }
-        return CheckBox.super.has(condition);
-    }
-
-    @Override
-    public CheckBox should(Condition... condition) {
-        for (Condition c : condition) {
-            if (c == enabled) {
-                impl.shouldNotHave(cssClass(DISABLED_CLASSNAME));
-            } else if (c == disabled) {
-                impl.shouldHave(cssClass(DISABLED_CLASSNAME));
-            } else if (c == checked || c == selected) {
-                $(byChain(by, INPUT)).shouldBe(c);
-            } else if (c == editable) {
-                impl.shouldNotHave(cssClass(READONLY_CLASSNAME));
-            } else if (c == readonly) {
-                impl.shouldHave(cssClass(READONLY_CLASSNAME));
-            } else if (c instanceof Caption) {
-                String caption = ((Caption) c).getCaption();
-                $(byChain(by, LABEL)).shouldHave(exactTextCaseSensitive(caption));
-            } else {
-                CheckBox.super.should(c);
-            }
-        }
-        return this;
-    }
-
-    @Override
-    public CheckBox shouldNot(Condition... condition) {
-        for (Condition c : condition) {
-            if (c == enabled) {
-                impl.shouldHave(cssClass(DISABLED_CLASSNAME));
-            } else if (c == disabled) {
-                impl.shouldNotHave(cssClass(DISABLED_CLASSNAME));
-            } else if (c == checked || c == selected) {
-                $(byChain(by, INPUT)).shouldNotBe(c);
-            } else if (c == editable) {
-                impl.shouldHave(cssClass(READONLY_CLASSNAME));
-            } else if (c == readonly) {
-                impl.shouldNotHave(cssClass(READONLY_CLASSNAME));
-            } else if (c instanceof Caption) {
-                String caption = ((Caption) c).getCaption();
-                $(byChain(by, LABEL)).shouldNotHave(exactTextCaseSensitive(caption));
-            } else {
-                CheckBox.super.shouldNot(c);
-            }
-        }
-        return this;
+    public boolean apply(SpecificCondition condition) {
+        return componentApply(match(condition), getDelegate())
+                .when(eq(Conditions.checked)).get(() ->
+                        $(byChain(by, INPUT)).is(Condition.checked)
+                )
+                .when(eq(Conditions.selected)).get(() ->
+                        $(byChain(by, INPUT)).is(Condition.selected)
+                )
+                .when(hasType(Caption.class)).get(c ->
+                        Objects.equals(getCaption(), c.getCaption())
+                )
+                .getMatch();
     }
 
     @Override
@@ -113,7 +57,7 @@ public class CheckBoxImpl extends AbstractComponent<CheckBox> implements CheckBo
 
     @Override
     public boolean isChecked() {
-        return $(byChain(by, INPUT)).is(checked);
+        return is(Conditions.checked);
     }
 
     @Override

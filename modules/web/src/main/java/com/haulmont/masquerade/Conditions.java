@@ -2,7 +2,6 @@ package com.haulmont.masquerade;
 
 import com.codeborne.selenide.Condition;
 import com.haulmont.masquerade.conditions.*;
-import org.openqa.selenium.WebElement;
 
 import java.util.Arrays;
 import java.util.List;
@@ -11,9 +10,9 @@ public class Conditions {
     protected Conditions() {
     }
 
-    public static final Condition enabled = Condition.enabled;
+    public static final Condition enabled = new SpecificCondition("enabled");
 
-    public static final Condition disabled = Condition.disabled;
+    public static final Condition disabled = new SpecificCondition("disabled");
 
     public static final Condition visible = Condition.visible;
 
@@ -29,20 +28,15 @@ public class Conditions {
 
     public static final Condition disappear = hidden;
 
-    public static final Condition readonly = Condition.readonly;
+    public static final Condition readonly = new SpecificCondition("readonly");
 
-    public static final Condition editable = new Condition("editable") {
-        @Override
-        public boolean apply(WebElement element) {
-            return element.getAttribute("readonly") == null;
-        }
-    };
+    public static final Condition editable = new SpecificCondition("editable");
 
     public static final Condition required = new SpecificCondition("required");
 
-    public static final Condition checked = Condition.checked;
+    public static final Condition checked = new SpecificCondition("checked");
 
-    public static final Condition selected = Condition.selected;
+    public static final Condition selected = new SpecificCondition("selected");
 
     public static Condition caption(String caption) {
         return new Caption(caption);

@@ -1,18 +1,12 @@
 package com.haulmont.masquerade.components.impl;
 
-import com.codeborne.selenide.SelenideElement;
 import com.haulmont.masquerade.components.DateField;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
 
-import static com.codeborne.selenide.Condition.enabled;
-import static com.codeborne.selenide.Condition.visible;
-import static com.codeborne.selenide.Selenide.$;
-import static com.haulmont.masquerade.Conditions.editable;
-import static com.haulmont.masquerade.Selectors.byChain;
-import static com.haulmont.masquerade.sys.TagNames.INPUT;
+import static com.codeborne.selenide.Condition.*;
 
-public class DateFieldImpl extends AbstractComponent<DateField> implements DateField {
+public class DateFieldImpl extends AbstractInputComponent<DateField> implements DateField {
 
     public DateFieldImpl(By by) {
         super(by);
@@ -20,7 +14,7 @@ public class DateFieldImpl extends AbstractComponent<DateField> implements DateF
 
     @Override
     public String getDateValue() {
-        return $(byChain(by, INPUT))
+        return getInputDelegate()
                 .shouldBe(visible)
                 .shouldBe(enabled)
                 .getValue();
@@ -28,14 +22,12 @@ public class DateFieldImpl extends AbstractComponent<DateField> implements DateF
 
     @Override
     public DateField setDateValue(String value) {
-        SelenideElement inputImpl = $(byChain(by, INPUT));
-
-        inputImpl.shouldBe(visible)
+        getInputDelegate().shouldBe(visible)
                 .shouldBe(enabled)
-                .shouldBe(editable)
+                .shouldNotBe(readonly)
                 .click();
 
-        inputImpl.sendKeys(Keys.HOME, value);
+        getInputDelegate().sendKeys(Keys.HOME, value);
 
         return this;
     }

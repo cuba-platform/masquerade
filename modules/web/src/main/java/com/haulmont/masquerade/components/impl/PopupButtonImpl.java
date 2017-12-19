@@ -6,14 +6,13 @@ import org.openqa.selenium.By;
 
 import java.util.List;
 
-import static com.codeborne.selenide.Condition.cssClass;
 import static com.codeborne.selenide.Condition.visible;
 import static com.codeborne.selenide.Selectors.byText;
 import static com.codeborne.selenide.Selenide.$;
 import static com.codeborne.selenide.Selenide.$$;
 import static com.haulmont.masquerade.Selectors.byChain;
 import static com.haulmont.masquerade.sys.TagNames.SPAN;
-import static com.haulmont.masquerade.sys.VaadinClassNames.DISABLED_CLASSNAME;
+import static com.haulmont.masquerade.sys.VaadinClassNames.disabledClass;
 import static org.openqa.selenium.By.className;
 
 public class PopupButtonImpl extends AbstractComponent<PopupButton> implements PopupButton {
@@ -31,7 +30,7 @@ public class PopupButtonImpl extends AbstractComponent<PopupButton> implements P
     @Override
     public PopupContent openPopupContent() {
         impl.shouldBe(visible)
-                .shouldNotHave(cssClass(DISABLED_CLASSNAME))
+                .shouldNotHave(disabledClass)
                 .click();
 
         PopupContentImpl popupContent = new PopupContentImpl(By.cssSelector("div.v-popupbutton-popup"));
@@ -72,7 +71,7 @@ public class PopupButtonImpl extends AbstractComponent<PopupButton> implements P
             $(byChain(by, SPAN, byText(option)))
                     .parent().parent()
                     .shouldBe(visible)
-                    .shouldNotHave(cssClass(DISABLED_CLASSNAME))
+                    .shouldNotHave(disabledClass)
                     .click();
         }
 

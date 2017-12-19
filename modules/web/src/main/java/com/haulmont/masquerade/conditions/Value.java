@@ -1,21 +1,11 @@
 package com.haulmont.masquerade.conditions;
 
-import com.codeborne.selenide.Condition;
-import com.codeborne.selenide.impl.Html;
-import org.openqa.selenium.WebElement;
-
-public class Value extends Condition {
-
+public class Value extends SpecificCondition {
     private String expectedValue;
 
     public Value(String expectedValue) {
         super("value");
         this.expectedValue = expectedValue;
-    }
-
-    @Override
-    public boolean apply(WebElement element) {
-        return Html.text.equalsCaseSensitive(getAttributeValue(element, "value"), expectedValue);
     }
 
     @Override
@@ -25,10 +15,5 @@ public class Value extends Condition {
 
     public String getExpectedValue() {
         return expectedValue;
-    }
-
-    protected String getAttributeValue(WebElement element, String attributeName) {
-        String attr = element.getAttribute(attributeName);
-        return attr == null ? "" : attr;
     }
 }

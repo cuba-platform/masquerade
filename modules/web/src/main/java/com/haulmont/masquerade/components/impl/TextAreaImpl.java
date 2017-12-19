@@ -1,13 +1,15 @@
 package com.haulmont.masquerade.components.impl;
 
+import com.codeborne.selenide.SelenideElement;
 import com.haulmont.masquerade.components.TextArea;
 import org.openqa.selenium.By;
 
-import static com.codeborne.selenide.Condition.enabled;
-import static com.codeborne.selenide.Condition.visible;
-import static com.haulmont.masquerade.Conditions.editable;
+import static com.codeborne.selenide.Condition.*;
+import static com.codeborne.selenide.Selenide.$;
+import static com.haulmont.masquerade.Selectors.byChain;
+import static com.haulmont.masquerade.sys.TagNames.TEXTAREA;
 
-public class TextAreaImpl extends AbstractComponent<TextArea> implements TextArea {
+public class TextAreaImpl extends AbstractInputComponent<TextArea> implements TextArea {
 
     public TextAreaImpl(By by) {
         super(by);
@@ -15,15 +17,23 @@ public class TextAreaImpl extends AbstractComponent<TextArea> implements TextAre
 
     @Override
     public TextArea setValue(String value) {
-        impl.shouldBe(visible)
+        getInputDelegate()
+                .shouldBe(visible)
                 .shouldBe(enabled)
-                .shouldBe(editable)
+                .shouldNotBe(readonly)
                 .setValue(value);
         return this;
     }
 
     @Override
     public String getValue() {
-        return impl.shouldBe(visible).getValue();
+        return getInputDelegate()
+                .shouldBe(visible)
+                .getValue();
+    }
+
+    @Override
+    protected SelenideElement getInputDelegate() {
+        return $(byChain(by, TEXTAREA));
     }
 }

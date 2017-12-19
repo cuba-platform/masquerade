@@ -9,6 +9,7 @@ public final class TagNames {
     public static final By TR = By.tagName("tr");
     public static final By LABEL = By.tagName("label");
     public static final By INPUT = By.tagName("input");
+    public static final By TEXTAREA = By.tagName("textarea");
 
     private TagNames() {
     }

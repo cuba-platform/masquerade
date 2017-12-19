@@ -13,6 +13,9 @@ import com.haulmont.masquerade.Conditions;
  *     <li>{@link Conditions#disabled}</li>
  *     <li>{@link Conditions#editable}</li>
  *     <li>{@link Conditions#readonly}</li>
+ *     <li>{@link Conditions#required}</li>
+ *     <li>{@link Conditions#value(String)}</li>
+ *     <li>{@link Conditions#valueContains(String)}</li>
  * </ul>
  */
 public interface PasswordField extends TextInput<PasswordField> {
