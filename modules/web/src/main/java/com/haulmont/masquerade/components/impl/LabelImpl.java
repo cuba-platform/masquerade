@@ -1,13 +1,16 @@
 package com.haulmont.masquerade.components.impl;
 
-import com.codeborne.selenide.Condition;
 import com.haulmont.masquerade.components.Label;
+import com.haulmont.masquerade.conditions.SpecificCondition;
 import com.haulmont.masquerade.conditions.Value;
 import com.haulmont.masquerade.conditions.ValueContains;
 import org.openqa.selenium.By;
 
-import static com.codeborne.selenide.Condition.*;
-import static com.haulmont.masquerade.sys.VaadinClassNames.disabledClass;
+import static com.codeborne.selenide.Condition.exactTextCaseSensitive;
+import static com.codeborne.selenide.Condition.text;
+import static com.haulmont.masquerade.sys.matchers.ConditionCases.componentApply;
+import static com.haulmont.masquerade.sys.matchers.InstanceOfCases.hasType;
+import static com.leacox.motif.Motif.match;
 
 public class LabelImpl extends AbstractComponent<Label> implements Label {
     public LabelImpl(By by) {
@@ -20,68 +23,14 @@ public class LabelImpl extends AbstractComponent<Label> implements Label {
     }
 
     @Override
-    public boolean is(Condition condition) {
-        if (condition == Condition.enabled) {
-            return !impl.has(disabledClass);
-        }
-        if (condition == Condition.disabled) {
-            return impl.has(disabledClass);
-        }
-
-        return Label.super.is(condition);
-    }
-
-    @Override
-    public boolean has(Condition condition) {
-        if (condition instanceof Value) {
-            String value = ((Value) condition).getExpectedValue();
-            return impl.has(exactTextCaseSensitive(value));
-        }
-        if (condition instanceof ValueContains) {
-            String value = ((ValueContains) condition).getExpectedValueSubstring();
-            return impl.has(text(value));
-        }
-
-        return Label.super.has(condition);
-    }
-
-    @Override
-    public Label should(Condition... condition) {
-        for (Condition c : condition) {
-            if (c == enabled) {
-                impl.shouldNotHave(disabledClass);
-            } else if (c == disabled) {
-                impl.shouldHave(disabledClass);
-            } else if (c instanceof Value) {
-                String value = ((Value) c).getExpectedValue();
-                impl.shouldHave(exactTextCaseSensitive(value));
-            } else if (c instanceof ValueContains) {
-                String value = ((ValueContains) c).getExpectedValueSubstring();
-                impl.shouldHave(text(value));
-            } else {
-                Label.super.should(c);
-            }
-        }
-        return this;
-    }
-
-    @Override
-    public Label shouldNot(Condition... condition) {
-        for (Condition c : condition) {
-            if (c == enabled) {
-                impl.shouldHave(disabledClass);
-            } else if (c == disabled) {
-                impl.shouldNotHave(disabledClass);
-            } else if (c instanceof Value) {
-                String value = ((Value) c).getExpectedValue();
-                impl.shouldNotHave(exactTextCaseSensitive(value));
-            } else if (c instanceof ValueContains) {
-                String value = ((ValueContains) c).getExpectedValueSubstring();
-                impl.shouldNotHave(text(value));
-            } else {
-                Label.super.shouldNot(c);
-            }
-        }
-        return this;
+    public boolean apply(SpecificCondition condition) {
+        return componentApply(match(condition), getDelegate())
+                .when(hasType(Value.class)).get(v ->
+                        impl.has(exactTextCaseSensitive(v.getExpectedValue()))
+                )
+                .when(hasType(ValueContains.class)).get(v ->
+                        impl.has(text(v.getExpectedValueSubstring()))
+                )
+                .getMatch();
     }
 }

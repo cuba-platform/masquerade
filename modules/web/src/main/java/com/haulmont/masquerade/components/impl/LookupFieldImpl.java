@@ -3,26 +3,29 @@ package com.haulmont.masquerade.components.impl;
 import com.codeborne.selenide.Condition;
 import com.codeborne.selenide.SelenideElement;
 import com.haulmont.masquerade.components.LookupField;
+import com.haulmont.masquerade.conditions.Options;
+import com.haulmont.masquerade.conditions.OptionsCount;
+import com.haulmont.masquerade.sys.matchers.InstanceOfCases;
 import org.openqa.selenium.By;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
 import static com.codeborne.selenide.CollectionCondition.texts;
+import static com.codeborne.selenide.Condition.readonly;
 import static com.codeborne.selenide.Selectors.byClassName;
 import static com.codeborne.selenide.Selectors.byText;
 import static com.codeborne.selenide.Selenide.$;
 import static com.codeborne.selenide.Selenide.$$;
 import static com.google.common.base.Strings.isNullOrEmpty;
-import static com.haulmont.masquerade.Conditions.*;
+import static com.haulmont.masquerade.Conditions.enabled;
+import static com.haulmont.masquerade.Conditions.visible;
 import static com.haulmont.masquerade.Selectors.byChain;
 import static com.haulmont.masquerade.sys.TagNames.*;
-import static com.haulmont.masquerade.sys.matchers.ConditionCases.*;
 import static com.haulmont.masquerade.sys.matchers.Matchers.matchAll;
-import static com.leacox.motif.Motif.match;
 import static org.openqa.selenium.By.className;
 
-public class LookupFieldImpl extends AbstractComponent<LookupField> implements LookupField {
+public class LookupFieldImpl extends AbstractInputComponent<LookupField> implements LookupField {
     public static final String EMPTY_OPTION_VALUE = "\u00a0";
 
     public static final String V_FILTERSELECT_NEXTPAGE = "v-filterselect-nextpage";
@@ -37,13 +40,9 @@ public class LookupFieldImpl extends AbstractComponent<LookupField> implements L
         super(by);
     }
 
-    protected SelenideElement inputImpl() {
-        return $(byChain(by, INPUT));
-    }
-
     @Override
     public String getValue() {
-        return inputImpl()
+        return getInputDelegate()
                 .shouldBe(visible)
                 .getValue();
     }
@@ -64,10 +63,10 @@ public class LookupFieldImpl extends AbstractComponent<LookupField> implements L
 
     @Override
     public LookupField setFilter(String filter) {
-        SelenideElement inputImpl = inputImpl();
+        SelenideElement inputImpl = getInputDelegate();
 
         inputImpl.shouldBe(visible)
-                .shouldBe(editable)
+                .shouldNotBe(readonly)
                 .shouldBe(enabled)
                 .click();
 
@@ -109,38 +108,6 @@ public class LookupFieldImpl extends AbstractComponent<LookupField> implements L
         $(byChain(by, DIV))
                 .shouldBe(visible)
                 .click();
-
-        return this;
-    }
-
-    @Override
-    public boolean is(Condition condition) {
-        return fieldIs(match(condition), impl, inputImpl())
-                .orElse(c -> LookupField.super.is(condition))
-                .getMatch();
-    }
-
-    @Override
-    public boolean has(Condition condition) {
-        return fieldHas(match(condition), impl, inputImpl())
-                .orElse(c -> LookupField.super.has(condition))
-                .getMatch();
-    }
-
-    @SuppressWarnings("CodeBlock2Expr")
-    @Override
-    public LookupField should(Condition... conditions) {
-        matchAll(conditions, m -> fieldShould(m, impl, inputImpl())
-                .orElse(c -> LookupField.super.should(c)));
-
-        return this;
-    }
-
-    @SuppressWarnings("CodeBlock2Expr")
-    @Override
-    public LookupField shouldNot(Condition... conditions) {
-        matchAll(conditions, m -> fieldShouldNot(m, impl, inputImpl())
-                .orElse(c -> LookupField.super.shouldNot(c)));
 
         return this;
     }
@@ -214,7 +181,7 @@ public class LookupFieldImpl extends AbstractComponent<LookupField> implements L
         @Override
         public OptionsPopup should(Condition... conditions) {
             matchAll(conditions, m -> m
-                    .when(isOptions()).then(opts -> {
+                    .when(InstanceOfCases.hasType(Options.class)).then(opts -> {
                         List<String> options = opts.getOptions().stream()
                                 .map(o -> isNullOrEmpty(o) ? EMPTY_OPTION_VALUE : o)
                                 .collect(Collectors.toList());
@@ -222,7 +189,7 @@ public class LookupFieldImpl extends AbstractComponent<LookupField> implements L
                         $$(byChain(by, TD, SPAN))
                                 .shouldHave(texts(options));
                     })
-                    .when(isOptionsCount()).then(optsCount -> {
+                    .when(InstanceOfCases.hasType(OptionsCount.class)).then(optsCount -> {
                         $$(byChain(by, TD, SPAN))
                                 .shouldHaveSize(optsCount.getCount());
                     })

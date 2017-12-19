@@ -13,6 +13,12 @@ public class SpecificCondition extends Condition {
 
     @Override
     public boolean apply(WebElement element) {
-        throw new RuntimeException("SpecificCondition must be checked ony in component implementations");
+        SpecificConditionHandler handler = SpecificConditionContext.getHandler();
+        if (handler == null) {
+            throw new RuntimeException(
+                    "SpecificCondition must be checked ony in SpecificConditionHandler implementations");
+        }
+
+        return handler.apply(this);
     }
 }

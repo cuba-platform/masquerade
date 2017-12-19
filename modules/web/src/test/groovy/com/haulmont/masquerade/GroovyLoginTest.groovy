@@ -1,7 +1,6 @@
 package com.haulmont.masquerade
 
 import com.codeborne.selenide.Condition
-import com.haulmont.masquerade.components.LookupField
 import com.haulmont.masquerade.composite.GroovyLoginWindow
 import org.junit.Ignore
 import org.junit.Test
@@ -27,6 +26,12 @@ class GroovyLoginTest {
 
             loginField.value = "masquerade"
             passwordField.value = "rulezzz"
+
+            loginField
+                    .shouldBe(Conditions.enabled)
+                    .shouldBe(Conditions.editable)
+                    .shouldHave(Conditions.value("masquerade"))
+                    .shouldHave(Conditions.valueContains("ma"))
 
             def popup = localesSelect.openOptionsPopup()
 
