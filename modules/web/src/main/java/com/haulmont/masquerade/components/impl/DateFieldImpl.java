@@ -48,14 +48,14 @@ public class DateFieldImpl extends AbstractComponent<DateField> implements DateF
 
     @Override
     public boolean is(Condition condition) {
-        return fieldIs(match(condition), inputImpl())
-                .orElse(c -> DateField.super.has(condition))
+        return fieldIs(match(condition), impl, inputImpl())
+                .orElse(c -> DateField.super.is(condition))
                 .getMatch();
     }
 
     @Override
     public boolean has(Condition condition) {
-        return fieldHas(match(condition), inputImpl())
+        return fieldHas(match(condition), impl, inputImpl())
                 .orElse(c -> DateField.super.has(condition))
                 .getMatch();
     }
@@ -63,7 +63,7 @@ public class DateFieldImpl extends AbstractComponent<DateField> implements DateF
     @SuppressWarnings("CodeBlock2Expr")
     @Override
     public DateField should(Condition... conditions) {
-        matchAll(conditions, m -> fieldShould(m, inputImpl())
+        matchAll(conditions, m -> fieldShould(m, impl, inputImpl())
                 .orElse(c -> DateField.super.should(c)));
 
         return this;
@@ -72,7 +72,7 @@ public class DateFieldImpl extends AbstractComponent<DateField> implements DateF
     @SuppressWarnings("CodeBlock2Expr")
     @Override
     public DateField shouldNot(Condition... conditions) {
-        matchAll(conditions, m -> fieldShouldNot(m, inputImpl())
+        matchAll(conditions, m -> fieldShouldNot(m, impl, inputImpl())
                 .orElse(c -> DateField.super.shouldNot(c)));
 
         return this;

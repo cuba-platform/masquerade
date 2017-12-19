@@ -33,14 +33,14 @@ public class TextFieldImpl extends AbstractComponent<TextField> implements TextF
 
     @Override
     public boolean is(Condition condition) {
-        return fieldIs(match(condition), impl)
+        return fieldIs(match(condition), impl, impl)
                 .orElse(c -> TextField.super.has(condition))
                 .getMatch();
     }
 
     @Override
     public boolean has(Condition condition) {
-        return fieldHas(match(condition), impl)
+        return fieldHas(match(condition), impl, impl)
                 .orElse(c -> TextField.super.has(condition))
                 .getMatch();
     }
@@ -48,7 +48,7 @@ public class TextFieldImpl extends AbstractComponent<TextField> implements TextF
     @SuppressWarnings("CodeBlock2Expr")
     @Override
     public TextField should(Condition... conditions) {
-        matchAll(conditions, m -> fieldShould(m, impl)
+        matchAll(conditions, m -> fieldShould(m, impl, impl)
                 .orElse(c -> TextField.super.should(c)));
 
         return this;
@@ -57,7 +57,7 @@ public class TextFieldImpl extends AbstractComponent<TextField> implements TextF
     @SuppressWarnings("CodeBlock2Expr")
     @Override
     public TextField shouldNot(Condition... conditions) {
-        matchAll(conditions, m -> fieldShouldNot(m, impl)
+        matchAll(conditions, m -> fieldShouldNot(m, impl, impl)
                 .orElse(c -> TextField.super.shouldNot(c)));
 
         return this;

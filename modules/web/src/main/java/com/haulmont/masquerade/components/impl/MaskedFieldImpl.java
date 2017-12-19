@@ -38,14 +38,14 @@ public class MaskedFieldImpl extends AbstractComponent<MaskedField> implements M
 
     @Override
     public boolean is(Condition condition) {
-        return fieldIs(match(condition), impl)
+        return fieldIs(match(condition), impl, impl)
                 .orElse(c -> MaskedField.super.has(condition))
                 .getMatch();
     }
 
     @Override
     public boolean has(Condition condition) {
-        return fieldHas(match(condition), impl)
+        return fieldHas(match(condition), impl, impl)
                 .orElse(c -> MaskedField.super.has(condition))
                 .getMatch();
     }
@@ -53,7 +53,7 @@ public class MaskedFieldImpl extends AbstractComponent<MaskedField> implements M
     @SuppressWarnings("CodeBlock2Expr")
     @Override
     public MaskedField should(Condition... conditions) {
-        matchAll(conditions, m -> fieldShould(m, impl)
+        matchAll(conditions, m -> fieldShould(m, impl, impl)
                 .orElse(c -> MaskedField.super.should(c)));
 
         return this;
@@ -62,7 +62,7 @@ public class MaskedFieldImpl extends AbstractComponent<MaskedField> implements M
     @SuppressWarnings("CodeBlock2Expr")
     @Override
     public MaskedField shouldNot(Condition... conditions) {
-        matchAll(conditions, m -> fieldShouldNot(m, impl)
+        matchAll(conditions, m -> fieldShouldNot(m, impl, impl)
                 .orElse(c -> MaskedField.super.shouldNot(c)));
 
         return this;

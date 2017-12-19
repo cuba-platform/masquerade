@@ -2,15 +2,18 @@ package com.haulmont.masquerade.components.impl;
 
 import com.codeborne.selenide.Condition;
 import com.haulmont.masquerade.components.Button;
-import com.haulmont.masquerade.conditions.Caption;
 import org.openqa.selenium.By;
 
 import java.util.Objects;
 
-import static com.codeborne.selenide.Condition.*;
+import static com.codeborne.selenide.Condition.exactTextCaseSensitive;
+import static com.codeborne.selenide.Condition.visible;
 import static com.codeborne.selenide.Selenide.$;
 import static com.haulmont.masquerade.Selectors.byChain;
 import static com.haulmont.masquerade.sys.VaadinClassNames.disabledClass;
+import static com.haulmont.masquerade.sys.matchers.ConditionCases.*;
+import static com.haulmont.masquerade.sys.matchers.Matchers.matchAll;
+import static com.leacox.motif.Motif.match;
 import static org.openqa.selenium.By.className;
 
 public class ButtonImpl extends AbstractComponent<Button> implements Button {
@@ -27,23 +30,38 @@ public class ButtonImpl extends AbstractComponent<Button> implements Button {
     }
 
     @Override
-    public boolean is(Condition c) {
-        if (c == enabled) {
-            return !impl.has(disabledClass);
-        }
-        if (c == disabled) {
-            return impl.has(disabledClass);
-        }
-        return Button.super.is(c);
+    public boolean has(Condition condition) {
+        return componentHas(match(condition), impl)
+                .when(isCaption()).get(c->
+                        Objects.equals(getCaption(), c.getCaption()))
+                .orElse(c -> Button.super.has(condition))
+                .getMatch();
     }
 
+    @SuppressWarnings("CodeBlock2Expr")
     @Override
-    public boolean has(Condition condition) {
-        if (condition instanceof Caption) {
-            String expectedCaption = ((Caption) condition).getCaption();
-            return Objects.equals(getCaption(), expectedCaption);
-        }
-        return Button.super.has(condition);
+    public Button should(Condition... conditions) {
+        matchAll(conditions, m -> componentShould(m, impl)
+                .when(isCaption()).then(c -> {
+                    $(byChain(by, className(BUTTON_CAPTION_CLASSNAME)))
+                            .shouldHave(exactTextCaseSensitive(c.getCaption()));
+                })
+                .orElse(c -> Button.super.should(c)));
+
+        return this;
+    }
+
+    @SuppressWarnings("CodeBlock2Expr")
+    @Override
+    public Button shouldNot(Condition... conditions) {
+        matchAll(conditions, m -> componentShouldNot(m, impl)
+                .when(isCaption()).then(c -> {
+                    $(byChain(by, className(BUTTON_CAPTION_CLASSNAME)))
+                            .shouldNotHave(exactTextCaseSensitive(c.getCaption()));
+                })
+                .orElse(c -> Button.super.shouldNot(c)));
+
+        return this;
     }
 
     @Override
@@ -51,44 +69,6 @@ public class ButtonImpl extends AbstractComponent<Button> implements Button {
         impl.shouldBe(visible)
                 .shouldNotHave(disabledClass)
                 .click();
-        return this;
-    }
-
-    @Override
-    public Button should(Condition... condition) {
-        for (Condition c : condition) {
-            if (c == enabled) {
-                impl.shouldNotHave(disabledClass);
-            } else if (c == disabled) {
-                impl.shouldHave(disabledClass);
-            } else if (c instanceof Caption) {
-                String caption = ((Caption) c).getCaption();
-
-                $(byChain(by, className(BUTTON_CAPTION_CLASSNAME)))
-                        .shouldHave(exactTextCaseSensitive(caption));
-            } else {
-                Button.super.should(c);
-            }
-        }
-        return this;
-    }
-
-    @Override
-    public Button shouldNot(Condition... condition) {
-        for (Condition c : condition) {
-            if (c == enabled) {
-                impl.shouldHave(disabledClass);
-            } else if (c == disabled) {
-                impl.shouldNotHave(disabledClass);
-            } else if (c instanceof Caption) {
-                String caption = ((Caption) c).getCaption();
-
-                $(byChain(by, className(BUTTON_CAPTION_CLASSNAME)))
-                        .shouldNotHave(exactTextCaseSensitive(caption));
-            } else {
-                Button.super.shouldNot(c);
-            }
-        }
         return this;
     }
 }

@@ -2,10 +2,7 @@ package com.haulmont.masquerade.sys.matchers;
 
 import com.codeborne.selenide.Condition;
 import com.codeborne.selenide.SelenideElement;
-import com.haulmont.masquerade.conditions.Options;
-import com.haulmont.masquerade.conditions.OptionsCount;
-import com.haulmont.masquerade.conditions.Value;
-import com.haulmont.masquerade.conditions.ValueContains;
+import com.haulmont.masquerade.conditions.*;
 import com.leacox.motif.MatchesExact;
 import com.leacox.motif.extract.DecomposableMatchBuilder1;
 import com.leacox.motif.matching.FluentMatching;
@@ -35,6 +32,10 @@ public final class ConditionCases {
         return InstanceOfCases.hasType(Options.class);
     }
 
+    public static DecomposableMatchBuilder1<Condition, Caption> isCaption() {
+        return InstanceOfCases.hasType(Caption.class);
+    }
+
     public static DecomposableMatchBuilder1<Condition, OptionsCount> isOptionsCount() {
         return InstanceOfCases.hasType(OptionsCount.class);
     }
@@ -60,7 +61,52 @@ public final class ConditionCases {
     }
 
     @SuppressWarnings("CodeBlock2Expr")
+    public static FluentMatchingC<Condition> componentShould(FluentMatching<Condition> matching,
+                                                             SelenideElement impl) {
+        return matching
+                .when(isEnabled()).then(() -> {
+                    impl.shouldNotHave(disabledClass);
+                })
+                .when(isDisabled()).then(() -> {
+                    impl.shouldHave(disabledClass);
+                });
+    }
+
+    @SuppressWarnings("CodeBlock2Expr")
+    public static FluentMatchingC<Condition> componentShouldNot(FluentMatching<Condition> matching,
+                                                                SelenideElement impl) {
+        return matching
+                .when(isEnabled()).then(() -> {
+                    impl.shouldHave(disabledClass);
+                })
+                .when(isDisabled()).then(() -> {
+                    impl.shouldNotHave(disabledClass);
+                });
+    }
+
+    public static FluentMatchingR<Condition, Boolean> componentIs(FluentMatching<Condition> matching,
+                                                                  SelenideElement impl) {
+        return matching
+                .when(isEnabled()).get(() ->
+                        !impl.has(disabledClass)
+                )
+                .when(isDisabled()).get(() ->
+                        impl.has(disabledClass)
+                );
+    }
+
+    public static FluentMatchingR<Condition, Boolean> componentHas(FluentMatching<Condition> matching,
+                                                                   SelenideElement impl) {
+        // reserved for Caption / Icon support in the future
+        return matching
+                .when(eq(null)).get(() -> {
+                    throw new IllegalArgumentException();
+                });
+    }
+
+    @SuppressWarnings("CodeBlock2Expr")
     public static FluentMatchingC<Condition> fieldShould(FluentMatching<Condition> matching,
+                                                         SelenideElement impl,
                                                          SelenideElement inputImpl) {
         return matching
                 .when(isValue()).then(v -> {
@@ -94,6 +140,7 @@ public final class ConditionCases {
 
     @SuppressWarnings("CodeBlock2Expr")
     public static FluentMatchingC<Condition> fieldShouldNot(FluentMatching<Condition> matching,
+                                                            SelenideElement impl,
                                                             SelenideElement inputImpl) {
         return matching
                 .when(isValue()).then(v -> {
@@ -109,43 +156,45 @@ public final class ConditionCases {
                             .shouldNotHave(valueContains(expectedValue));
                 })
                 .when(isEnabled()).then(() -> {
-                    inputImpl.shouldHave(disabledClass);
+                    impl.shouldHave(disabledClass);
                 })
                 .when(isDisabled()).then(() -> {
-                    inputImpl.shouldNotHave(disabledClass);
+                    impl.shouldNotHave(disabledClass);
                 })
                 .when(isRequired()).then(() -> {
-                    inputImpl.shouldNotHave(requiredClass);
+                    impl.shouldNotHave(requiredClass);
                 })
                 .when(isReadonly()).then(() -> {
-                    inputImpl.shouldNotHave(readonlyClass);
+                    impl.shouldNotHave(readonlyClass);
                 })
                 .when(isEditable()).then(() -> {
-                    inputImpl.shouldHave(readonlyClass);
+                    impl.shouldHave(readonlyClass);
                 });
     }
 
     public static FluentMatchingR<Condition, Boolean> fieldIs(FluentMatching<Condition> matching,
+                                                              SelenideElement impl,
                                                               SelenideElement inputImpl) {
         return matching
                 .when(isEnabled()).get(() ->
-                        !inputImpl.has(disabledClass)
+                        !impl.has(disabledClass)
                 )
                 .when(isDisabled()).get(() ->
-                        inputImpl.has(disabledClass)
+                        impl.has(disabledClass)
                 )
                 .when(isRequired()).get(() ->
-                        inputImpl.has(requiredClass)
+                        impl.has(requiredClass)
                 )
                 .when(isReadonly()).get(() ->
-                        inputImpl.has(readonlyClass)
+                        impl.has(readonlyClass)
                 )
                 .when(isEditable()).get(() ->
-                        !inputImpl.has(readonlyClass)
+                        !impl.has(readonlyClass)
                 );
     }
 
     public static FluentMatchingR<Condition, Boolean> fieldHas(FluentMatching<Condition> matching,
+                                                               SelenideElement impl,
                                                                SelenideElement inputImpl) {
         return matching
                 .when(isValue()).get(v -> {

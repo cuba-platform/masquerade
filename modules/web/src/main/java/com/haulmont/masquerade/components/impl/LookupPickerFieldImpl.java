@@ -57,14 +57,14 @@ public class LookupPickerFieldImpl extends AbstractComponent<LookupPickerField> 
 
     @Override
     public boolean is(Condition condition) {
-        return fieldIs(match(condition), inputImpl())
+        return fieldIs(match(condition), impl, inputImpl())
                 .orElse(c -> LookupPickerField.super.has(condition))
                 .getMatch();
     }
 
     @Override
     public boolean has(Condition condition) {
-        return fieldHas(match(condition), inputImpl())
+        return fieldHas(match(condition), impl, inputImpl())
                 .orElse(c -> LookupPickerField.super.has(condition))
                 .getMatch();
     }
@@ -72,7 +72,7 @@ public class LookupPickerFieldImpl extends AbstractComponent<LookupPickerField> 
     @SuppressWarnings("CodeBlock2Expr")
     @Override
     public LookupPickerField should(Condition... conditions) {
-        matchAll(conditions, m -> fieldShould(m, inputImpl())
+        matchAll(conditions, m -> fieldShould(m, impl, inputImpl())
                 .orElse(c -> LookupPickerField.super.should(c)));
 
         return this;
@@ -81,7 +81,7 @@ public class LookupPickerFieldImpl extends AbstractComponent<LookupPickerField> 
     @SuppressWarnings("CodeBlock2Expr")
     @Override
     public LookupPickerField shouldNot(Condition... conditions) {
-        matchAll(conditions, m -> fieldShouldNot(m, inputImpl())
+        matchAll(conditions, m -> fieldShouldNot(m, impl, inputImpl())
                 .orElse(c -> LookupPickerField.super.shouldNot(c)));
 
         return this;

@@ -37,14 +37,14 @@ public class TimeFieldImpl extends AbstractComponent<TimeField> implements TimeF
 
     @Override
     public boolean is(Condition condition) {
-        return fieldIs(match(condition), impl)
+        return fieldIs(match(condition), impl, impl)
                 .orElse(c -> TimeField.super.has(condition))
                 .getMatch();
     }
 
     @Override
     public boolean has(Condition condition) {
-        return fieldHas(match(condition), impl)
+        return fieldHas(match(condition), impl, impl)
                 .orElse(c -> TimeField.super.has(condition))
                 .getMatch();
     }
@@ -52,7 +52,7 @@ public class TimeFieldImpl extends AbstractComponent<TimeField> implements TimeF
     @SuppressWarnings("CodeBlock2Expr")
     @Override
     public TimeField should(Condition... conditions) {
-        matchAll(conditions, m -> fieldShould(m, impl)
+        matchAll(conditions, m -> fieldShould(m, impl, impl)
                 .orElse(c -> TimeField.super.should(c)));
 
         return this;
@@ -61,7 +61,7 @@ public class TimeFieldImpl extends AbstractComponent<TimeField> implements TimeF
     @SuppressWarnings("CodeBlock2Expr")
     @Override
     public TimeField shouldNot(Condition... conditions) {
-        matchAll(conditions, m -> fieldShouldNot(m, impl)
+        matchAll(conditions, m -> fieldShouldNot(m, impl, impl)
                 .orElse(c -> TimeField.super.shouldNot(c)));
 
         return this;
