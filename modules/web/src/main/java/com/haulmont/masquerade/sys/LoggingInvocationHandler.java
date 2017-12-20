@@ -52,7 +52,7 @@ public class LoggingInvocationHandler implements InvocationHandler {
             return proxy;
         }
 
-        if (proxyFactory != null) {
+        if (proxyFactory != null && result != null) {
             return proxyFactory.createProxy(method.getReturnType(), result);
         }
 
