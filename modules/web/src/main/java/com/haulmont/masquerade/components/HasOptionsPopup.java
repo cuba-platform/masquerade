@@ -24,7 +24,7 @@ public interface HasOptionsPopup<T> {
      *     <li>{@link Conditions#visibleOptions(String...)}</li>
      * </ul>
      */
-    interface OptionsPopup<T> extends SelenideElementWrapper<OptionsPopup>, ByLocator {
+    interface OptionsPopup<T> extends SelenideElementWrapper<OptionsPopup>, ByLocator, Element {
         List<String> getVisibleOptions();
 
         @Log

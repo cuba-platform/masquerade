@@ -2,6 +2,8 @@ package com.haulmont.masquerade.sys;
 
 import com.haulmont.masquerade.Selectors;
 import com.haulmont.masquerade.base.ByLocator;
+import com.haulmont.masquerade.components.Component;
+import com.haulmont.masquerade.components.Element;
 import com.haulmont.masquerade.util.Log;
 import org.apache.commons.lang3.StringUtils;
 import org.openqa.selenium.By;
@@ -88,6 +90,11 @@ public class LoggingInvocationHandler implements InvocationHandler {
     }
 
     private String getTargetId(Object target) {
+        if (target instanceof Element) {
+            Component parent = ((Element) target).getParent();
+            return getTargetId(parent);
+        }
+
         if (target instanceof ByLocator) {
             return formatBy(((ByLocator) target).getBy());
         }
