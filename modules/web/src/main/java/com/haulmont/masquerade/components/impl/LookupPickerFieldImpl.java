@@ -4,8 +4,8 @@ import com.haulmont.masquerade.Components;
 import com.haulmont.masquerade.components.LookupPickerField;
 import org.openqa.selenium.By;
 
+import static com.codeborne.selenide.Condition.visible;
 import static com.codeborne.selenide.Selenide.$;
-import static com.haulmont.masquerade.Conditions.visible;
 import static com.haulmont.masquerade.Selectors.byChain;
 import static com.haulmont.masquerade.Selectors.byCubaId;
 import static com.haulmont.masquerade.sys.TagNames.DIV;

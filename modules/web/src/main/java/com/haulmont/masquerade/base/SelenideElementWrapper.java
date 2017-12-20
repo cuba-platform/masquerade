@@ -25,11 +25,13 @@ public interface SelenideElementWrapper<T> {
     }
 
     default T shouldHave(Condition... condition) {
-        return should(condition);
+        getDelegate().shouldHave(condition);
+        return (T) this;
     }
 
     default T shouldBe(Condition... condition) {
-        return should(condition);
+        getDelegate().shouldBe(condition);
+        return (T) this;
     }
 
     default T shouldNot(Condition... condition) {
@@ -38,11 +40,13 @@ public interface SelenideElementWrapper<T> {
     }
 
     default T shouldNotHave(Condition... condition) {
-        return (T) shouldNot(condition);
+        getDelegate().shouldNotHave(condition);
+        return (T) this;
     }
 
     default T shouldNotBe(Condition... condition) {
-        return shouldNot(condition);
+        getDelegate().shouldNotBe(condition);
+        return (T) this;
     }
 
     default T waitUntil(Condition condition, long timeoutMilliseconds) {

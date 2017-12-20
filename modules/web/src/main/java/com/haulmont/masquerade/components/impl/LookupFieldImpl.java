@@ -1,28 +1,25 @@
 package com.haulmont.masquerade.components.impl;
 
-import com.codeborne.selenide.Condition;
 import com.codeborne.selenide.SelenideElement;
 import com.haulmont.masquerade.components.LookupField;
 import com.haulmont.masquerade.conditions.Options;
 import com.haulmont.masquerade.conditions.OptionsCount;
-import com.haulmont.masquerade.sys.matchers.InstanceOfCases;
+import com.haulmont.masquerade.conditions.SpecificCondition;
+import com.leacox.motif.Motif;
 import org.openqa.selenium.By;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static com.codeborne.selenide.CollectionCondition.texts;
-import static com.codeborne.selenide.Condition.readonly;
+import static com.codeborne.selenide.Condition.*;
 import static com.codeborne.selenide.Selectors.byClassName;
 import static com.codeborne.selenide.Selectors.byText;
 import static com.codeborne.selenide.Selenide.$;
 import static com.codeborne.selenide.Selenide.$$;
 import static com.google.common.base.Strings.isNullOrEmpty;
-import static com.haulmont.masquerade.Conditions.enabled;
-import static com.haulmont.masquerade.Conditions.visible;
 import static com.haulmont.masquerade.Selectors.byChain;
 import static com.haulmont.masquerade.sys.TagNames.*;
-import static com.haulmont.masquerade.sys.matchers.Matchers.matchAll;
+import static com.haulmont.masquerade.sys.matchers.InstanceOfCases.hasType;
 import static org.openqa.selenium.By.className;
 
 public class LookupFieldImpl extends AbstractInputComponent<LookupField> implements LookupField {
@@ -112,7 +109,10 @@ public class LookupFieldImpl extends AbstractInputComponent<LookupField> impleme
         return this;
     }
 
-    public class OptionsPopupImpl implements OptionsPopup<LookupField> {
+    public class OptionsPopupImpl
+            extends AbstractSpecificConditionHandler<OptionsPopup>
+            implements OptionsPopup<LookupField> {
+
         private final By by;
         private final SelenideElement impl;
 
@@ -179,23 +179,20 @@ public class LookupFieldImpl extends AbstractInputComponent<LookupField> impleme
 
         @SuppressWarnings("CodeBlock2Expr")
         @Override
-        public OptionsPopup should(Condition... conditions) {
-            matchAll(conditions, m -> m
-                    .when(InstanceOfCases.hasType(Options.class)).then(opts -> {
+        public boolean apply(SpecificCondition condition) {
+            return Motif.match(condition)
+                    .when(hasType(Options.class)).get(opts -> {
                         List<String> options = opts.getOptions().stream()
                                 .map(o -> isNullOrEmpty(o) ? EMPTY_OPTION_VALUE : o)
                                 .collect(Collectors.toList());
 
-                        $$(byChain(by, TD, SPAN))
-                                .shouldHave(texts(options));
+                        List<String> texts = $$(byChain(by, TD, SPAN)).texts();
+                        return texts.equals(options);
                     })
-                    .when(InstanceOfCases.hasType(OptionsCount.class)).then(optsCount -> {
-                        $$(byChain(by, TD, SPAN))
-                                .shouldHaveSize(optsCount.getCount());
+                    .when(hasType(OptionsCount.class)).get(optsCount -> {
+                        return $$(byChain(by, TD, SPAN)).size() == optsCount.getCount();
                     })
-                    .orElse(c -> OptionsPopup.super.should(c)));
-
-            return this;
+                    .getMatch();
         }
     }
 }
