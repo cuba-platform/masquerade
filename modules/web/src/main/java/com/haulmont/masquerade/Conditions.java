@@ -38,6 +38,10 @@ public class Conditions {
 
     public static final Condition selected = new SpecificCondition("selected");
 
+    public static final Condition expanded = new SpecificCondition("expanded");
+
+    public static final Condition collapsed = new SpecificCondition("collapsed");
+
     public static Condition caption(String caption) {
         return new Caption(caption);
     }
