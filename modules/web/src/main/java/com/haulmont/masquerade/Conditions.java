@@ -61,4 +61,12 @@ public class Conditions {
     public static Condition visibleOptionsCount(int count) {
         return new OptionsCount(count);
     }
+
+    public static Condition dateValue(String expectedValue) {
+        return new DateValue(expectedValue);
+    }
+
+    public static Condition timeValue(String expectedValue) {
+        return new TimeValue(expectedValue);
+    }
 }

@@ -51,7 +51,7 @@ public final class ConditionCases {
                     return impl.has(requiredClass);
                 })
                 .when(eq(readonly)).get(() -> {
-                    return !impl.has(readonlyClass);
+                    return impl.has(readonlyClass);
                 })
                 .when(eq(editable)).get(() -> {
                     return !impl.has(readonlyClass);
