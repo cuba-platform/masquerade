@@ -51,8 +51,16 @@ public class Conditions {
         return new Caption(caption);
     }
 
-    public static Condition description(String caption) {
-        return new Description(caption);
+    public static Condition captionContains(String caption) {
+        return new CaptionContains(caption);
+    }
+
+    public static Condition description(String description) {
+        return new Description(description);
+    }
+
+    public static Condition descriptionContains(String description) {
+        return new DescriptionContains(description);
     }
 
     public static Condition value(String expectedValue) {

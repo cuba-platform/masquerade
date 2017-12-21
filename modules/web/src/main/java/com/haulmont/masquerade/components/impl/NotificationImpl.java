@@ -2,15 +2,12 @@ package com.haulmont.masquerade.components.impl;
 
 import com.codeborne.selenide.SelenideElement;
 import com.haulmont.masquerade.components.Notification;
-import com.haulmont.masquerade.conditions.Caption;
-import com.haulmont.masquerade.conditions.Description;
-import com.haulmont.masquerade.conditions.NotificationType;
-import com.haulmont.masquerade.conditions.SpecificCondition;
+import com.haulmont.masquerade.conditions.*;
 import org.openqa.selenium.By;
 
 import java.util.Objects;
 
-import static com.codeborne.selenide.Condition.visible;
+import static com.codeborne.selenide.Condition.*;
 import static com.codeborne.selenide.Selenide.$;
 import static com.haulmont.masquerade.Selectors.byChain;
 import static com.haulmont.masquerade.sys.matchers.InstanceOfCases.hasType;
@@ -47,11 +44,19 @@ public class NotificationImpl extends AbstractSpecificConditionHandler<Notificat
         return match(condition)
                 .when(hasType(Caption.class)).get(c-> {
                     SelenideElement captionImpl = $(byChain(by, NOTIFICATION_CAPTION));
-                    return Objects.equals(captionImpl.getText(), c.getCaption());
+                    return captionImpl.has(exactText(c.getCaption()));
                 })
                 .when(hasType(Description.class)).get(d-> {
                     SelenideElement descriptionImpl = $(byChain(by, NOTIFICATION_DESCRIPTION));
-                    return Objects.equals(descriptionImpl.getText(), d.getDescription());
+                    return descriptionImpl.has(exactText(d.getDescription()));
+                })
+                .when(hasType(CaptionContains.class)).get(cc-> {
+                    SelenideElement captionImpl = $(byChain(by, NOTIFICATION_CAPTION));
+                    return captionImpl.has(text(cc.getCaptionSubstring()));
+                })
+                .when(hasType(DescriptionContains.class)).get(dc-> {
+                    SelenideElement descriptionImpl = $(byChain(by, NOTIFICATION_DESCRIPTION));
+                    return descriptionImpl.has(text(dc.getDescriptionSubstring()));
                 })
                 .when(hasType(NotificationType.class)).get(t-> {
                     Type type = getTypeInternal();

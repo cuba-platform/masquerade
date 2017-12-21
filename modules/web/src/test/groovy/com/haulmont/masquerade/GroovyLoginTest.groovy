@@ -44,6 +44,8 @@ class GroovyLoginTest {
 
             _$(Notification)
                     .shouldBe(VISIBLE)
+                    .shouldHave(captionContains("Failed"))
+                    .shouldHave(descriptionContains("Unknown login"))
                     .shouldHave(type(Type.ERROR))
                     .clickToClose()
                     .should(DISAPPEAR)

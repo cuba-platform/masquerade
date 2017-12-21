@@ -15,7 +15,9 @@ import com.haulmont.masquerade.util.Log;
  *     <li>{@link Conditions#APPEAR}</li>
  *     <li>{@link Conditions#DISAPPEAR}</li>
  *     <li>{@link Conditions#caption(String)}</li>
+ *     <li>{@link Conditions#captionContains(String)}</li>
  *     <li>{@link Conditions#description(String)}</li>
+ *     <li>{@link Conditions#descriptionContains(String)}</li>
  * </ul>
  */
 public interface Notification extends SelenideElementWrapper<Notification>, Overlay, ByLocator {
