@@ -50,10 +50,10 @@ public class DefaultComponentConfig implements ComponentConfig {
         components.put(OptionsGroup.class, OptionsGroupImpl::new);
         components.put(PickerField.class, PickerFieldImpl::new);
         components.put(Notification.class, NotificationImpl::new);
+        components.put(DialogWindow.class, DialogWindowImpl::new);
         // stubs
         components.put(BoxLayout.class, BoxLayoutImpl::new);
         components.put(TabSheet.class, TabSheetImpl::new);
-        components.put(DialogWindow.class, DialogWindowImpl::new);
         components.put(FieldGroup.class, FieldGroupImpl::new);
         components.put(SourceCodeEditor.class, SourceCodeEditorImpl::new);
         components.put(Tree.class, TreeImpl::new);
