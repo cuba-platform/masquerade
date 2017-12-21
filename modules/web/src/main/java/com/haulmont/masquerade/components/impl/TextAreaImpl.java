@@ -34,6 +34,6 @@ public class TextAreaImpl extends AbstractInputComponent<TextArea> implements Te
 
     @Override
     protected SelenideElement getInputDelegate() {
-        return $(byChain(by, TEXTAREA));
+        return impl;
     }
 }
