@@ -11,7 +11,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.lang.reflect.InvocationHandler;
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.lang.reflect.UndeclaredThrowableException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -43,7 +45,17 @@ public class LoggingInvocationHandler implements InvocationHandler {
             logExecution(method, args);
         }
 
-        Object result = method.invoke(target, args);
+        Object result;
+        try {
+            result = method.invoke(target, args);
+        } catch (UndeclaredThrowableException | InvocationTargetException e) {
+            // rethrow e
+            if (e.getCause() != null) {
+                throw e.getCause();
+            } else {
+                throw e;
+            }
+        }
 
         return postProcessResult(proxy, method, result);
     }
