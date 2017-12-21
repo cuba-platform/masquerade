@@ -7,12 +7,12 @@ import com.haulmont.masquerade.Conditions;
  * <br>
  * Supported conditions:
  * <ul>
- *     <li>{@link Conditions#visible}</li>
- *     <li>{@link Conditions#hidden}</li>
- *     <li>{@link Conditions#enabled}</li>
- *     <li>{@link Conditions#disabled}</li>
- *     <li>{@link Conditions#expanded}</li>
- *     <li>{@link Conditions#collapsed}</li>
+ *     <li>{@link Conditions#VISIBLE}</li>
+ *     <li>{@link Conditions#HIDDEN}</li>
+ *     <li>{@link Conditions#ENABLED}</li>
+ *     <li>{@link Conditions#DISABLED}</li>
+ *     <li>{@link Conditions#EXPANDED}</li>
+ *     <li>{@link Conditions#COLLAPSED}</li>
  *     <li>{@link Conditions#caption(String)}</li>
  * </ul>
  */

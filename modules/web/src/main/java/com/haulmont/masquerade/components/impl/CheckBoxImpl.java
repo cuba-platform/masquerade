@@ -30,10 +30,10 @@ public class CheckBoxImpl extends AbstractComponent<CheckBox> implements CheckBo
     @Override
     public boolean apply(SpecificCondition condition) {
         return componentApply(match(condition), getDelegate())
-                .when(eq(Conditions.checked)).get(() ->
+                .when(eq(Conditions.CHECKED)).get(() ->
                         $(byChain(by, INPUT)).is(Condition.checked)
                 )
-                .when(eq(Conditions.selected)).get(() ->
+                .when(eq(Conditions.SELECTED)).get(() ->
                         $(byChain(by, INPUT)).is(Condition.selected)
                 )
                 .when(hasType(Caption.class)).get(c ->
@@ -57,7 +57,7 @@ public class CheckBoxImpl extends AbstractComponent<CheckBox> implements CheckBo
 
     @Override
     public boolean isChecked() {
-        return is(Conditions.checked);
+        return is(Conditions.CHECKED);
     }
 
     @Override

@@ -15,7 +15,6 @@ import static com.haulmont.masquerade.sys.matchers.InstanceOfCases.hasType;
 import static com.leacox.motif.MatchesExact.eq;
 import static com.leacox.motif.Motif.match;
 import static org.openqa.selenium.By.cssSelector;
-import static org.openqa.selenium.By.xpath;
 
 public class GroupBoxImpl extends AbstractComponent<GroupBox> implements GroupBox {
 
@@ -32,10 +31,10 @@ public class GroupBoxImpl extends AbstractComponent<GroupBox> implements GroupBo
     @Override
     public boolean apply(SpecificCondition condition) {
         return componentApply(match(condition), getDelegate())
-                .when(eq(Conditions.expanded)).get(() -> {
+                .when(eq(Conditions.EXPANDED)).get(() -> {
                     return $(byChain(by, EXPANDER)).has(cssClass(EXPANDED));
                 })
-                .when(eq(Conditions.collapsed)).get(() -> {
+                .when(eq(Conditions.COLLAPSED)).get(() -> {
                     return !$(byChain(by, EXPANDER)).has(cssClass(EXPANDED));
                 })
                 .when(hasType(Caption.class)).get(c -> {

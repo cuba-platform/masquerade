@@ -23,8 +23,8 @@ public class LoginTest {
         assertNotNull(loginWindow.getPasswordField());
 
         loginWindow.getLoginField()
-                .shouldBe(editable)
-                .shouldBe(enabled);
+                .shouldBe(EDITABLE)
+                .shouldBe(ENABLED);
 
         loginWindow.getLoginField().setValue("masquerade");
         loginWindow.getPasswordField().setValue("rulezzz");
@@ -33,18 +33,18 @@ public class LoginTest {
         loginWindow.getRememberMeCheckBox().getCaption();
 
         loginWindow.getWelcomeLabelTest()
-                .shouldBe(Conditions.visible);
+                .shouldBe(VISIBLE);
 
         loginWindow.getLoginButton()
-                .shouldBe(visible)
-                .shouldBe(enabled)
+                .shouldBe(VISIBLE)
+                .shouldBe(ENABLED)
                 .shouldHave(caption("Submit"));
 
         String caption = loginWindow.getLoginButton().getCaption();
-        boolean enabled = loginWindow.getLoginButton().is(Conditions.enabled);
+        boolean enabled = loginWindow.getLoginButton().is(ENABLED);
 
         Untyped loginFormLayout = wire(Untyped.class, "loginFormLayout");
-        loginFormLayout.shouldBe(visible);
+        loginFormLayout.shouldBe(VISIBLE);
 
         loginWindow.getLoginButton().click();
     }

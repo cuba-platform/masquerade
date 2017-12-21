@@ -8,14 +8,14 @@ import com.haulmont.masquerade.util.Log;
  * <br>
  * Supported conditions:
  * <ul>
- *     <li>{@link Conditions#visible}</li>
- *     <li>{@link Conditions#hidden}</li>
- *     <li>{@link Conditions#enabled}</li>
- *     <li>{@link Conditions#disabled}</li>
- *     <li>{@link Conditions#readonly}</li>
- *     <li>{@link Conditions#editable}</li>
- *     <li>{@link Conditions#checked}</li>
- *     <li>{@link Conditions#selected}</li>
+ *     <li>{@link Conditions#VISIBLE}</li>
+ *     <li>{@link Conditions#HIDDEN}</li>
+ *     <li>{@link Conditions#ENABLED}</li>
+ *     <li>{@link Conditions#DISABLED}</li>
+ *     <li>{@link Conditions#READONLY}</li>
+ *     <li>{@link Conditions#EDITABLE}</li>
+ *     <li>{@link Conditions#CHECKED}</li>
+ *     <li>{@link Conditions#SELECTED}</li>
  *     <li>{@link Conditions#caption(String)}</li>
  * </ul>
  */

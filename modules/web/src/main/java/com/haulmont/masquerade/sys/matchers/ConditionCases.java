@@ -20,10 +20,10 @@ public final class ConditionCases {
     public static FluentMatchingR<Condition, Boolean> componentApply(FluentMatching<Condition> matching,
                                                                      SelenideElement impl) {
         return matching
-                .when(eq(enabled)).get(() ->
+                .when(eq(ENABLED)).get(() ->
                         !impl.has(disabledClass)
                 )
-                .when(eq(disabled)).get(() ->
+                .when(eq(DISABLED)).get(() ->
                         impl.has(disabledClass)
                 );
     }
@@ -41,19 +41,19 @@ public final class ConditionCases {
                     String expectedValue = nullToEmpty(v.getExpectedValueSubstring());
                     return inputImpl.is(Condition.visible) && inputImpl.has(Condition.value(expectedValue));
                 })
-                .when(eq(enabled)).get(() -> {
+                .when(eq(ENABLED)).get(() -> {
                     return !impl.has(disabledClass);
                 })
-                .when(eq(disabled)).get(() -> {
+                .when(eq(DISABLED)).get(() -> {
                     return impl.has(disabledClass);
                 })
-                .when(eq(required)).get(() -> {
+                .when(eq(REQUIRED)).get(() -> {
                     return impl.has(requiredClass);
                 })
-                .when(eq(readonly)).get(() -> {
+                .when(eq(READONLY)).get(() -> {
                     return impl.has(readonlyClass);
                 })
-                .when(eq(editable)).get(() -> {
+                .when(eq(EDITABLE)).get(() -> {
                     return !impl.has(readonlyClass);
                 });
     }

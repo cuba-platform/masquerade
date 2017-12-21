@@ -13,7 +13,7 @@ import static com.codeborne.selenide.Condition.*;
 import static com.codeborne.selenide.Condition.visible;
 import static com.codeborne.selenide.Selenide.$;
 import static com.haulmont.masquerade.Conditions.*;
-import static com.haulmont.masquerade.Conditions.readonly;
+import static com.haulmont.masquerade.Conditions.READONLY;
 import static com.haulmont.masquerade.Selectors.byChain;
 import static com.haulmont.masquerade.sys.VaadinClassNames.readonlyClass;
 import static com.haulmont.masquerade.sys.VaadinClassNames.requiredClass;
@@ -36,13 +36,13 @@ public class DateTimeFieldImpl extends AbstractComponent<DateTimeField> implemen
     @Override
     public boolean apply(SpecificCondition condition) {
         return componentApply(match(condition), impl)
-                .when(eq(required)).get(() -> {
+                .when(eq(REQUIRED)).get(() -> {
                     return impl.has(requiredClass);
                 })
-                .when(eq(readonly)).get(() -> {
+                .when(eq(READONLY)).get(() -> {
                     return impl.has(readonlyClass);
                 })
-                .when(eq(editable)).get(() -> {
+                .when(eq(EDITABLE)).get(() -> {
                     return !impl.has(readonlyClass);
                 })
                 .when(hasType(DateValue.class)).get(dv -> {
@@ -70,7 +70,7 @@ public class DateTimeFieldImpl extends AbstractComponent<DateTimeField> implemen
         dateFieldImpl
                 .shouldBe(visible)
                 .shouldBe(enabled)
-                .shouldNotBe(readonly)
+                .shouldNotBe(READONLY)
                 .click();
 
         dateFieldImpl.sendKeys(Keys.HOME, value);
@@ -92,7 +92,7 @@ public class DateTimeFieldImpl extends AbstractComponent<DateTimeField> implemen
         timeFieldImpl
                 .shouldBe(visible)
                 .shouldBe(enabled)
-                .shouldNotBe(readonly)
+                .shouldNotBe(READONLY)
                 .click();
 
         timeFieldImpl.sendKeys(Keys.HOME, value);

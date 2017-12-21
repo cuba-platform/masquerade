@@ -1,46 +1,50 @@
 package com.haulmont.masquerade;
 
 import com.codeborne.selenide.Condition;
+import com.haulmont.masquerade.components.Component;
 import com.haulmont.masquerade.conditions.*;
 
 import java.util.Arrays;
 import java.util.List;
 
+/**
+ * Conditions for {@link Component#should(Condition...)} methods.
+ */
 public class Conditions {
     protected Conditions() {
     }
 
-    public static final Condition enabled = new SpecificCondition("enabled");
+    public static final Condition ENABLED = new SpecificCondition("enabled");
 
-    public static final Condition disabled = new SpecificCondition("disabled");
+    public static final Condition DISABLED = new SpecificCondition("disabled");
 
-    public static final Condition visible = Condition.visible;
+    public static final Condition VISIBLE = Condition.visible;
 
-    public static final Condition hidden = Condition.hidden;
+    public static final Condition HIDDEN = Condition.hidden;
 
-    public static final Condition exists = Condition.exist;
+    public static final Condition EXIST = Condition.exist;
 
-    public static final Condition appear = visible;
+    public static final Condition APPEAR = VISIBLE;
 
-    public static final Condition appears = visible;
+    public static final Condition APPEARS = VISIBLE;
 
-    public static final Condition disappears = hidden;
+    public static final Condition DISAPPEARS = HIDDEN;
 
-    public static final Condition disappear = hidden;
+    public static final Condition DISAPPEAR = HIDDEN;
 
-    public static final Condition readonly = new SpecificCondition("readonly");
+    public static final Condition READONLY = new SpecificCondition("readonly");
 
-    public static final Condition editable = new SpecificCondition("editable");
+    public static final Condition EDITABLE = new SpecificCondition("editable");
 
-    public static final Condition required = new SpecificCondition("required");
+    public static final Condition REQUIRED = new SpecificCondition("required");
 
-    public static final Condition checked = new SpecificCondition("checked");
+    public static final Condition CHECKED = new SpecificCondition("checked");
 
-    public static final Condition selected = new SpecificCondition("selected");
+    public static final Condition SELECTED = new SpecificCondition("selected");
 
-    public static final Condition expanded = new SpecificCondition("expanded");
+    public static final Condition EXPANDED = new SpecificCondition("expanded");
 
-    public static final Condition collapsed = new SpecificCondition("collapsed");
+    public static final Condition COLLAPSED = new SpecificCondition("collapsed");
 
     public static Condition caption(String caption) {
         return new Caption(caption);

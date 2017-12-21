@@ -19,9 +19,10 @@ public interface HasOptionsPopup<T> {
      * <br>
      * Supported conditions:
      * <ul>
-     *     <li>{@link Conditions#visible}</li>
-     *     <li>{@link Conditions#hidden}</li>
+     *     <li>{@link Conditions#VISIBLE}</li>
+     *     <li>{@link Conditions#HIDDEN}</li>
      *     <li>{@link Conditions#visibleOptions(String...)}</li>
+     *     <li>{@link Conditions#visibleOptionsCount(int)}</li>
      * </ul>
      */
     interface OptionsPopup<T> extends SelenideElementWrapper<OptionsPopup>, ByLocator, Element {
