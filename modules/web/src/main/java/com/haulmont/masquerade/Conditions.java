@@ -58,6 +58,14 @@ public class Conditions {
         return new ValueContains(expectedValueSubstring);
     }
 
+    public static Condition options(List<String> options) {
+        return new Options(options);
+    }
+
+    public static Condition options(String... options) {
+        return new Options(Arrays.asList(options));
+    }
+
     public static Condition visibleOptions(List<String> options) {
         return new Options(options);
     }
@@ -67,6 +75,10 @@ public class Conditions {
     }
 
     public static Condition visibleOptionsCount(int count) {
+        return new OptionsCount(count);
+    }
+
+    public static Condition optionsCount(int count) {
         return new OptionsCount(count);
     }
 
