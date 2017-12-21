@@ -21,13 +21,13 @@ import static com.haulmont.masquerade.sys.TagNames.SPAN;
 import static com.haulmont.masquerade.sys.matchers.ConditionCases.componentApply;
 import static com.haulmont.masquerade.sys.matchers.InstanceOfCases.hasType;
 import static com.leacox.motif.Motif.match;
-import static org.openqa.selenium.By.cssSelector;
+import static org.openqa.selenium.By.tagName;
 import static org.openqa.selenium.By.xpath;
 
 public class OptionsGroupImpl extends AbstractComponent<OptionsGroup> implements OptionsGroup {
 
     public static final By SELECTED_OPTION = xpath(".//input[@checked]/following-sibling::label");
-    public static final By OPTION_LABEL = cssSelector("label");
+    public static final By OPTION_LABEL = tagName("label");
 
     public OptionsGroupImpl(By by) {
         super(by);

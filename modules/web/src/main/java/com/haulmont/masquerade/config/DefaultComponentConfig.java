@@ -29,15 +29,16 @@ public class DefaultComponentConfig implements ComponentConfig {
         components.put(TimeField.class, TimeFieldImpl::new);
         components.put(FileUploadField.class, FileUploadFieldImpl::new);
         components.put(MaskedField.class, MaskedFieldImpl::new);
+        components.put(GroupBox.class, GroupBoxImpl::new);
+        components.put(LookupPickerField.class, LookupPickerFieldImpl::new);
+        components.put(OptionsGroup.class, OptionsGroupImpl::new);
+        components.put(PickerField.class, PickerFieldImpl::new);
+        components.put(Notification.class, NotificationImpl::new);
         // stubs
         components.put(BoxLayout.class, BoxLayoutImpl::new);
         components.put(TabSheet.class, TabSheetImpl::new);
         components.put(DialogWindow.class, DialogWindowImpl::new);
         components.put(FieldGroup.class, FieldGroupImpl::new);
-        components.put(GroupBox.class, GroupBoxImpl::new);
-        components.put(LookupPickerField.class, LookupPickerFieldImpl::new);
-        components.put(OptionsGroup.class, OptionsGroupImpl::new);
-        components.put(PickerField.class, PickerFieldImpl::new);
         components.put(SourceCodeEditor.class, SourceCodeEditorImpl::new);
         components.put(Tree.class, TreeImpl::new);
 

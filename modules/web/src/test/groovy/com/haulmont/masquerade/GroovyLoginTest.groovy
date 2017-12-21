@@ -1,12 +1,15 @@
 package com.haulmont.masquerade
 
+import com.haulmont.masquerade.components.Notification
 import com.haulmont.masquerade.composite.GroovyLoginWindow
 import org.junit.Ignore
 import org.junit.Test
 
 import static com.codeborne.selenide.Selenide.open
+import static com.haulmont.masquerade.Components._$
 import static com.haulmont.masquerade.Components.wire
 import static com.haulmont.masquerade.Conditions.*
+import static com.haulmont.masquerade.components.Notification.Type
 import static org.junit.Assert.assertNotNull
 
 @Ignore
@@ -38,6 +41,12 @@ class GroovyLoginTest {
             popup.shouldBe(VISIBLE)
 
             loginButton.click()
+
+            _$(Notification)
+                    .shouldBe(VISIBLE)
+                    .shouldHave(type(Type.ERROR))
+                    .clickToClose()
+                    .should(DISAPPEAR)
         }
     }
 }

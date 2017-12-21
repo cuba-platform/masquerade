@@ -2,6 +2,7 @@ package com.haulmont.masquerade;
 
 import com.codeborne.selenide.Condition;
 import com.haulmont.masquerade.components.Component;
+import com.haulmont.masquerade.components.Notification;
 import com.haulmont.masquerade.conditions.*;
 
 import java.util.Arrays;
@@ -50,6 +51,10 @@ public class Conditions {
         return new Caption(caption);
     }
 
+    public static Condition description(String caption) {
+        return new Description(caption);
+    }
+
     public static Condition value(String expectedValue) {
         return new Value(expectedValue);
     }
@@ -88,5 +93,9 @@ public class Conditions {
 
     public static Condition timeValue(String expectedValue) {
         return new TimeValue(expectedValue);
+    }
+
+    public static Condition type(Notification.Type type) {
+        return new NotificationType(type);
     }
 }
