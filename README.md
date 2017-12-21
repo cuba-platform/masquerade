@@ -17,10 +17,6 @@ It is based on:
 * Selenium
 
 # Getting started
-
-Download the library to your computer. Install the library using gradle task  
-
-    gradlew install
     
 ## Creating test project 
     
@@ -325,7 +321,8 @@ To run the tests using Gradle add the following task in the ```build.gradle``` f
 
 ```groovy
 test {
-     systemProperties = System.getProperties()
+     systemProperty 'selenide.browser', System.getProperty('selenide.browser')
+     systemProperty 'webdriver.gecko.driver', System.getProperty('webdriver.gecko.driver')
 }
 ```
 
