@@ -24,6 +24,11 @@ public class OptionsCount extends SpecificCondition {
         this.count = count;
     }
 
+    @Override
+    public String toString() {
+        return name + " '" + count + "'";
+    }
+
     public int getCount() {
         return count;
     }

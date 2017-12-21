@@ -17,6 +17,7 @@
 package com.haulmont.masquerade.base;
 
 import com.codeborne.selenide.SelenideElement;
+import com.haulmont.masquerade.Components;
 import com.haulmont.masquerade.Wire;
 import com.haulmont.masquerade.components.Container;
 import org.openqa.selenium.By;
@@ -40,5 +41,9 @@ public abstract class Composite<T> implements Container<T> {
     @Override
     public By getBy() {
         return by;
+    }
+
+    public <X> X actAs(Class<X> clazz) {
+        return Components.wire(clazz, by);
     }
 }

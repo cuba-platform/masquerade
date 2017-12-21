@@ -24,6 +24,11 @@ public class CaptionContains extends SpecificCondition {
         this.captionSubstring = captionSubstring;
     }
 
+    @Override
+    public String toString() {
+        return name + " '" + captionSubstring + "'";
+    }
+
     public String getCaptionSubstring() {
         return captionSubstring;
     }

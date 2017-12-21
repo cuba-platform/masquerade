@@ -24,6 +24,11 @@ public class DescriptionContains extends SpecificCondition {
         this.descriptionSubstring = descriptionSubstring;
     }
 
+    @Override
+    public String toString() {
+        return name + " '" + descriptionSubstring + "'";
+    }
+
     public String getDescriptionSubstring() {
         return descriptionSubstring;
     }

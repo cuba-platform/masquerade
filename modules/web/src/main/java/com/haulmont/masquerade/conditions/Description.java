@@ -24,6 +24,11 @@ public class Description extends SpecificCondition {
         this.description = description;
     }
 
+    @Override
+    public String toString() {
+        return name + " '" + description + "'";
+    }
+
     public String getDescription() {
         return description;
     }

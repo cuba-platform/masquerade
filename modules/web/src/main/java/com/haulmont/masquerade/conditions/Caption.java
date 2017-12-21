@@ -24,6 +24,11 @@ public class Caption extends SpecificCondition {
         this.caption = caption;
     }
 
+    @Override
+    public String toString() {
+        return name + " '" + caption + "'";
+    }
+
     public String getCaption() {
         return caption;
     }
