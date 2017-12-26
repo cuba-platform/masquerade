@@ -75,6 +75,14 @@ public class OptionsPopupImpl<T extends Component>
     }
 
     @Override
+    public T select(By by) {
+        $(byChain(by, TD, by))
+                .shouldBe(visible)
+                .click();
+        return parent;
+    }
+
+    @Override
     public OptionsPopup<T> nextPage() {
         $(byChain(by, className(V_FILTERSELECT_NEXTPAGE)))
                 .shouldBe(visible)

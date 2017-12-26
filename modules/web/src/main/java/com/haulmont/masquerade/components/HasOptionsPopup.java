@@ -20,6 +20,7 @@ import com.haulmont.masquerade.Conditions;
 import com.haulmont.masquerade.base.ByLocator;
 import com.haulmont.masquerade.base.SelenideElementWrapper;
 import com.haulmont.masquerade.util.Log;
+import org.openqa.selenium.By;
 
 import java.util.List;
 
@@ -44,8 +45,25 @@ public interface HasOptionsPopup<T> {
     interface OptionsPopup<T> extends SelenideElementWrapper<OptionsPopup>, ByLocator, Element {
         List<String> getVisibleOptions();
 
+        /**
+         * Selects option by exact text
+         *
+         * @param option option text
+         * @return parent
+         */
         @Log
         T select(String option);
+
+        /**
+         * Selects option by selector.
+         *
+         * @param by selector
+         * @return parent
+         * @see com.codeborne.selenide.Selectors#withText(String)
+         * @see com.codeborne.selenide.Selectors#byText(String)
+         */
+        @Log
+        T select(By by);
 
         @Log
         OptionsPopup<T> nextPage();
