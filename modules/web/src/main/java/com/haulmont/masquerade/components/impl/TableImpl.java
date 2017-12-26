@@ -19,6 +19,7 @@ package com.haulmont.masquerade.components.impl;
 import com.codeborne.selenide.Condition;
 import com.codeborne.selenide.ElementsCollection;
 import com.codeborne.selenide.SelenideElement;
+import com.haulmont.masquerade.components.Component;
 import com.haulmont.masquerade.components.Table;
 import com.haulmont.masquerade.sys.TagNames;
 import org.openqa.selenium.By;
@@ -31,6 +32,9 @@ import static com.haulmont.masquerade.Selectors.byChain;
 import static com.haulmont.masquerade.Selectors.byCubaId;
 
 public class TableImpl extends AbstractComponent<Table> implements Table {
+
+    public static final String V_SELECTED = "v-selected";
+
     public TableImpl(By by) {
         super(by);
     }
@@ -54,6 +58,15 @@ public class TableImpl extends AbstractComponent<Table> implements Table {
     public ElementsCollection getAllLines() {
         // todo wait for loading rows
         return impl.findAll(TagNames.TR);
+    }
+
+    @Override
+    public Row getRow(By by) {
+        // todo byIndex(..)
+        // todo byCells(..)
+        // todo selected()
+
+        return new RowImpl(by);
     }
 
     @Override
@@ -117,5 +130,43 @@ public class TableImpl extends AbstractComponent<Table> implements Table {
         }
 
         return 2;
+    }
+
+    public class RowImpl implements Row {
+        private By by;
+        private SelenideElement impl;
+
+        public RowImpl(By by) {
+            this.by = by;
+            this.impl = $(by);
+        }
+
+        @Override
+        public void select() {
+            impl.shouldBe(visible)
+                    .shouldNotHave(cssClass(V_SELECTED))
+                    .click();
+        }
+
+        @Override
+        public SelenideElement getCell(By by) {
+            // todo
+            return null;
+        }
+
+        @Override
+        public SelenideElement getDelegate() {
+            return impl;
+        }
+
+        @Override
+        public By getBy() {
+            return by;
+        }
+
+        @Override
+        public Component getParent() {
+            return TableImpl.this;
+        }
     }
 }

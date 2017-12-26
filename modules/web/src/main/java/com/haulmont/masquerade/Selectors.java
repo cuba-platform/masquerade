@@ -17,6 +17,7 @@
 package com.haulmont.masquerade;
 
 import com.codeborne.selenide.SelenideElement;
+import org.apache.commons.lang3.StringUtils;
 import org.openqa.selenium.By;
 import org.openqa.selenium.SearchContext;
 import org.openqa.selenium.WebElement;
@@ -67,6 +68,14 @@ public class Selectors extends com.codeborne.selenide.Selectors {
         return new ByTarget(target);
     }
 
+    public static By byCells(String... cellValues) {
+        return new ByCells(cellValues);
+    }
+
+    public static By byIndex(int index) {
+        return new ByIndex(index);
+    }
+
     public static class ByTarget extends By {
         private final SelenideElement target;
 
@@ -112,4 +121,51 @@ public class Selectors extends com.codeborne.selenide.Selectors {
     }
 
     // todo components aware selectors: byCaption, ...
+
+    public static class ByIndex extends By {
+
+        private final int index;
+
+        public ByIndex(int index) {
+            this.index = index;
+        }
+
+        public int getIndex() {
+            return index;
+        }
+
+        @Override
+        public List<WebElement> findElements(SearchContext context) {
+            throw new RuntimeException(
+                    "ByIndex must be checked ony in Component implementations");
+        }
+
+        @Override
+        public String toString() {
+            return "By.index: " + index;
+        }
+    }
+
+    public static class ByCells extends By {
+        private final String[] cellValues;
+
+        public ByCells(String[] cellValues) {
+            this.cellValues = cellValues;
+        }
+
+        @Override
+        public List<WebElement> findElements(SearchContext context) {
+            throw new RuntimeException(
+                    "ByCells must be checked ony in Table implementations");
+        }
+
+        public String[] getCellValues() {
+            return cellValues;
+        }
+
+        @Override
+        public String toString() {
+            return "By.cells: " + StringUtils.join(cellValues, ',');
+        }
+    }
 }

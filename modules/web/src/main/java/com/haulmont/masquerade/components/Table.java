@@ -18,18 +18,21 @@ package com.haulmont.masquerade.components;
 
 import com.codeborne.selenide.ElementsCollection;
 import com.codeborne.selenide.SelenideElement;
+import com.haulmont.masquerade.base.ByLocator;
+import com.haulmont.masquerade.base.SelenideElementWrapper;
+import org.openqa.selenium.By;
 
 public interface Table extends Component<Table> {
 
-    SelenideElement find(String cellValue);
-
-    SelenideElement getRow(int rowNumber);
-
-    ElementsCollection getCells(int row);
-
-    ElementsCollection getAllLines();
+    Row getRow(By by);
 
     Table sort(String columnId, SortDirection direction);
+
+    interface Row extends SelenideElementWrapper<Row>, ByLocator, Element {
+        void select();
+
+        SelenideElement getCell(By by);
+    }
 
     enum SortDirection {
         /**
@@ -47,4 +50,14 @@ public interface Table extends Component<Table> {
          */
         NONE
     }
+
+    // Raw API
+
+    SelenideElement find(String cellValue);
+
+    SelenideElement getRow(int rowNumber);
+
+    ElementsCollection getCells(int row);
+
+    ElementsCollection getAllLines();
 }
