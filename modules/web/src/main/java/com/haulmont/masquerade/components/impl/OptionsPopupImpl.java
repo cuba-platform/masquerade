@@ -16,14 +16,18 @@
 
 package com.haulmont.masquerade.components.impl;
 
+import com.codeborne.selenide.ElementsCollection;
 import com.codeborne.selenide.SelenideElement;
+import com.google.common.collect.Sets;
 import com.haulmont.masquerade.components.Component;
+import com.haulmont.masquerade.conditions.ContainOptions;
 import com.haulmont.masquerade.conditions.Options;
 import com.haulmont.masquerade.conditions.OptionsCount;
 import com.haulmont.masquerade.conditions.SpecificCondition;
 import org.openqa.selenium.By;
 
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import static com.codeborne.selenide.Condition.visible;
@@ -133,6 +137,16 @@ public class OptionsPopupImpl<T extends Component>
                 })
                 .when(hasType(OptionsCount.class)).get(optsCount -> {
                     return $$(byChain(by, TD, SPAN)).size() == optsCount.getCount();
+                })
+                .when(hasType(ContainOptions.class)).get(opts -> {
+                    Set<String> options = opts.getOptions().stream()
+                            .map(o -> isNullOrEmpty(o) ? EMPTY_OPTION_VALUE : o)
+                            .collect(Collectors.toSet());
+
+                    ElementsCollection optionElements = $$(byChain(by, TD, SPAN));
+                    Set<String> texts = Sets.newHashSet(optionElements.texts());
+
+                    return texts.containsAll(options);
                 })
                 .getMatch();
     }

@@ -21,11 +21,11 @@ import org.apache.commons.lang3.StringUtils;
 
 import java.util.List;
 
-public class Options extends SpecificCondition {
+public class ContainOptions extends SpecificCondition {
     private List<String> options;
 
-    public Options(List<String> options) {
-        super("options");
+    public ContainOptions(List<String> options) {
+        super("containOptions");
 
         this.options = ImmutableList.copyOf(options);
     }

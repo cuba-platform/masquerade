@@ -38,6 +38,7 @@ public interface HasOptionsPopup<T> {
      * <ul>
      *     <li>{@link Conditions#VISIBLE}</li>
      *     <li>{@link Conditions#HIDDEN}</li>
+     *     <li>{@link Conditions#containOptions(String...)}</li>
      *     <li>{@link Conditions#visibleOptions(String...)}</li>
      *     <li>{@link Conditions#visibleOptionsCount(int)}</li>
      * </ul>

@@ -87,6 +87,14 @@ public class Conditions {
         return new ValueContains(expectedValueSubstring);
     }
 
+    public static Condition containOptions(List<String> options) {
+        return new ContainOptions(options);
+    }
+
+    public static Condition containOptions(String... options) {
+        return new ContainOptions(Arrays.asList(options));
+    }
+
     public static Condition options(List<String> options) {
         return new Options(options);
     }
