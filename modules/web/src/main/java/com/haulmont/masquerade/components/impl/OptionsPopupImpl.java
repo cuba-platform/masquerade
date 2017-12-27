@@ -75,8 +75,8 @@ public class OptionsPopupImpl<T extends Component>
     }
 
     @Override
-    public T select(By by) {
-        $(byChain(by, TD, by))
+    public T select(By itemBy) {
+        $(byChain(by, TD, itemBy))
                 .shouldBe(visible)
                 .click();
         return parent;

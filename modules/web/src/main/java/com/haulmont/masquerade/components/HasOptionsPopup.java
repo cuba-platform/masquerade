@@ -63,7 +63,7 @@ public interface HasOptionsPopup<T> {
          * @see com.codeborne.selenide.Selectors#byText(String)
          */
         @Log
-        T select(By by);
+        T select(By itemBy);
 
         @Log
         OptionsPopup<T> nextPage();
