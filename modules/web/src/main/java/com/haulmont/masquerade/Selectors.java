@@ -17,7 +17,9 @@
 package com.haulmont.masquerade;
 
 import com.codeborne.selenide.SelenideElement;
+import org.apache.commons.lang3.StringUtils;
 import org.openqa.selenium.By;
+import org.openqa.selenium.By.ByClassName;
 import org.openqa.selenium.SearchContext;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.pagefactory.ByChained;
@@ -67,6 +69,34 @@ public class Selectors extends com.codeborne.selenide.Selectors {
         return new ByTarget(target);
     }
 
+    public static By byCells(String... cellValues) {
+        return new ByCells(cellValues);
+    }
+
+    public static By byIndex(int index) {
+        return new ByIndex(index);
+    }
+
+    public static By byRowIndex(int index) {
+        return new ByRowIndex(index);
+    }
+
+    public static By byText(String cellText) {
+        return new ByTargetText(cellText);
+    }
+
+    public static By withText(String cellText) {
+        return new WithTargetText(cellText);
+    }
+
+    public static By byClassName(String className) {
+        return new ByTargetClassName(className);
+    }
+
+    public static By isSelected() {
+        return new BySelected();
+    }
+
     public static class ByTarget extends By {
         private final SelenideElement target;
 
@@ -77,6 +107,11 @@ public class Selectors extends com.codeborne.selenide.Selectors {
         @Override
         public List<WebElement> findElements(SearchContext context) {
             return singletonList(target.getWrappedElement());
+        }
+
+        @Override
+        public String toString() {
+            return "By.target: " + target;
         }
     }
 
@@ -91,6 +126,11 @@ public class Selectors extends com.codeborne.selenide.Selectors {
 
         public String getCubaId() {
             return cubaId;
+        }
+
+        @Override
+        public String toString() {
+            return "By.cubaId: " + cubaId;
         }
     }
 
@@ -111,5 +151,109 @@ public class Selectors extends com.codeborne.selenide.Selectors {
         }
     }
 
-    // todo components aware selectors: byCaption, ...
+    public static class ByIndex extends By {
+        protected final int index;
+
+        public ByIndex(int index) {
+            this.index = index;
+        }
+
+        public int getIndex() {
+            return index;
+        }
+
+        @Override
+        public List<WebElement> findElements(SearchContext context) {
+            throw new RuntimeException(
+                    "ByIndex must be checked ony in Component implementations");
+        }
+
+        @Override
+        public String toString() {
+            return "By.index: " + index;
+        }
+    }
+
+    public static class ByRowIndex extends ByIndex {
+        public ByRowIndex(int index) {
+            super(index);
+        }
+
+        @Override
+        public String toString() {
+            return "By.rowIndex: " + index;
+        }
+    }
+
+    public static class ByCells extends By {
+        private final String[] cellValues;
+
+        public ByCells(String[] cellValues) {
+            this.cellValues = cellValues;
+        }
+
+        @Override
+        public List<WebElement> findElements(SearchContext context) {
+            throw new RuntimeException(
+                    "ByCells must be checked ony in Table implementations");
+        }
+
+        public String[] getCellValues() {
+            return cellValues;
+        }
+
+        @Override
+        public String toString() {
+            return "By.cells: " + StringUtils.join(cellValues, ',');
+        }
+    }
+
+    public static class ByTargetText extends com.codeborne.selenide.Selectors.ByText {
+        public ByTargetText(String elementText) {
+            super(elementText);
+        }
+
+        public String getElementText() {
+            return elementText;
+        }
+    }
+
+    public static class WithTargetText extends com.codeborne.selenide.Selectors.WithText {
+        public WithTargetText(String elementText) {
+            super(elementText);
+        }
+
+        public String getElementText() {
+            return elementText;
+        }
+    }
+
+    public static class ByTargetClassName extends ByClassName {
+
+        protected String expectedClassName;
+
+        public ByTargetClassName(String className) {
+            super(className);
+        }
+
+        public String getExpectedClassName() {
+            return expectedClassName;
+        }
+    }
+
+    public static class BySelected extends By {
+        public BySelected() {
+        }
+
+        @Override
+        public List<WebElement> findElements(SearchContext context) {
+            throw new RuntimeException(
+                    "BySelected must be checked ony in Component implementations");
+        }
+
+        @Override
+        public String toString() {
+            return "By.selectedRow";
+        }
+    }
 }

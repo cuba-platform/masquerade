@@ -16,9 +16,34 @@
 
 package com.haulmont.masquerade.components;
 
-import com.haulmont.masquerade.util.Log;
+import com.haulmont.masquerade.Conditions;
+import com.haulmont.masquerade.base.ByLocator;
+import com.haulmont.masquerade.base.SelenideElementWrapper;
+import org.openqa.selenium.By;
+
+import static com.haulmont.masquerade.Selectors.byCubaId;
 
 public interface TabSheet extends Component<TabSheet> {
-    @Log
-    void switchTo(String tabId);
+    @Deprecated
+    default void switchTo(String tabId) {
+        getTab(byCubaId(tabId))
+                .select();
+    }
+
+    Tab getTab(By tabBy);
+
+    /**
+     * Tab.
+     * <br>
+     * Supported conditions:
+     * <ul>
+     *     <li>{@link Conditions#VISIBLE}</li>
+     *     <li>{@link Conditions#HIDDEN}</li>
+     *     <li>{@link Conditions#caption(String)} </li>
+     *     <li>{@link Conditions#captionContains(String)} </li>
+     * </ul>
+     */
+    interface Tab extends SelenideElementWrapper<Tab>, ByLocator, Element {
+        void select();
+    }
 }

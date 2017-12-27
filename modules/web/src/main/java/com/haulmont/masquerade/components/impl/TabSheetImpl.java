@@ -16,9 +16,19 @@
 
 package com.haulmont.masquerade.components.impl;
 
+import com.codeborne.selenide.SelenideElement;
+import com.haulmont.masquerade.Selectors.ByTargetText;
+import com.haulmont.masquerade.Selectors.WithTargetText;
+import com.haulmont.masquerade.components.Component;
 import com.haulmont.masquerade.components.TabSheet;
-import com.haulmont.masquerade.util.NotImplementedException;
 import org.openqa.selenium.By;
+
+import static com.codeborne.selenide.Condition.cssClass;
+import static com.codeborne.selenide.Condition.visible;
+import static com.codeborne.selenide.Selenide.$;
+import static com.haulmont.masquerade.sys.matchers.InstanceOfCases.hasType;
+import static com.leacox.motif.Motif.match;
+import static org.openqa.selenium.By.className;
 
 public class TabSheetImpl extends AbstractComponent<TabSheet> implements TabSheet {
     public TabSheetImpl(By by) {
@@ -26,7 +36,48 @@ public class TabSheetImpl extends AbstractComponent<TabSheet> implements TabShee
     }
 
     @Override
-    public void switchTo(String tabId) {
-        throw new NotImplementedException();
+    public Tab getTab(By tabBy) {
+        // todo
+        return match(tabBy)
+                .when(hasType(ByTargetText.class)).get(byText -> {
+                    return (Tab)null;
+                })
+                .when(hasType(WithTargetText.class)).get(withText -> {
+                    return (Tab)null;
+                })
+                .getMatch();
+    }
+
+    public class TabImpl implements Tab {
+        protected final SelenideElement impl;
+        protected final By by;
+
+        public TabImpl(By by) {
+            this.by = by;
+            this.impl = $(by);
+        }
+
+        @Override
+        public void select() {
+            impl.shouldBe(visible)
+                    .shouldNotHave(cssClass("v-tabsheet-tabitemcell-selected"))
+                    .find(className("v-caption"))
+                    .click();
+        }
+
+        @Override
+        public By getBy() {
+            return by;
+        }
+
+        @Override
+        public SelenideElement getDelegate() {
+            return impl;
+        }
+
+        @Override
+        public Component getParent() {
+            return TabSheetImpl.this;
+        }
     }
 }

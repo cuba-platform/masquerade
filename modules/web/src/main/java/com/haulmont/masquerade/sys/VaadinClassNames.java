@@ -24,10 +24,12 @@ public final class VaadinClassNames {
     public static final String DISABLED_CLASSNAME = "v-disabled";
     public static final String READONLY_CLASSNAME = "v-readonly";
     public static final String REQUIRED_CLASSNAME = "v-required";
+    public static final String REQUIRED_SELECTED = "v-selected";
 
     public static final Condition disabledClass = cssClass(DISABLED_CLASSNAME);
     public static final Condition readonlyClass = cssClass(READONLY_CLASSNAME);
     public static final Condition requiredClass = cssClass(REQUIRED_CLASSNAME);
+    public static final Condition selectedClass = cssClass(REQUIRED_SELECTED);
 
     private VaadinClassNames() {
     }
