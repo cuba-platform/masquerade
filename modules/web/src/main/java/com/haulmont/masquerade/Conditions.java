@@ -63,6 +63,8 @@ public class Conditions {
 
     public static final Condition COLLAPSED = new SpecificCondition("collapsed");
 
+    public static final Condition LOADED = new SpecificCondition("loaded");
+
     public static Condition caption(String caption) {
         return new Caption(caption);
     }

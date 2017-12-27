@@ -151,8 +151,6 @@ public class Selectors extends com.codeborne.selenide.Selectors {
         }
     }
 
-    // todo components aware selectors: byCaption, ...
-
     public static class ByIndex extends By {
         protected final int index;
 

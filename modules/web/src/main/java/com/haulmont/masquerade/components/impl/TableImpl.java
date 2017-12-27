@@ -18,81 +18,164 @@ package com.haulmont.masquerade.components.impl;
 
 import com.codeborne.selenide.ElementsCollection;
 import com.codeborne.selenide.SelenideElement;
-import com.haulmont.masquerade.Selectors.ByRowIndex;
-import com.haulmont.masquerade.Selectors.ByTargetClassName;
-import com.haulmont.masquerade.Selectors.ByTargetText;
-import com.haulmont.masquerade.Selectors.WithTargetText;
+import com.codeborne.selenide.WebDriverRunner;
+import com.haulmont.masquerade.Conditions;
+import com.haulmont.masquerade.Selectors.*;
 import com.haulmont.masquerade.components.Table;
+import com.haulmont.masquerade.conditions.SpecificCondition;
 import com.haulmont.masquerade.sys.TagNames;
 import org.openqa.selenium.By;
+import org.openqa.selenium.Keys;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.Quotes;
+
+import java.util.Arrays;
+import java.util.stream.Collectors;
 
 import static com.codeborne.selenide.Condition.cssClass;
 import static com.codeborne.selenide.Condition.visible;
-import static com.codeborne.selenide.Selectors.*;
+import static com.codeborne.selenide.Selectors.byClassName;
+import static com.codeborne.selenide.Selectors.byText;
+import static com.codeborne.selenide.Selectors.byXpath;
 import static com.codeborne.selenide.Selenide.$;
 import static com.codeborne.selenide.Selenide.$$;
-import static com.haulmont.masquerade.Selectors.byChain;
-import static com.haulmont.masquerade.Selectors.byCubaId;
+import static com.haulmont.masquerade.Conditions.*;
+import static com.haulmont.masquerade.Selectors.*;
+import static com.haulmont.masquerade.sys.VaadinClassNames.selectedClass;
+import static com.haulmont.masquerade.sys.matchers.ConditionCases.componentApply;
 import static com.haulmont.masquerade.sys.matchers.InstanceOfCases.hasType;
+import static com.leacox.motif.MatchesExact.eq;
 import static com.leacox.motif.Motif.match;
 
 public class TableImpl extends AbstractComponent<Table> implements Table {
-
-    public static final String V_SELECTED = "v-selected";
 
     public TableImpl(By by) {
         super(by);
     }
 
     @Override
-    public ElementsCollection getRows(By cellBy) {
-        // todo
-        return null;
-    }
+    public boolean apply(SpecificCondition condition) {
+        return componentApply(match(condition), getDelegate())
+                .when(eq(Conditions.LOADED)).get(() -> {
+                    // we have to wait for minimal lazy-loading time
+                    try {
+                        Thread.sleep(400);
+                    } catch (InterruptedException e) {
+                        return false;
+                    }
 
-    @Override
-    public ElementsCollection getCells(By cellBy) {
-        return match(cellBy)
-                .when(hasType(ByTargetText.class)).get(byText -> {
-                    String text = byText.getElementText();
-
-                    String tdXpath = ".//td[contains(@class, 'v-table-cell-content') " +
-                            "and .//text()[normalize-space(.) = " + Quotes.escape(text) + "]]";
-
-                    return $$(byChain(by, byXpath(tdXpath)));
-                })
-                .when(hasType(WithTargetText.class)).get(withText -> {
-                    String text = withText.getElementText();
-
-                    String tdXpath = ".//td[contains(@class, 'v-table-cell-content') " +
-                            "and .//text()[contains(normalize-space(.), " + Quotes.escape(text) + ")]]";
-
-                    return $$(byChain(by, byXpath(tdXpath)));
-                })
-                .when(hasType(ByTargetClassName.class)).get(byClassName -> {
-                    String className = byClassName.getExpectedClassName();
-
-                    String tdXpath = ".//td[contains(@class, 'v-table-cell-content') " +
-                            "and contains(@class, " + Quotes.escape(className) + "]";
-
-                    return $$(byChain(by, byXpath(tdXpath)));
-                })
-                .when(hasType(ByRowIndex.class)).get(byRowIndex -> {
-                    int index = byRowIndex.getIndex();
-
-                    // todo
-                    String tdXpath = "";
-
-                    return $$(byChain(by, byXpath(tdXpath)));
+                    return !$(byClassName("v-loading-indicator")).is(visible);
                 })
                 .getMatch();
     }
 
     @Override
-    public SelenideElement getRow(By cellBy) {
-        // todo
-        return null;
+    public SelenideElement getRow(By rowBy) {
+        return match(rowBy)
+                .when(hasType(ByTargetText.class)).get(byText -> {
+                    String text = byText.getElementText();
+
+                    String trsXpath = ".//tr[.//td[contains(@class, 'v-table-cell-content') " +
+                            "and .//text()[normalize-space(.) = " + Quotes.escape(text) + "]]]";
+
+                    return $(byChain(by, byClassName("v-table-table"), byXpath(trsXpath)));
+                })
+                .when(hasType(WithTargetText.class)).get(withText -> {
+                    String text = withText.getElementText();
+
+                    String tdsXpath = ".//tr[.//td[contains(@class, 'v-table-cell-content') " +
+                            "and .//text()[contains(normalize-space(.), " + Quotes.escape(text) + ")]]]";
+
+                    return $(byChain(by, byClassName("v-table-table"), byXpath(tdsXpath)));
+                })
+                .when(hasType(ByRowIndex.class)).get(byRowIndex -> {
+                    int index = byRowIndex.getIndex() + 1;
+
+                    String tdsXpath = "(.//tr)[" + index + "]";
+
+                    return $(byChain(by, byClassName("v-table-table"), byXpath(tdsXpath)));
+                })
+                .when(hasType(ByIndex.class)).get(byRowIndex -> {
+                    int index = byRowIndex.getIndex() + 1;
+
+                    String tdsXpath = "(.//tr)[" + index + "]";
+
+                    return $(byChain(by, byClassName("v-table-table"), byXpath(tdsXpath)));
+                })
+                .when(hasType(BySelected.class)).get(isSelected -> {
+                    String tdsXpath = ".//tr[contains(@class, 'v-selected')]";
+
+                    return $(byChain(by, byClassName("v-table-table"), byXpath(tdsXpath)));
+                })
+                .when(hasType(ByCells.class)).get(byCells -> {
+                    String[] values = byCells.getCellValues();
+
+                    String tds = Arrays.stream(values)
+                            .map(text ->
+                                    ".//td[contains(@class, 'v-table-cell-content') " +
+                                            "and .//text()[normalize-space(.) = " + Quotes.escape(text) + "]]")
+                            .collect(Collectors.joining(" and "));
+
+                    String trsXpath = ".//tr[" + tds + "]";
+
+                    return $(byChain(by, byClassName("v-table-table"), byXpath(trsXpath)));
+                })
+                .getMatch();
+    }
+
+    @Override
+    public ElementsCollection getRows(By rowBy) {
+        return match(rowBy)
+                .when(hasType(ByTargetText.class)).get(byText -> {
+                    String text = byText.getElementText();
+
+                    String trsXpath = ".//tr[.//td[contains(@class, 'v-table-cell-content') " +
+                            "and .//text()[normalize-space(.) = " + Quotes.escape(text) + "]]]";
+
+                    return $$(byChain(by, byClassName("v-table-table"), byXpath(trsXpath)));
+                })
+                .when(hasType(WithTargetText.class)).get(withText -> {
+                    String text = withText.getElementText();
+
+                    String tdsXpath = ".//tr[.//td[contains(@class, 'v-table-cell-content') " +
+                            "and .//text()[contains(normalize-space(.), " + Quotes.escape(text) + ")]]]";
+
+                    return $$(byChain(by, byClassName("v-table-table"), byXpath(tdsXpath)));
+                })
+                .when(hasType(ByRowIndex.class)).get(byRowIndex -> {
+                    int index = byRowIndex.getIndex() + 1;
+
+                    String tdsXpath = "(.//tr)[" + index + "]";
+
+                    return $$(byChain(by, byClassName("v-table-table"), byXpath(tdsXpath)));
+                })
+                .when(hasType(ByIndex.class)).get(byRowIndex -> {
+                    int index = byRowIndex.getIndex() + 1;
+
+                    String tdsXpath = "(.//tr)[" + index + "]";
+
+                    return $$(byChain(by, byClassName("v-table-table"), byXpath(tdsXpath)));
+                })
+                .when(hasType(BySelected.class)).get(isSelected -> {
+                    String tdsXpath = ".//tr[contains(@class, 'v-selected')]";
+
+                    return $$(byChain(by, byClassName("v-table-table"), byXpath(tdsXpath)));
+                })
+                .when(hasType(ByCells.class)).get(byCells -> {
+                    String[] values = byCells.getCellValues();
+
+                    String tds = Arrays.stream(values)
+                            .map(text ->
+                                    ".//td[contains(@class, 'v-table-cell-content') " +
+                                            "and .//text()[normalize-space(.) = " + Quotes.escape(text) + "]]")
+                            .collect(Collectors.joining(" and "));
+
+                    String trsXpath = ".//tr[" + tds + "]";
+
+                    return $$(byChain(by, byClassName("v-table-table"), byXpath(trsXpath)));
+                })
+                .getMatch();
     }
 
     @Override
@@ -126,9 +209,99 @@ public class TableImpl extends AbstractComponent<Table> implements Table {
     }
 
     @Override
-    public ElementsCollection selectRows(By cellBy) {
-        // todo
-        return null;
+    public ElementsCollection getCells(By cellBy) {
+        return match(cellBy)
+                .when(hasType(ByTargetText.class)).get(byText -> {
+                    String text = byText.getElementText();
+
+                    String tdXpath = ".//td[contains(@class, 'v-table-cell-content') " +
+                            "and .//text()[normalize-space(.) = " + Quotes.escape(text) + "]]";
+
+                    return $$(byChain(by, byXpath(tdXpath)));
+                })
+                .when(hasType(WithTargetText.class)).get(withText -> {
+                    String text = withText.getElementText();
+
+                    String tdsXpath = ".//td[contains(@class, 'v-table-cell-content') " +
+                            "and .//text()[contains(normalize-space(.), " + Quotes.escape(text) + ")]]";
+
+                    return $$(byChain(by, byXpath(tdsXpath)));
+                })
+                .when(hasType(ByTargetClassName.class)).get(byClassName -> {
+                    String className = byClassName.getExpectedClassName();
+
+                    String tdsXpath = ".//td[contains(@class, 'v-table-cell-content') " +
+                            "and contains(@class, " + Quotes.escape(className) + "]";
+
+                    return $$(byChain(by, byXpath(tdsXpath)));
+                })
+                .when(hasType(ByRowIndex.class)).get(byRowIndex -> {
+                    int index = byRowIndex.getIndex() + 1;
+
+                    String tdsXpath = "(.//tr)[" + index + "]//td[contains(@class, 'v-table-cell-content')]";
+
+                    return $$(byChain(by, byClassName("v-table-table"), byXpath(tdsXpath)));
+                })
+                .getMatch();
+    }
+
+    @Override
+    public SelenideElement selectRow(By rowBy) {
+        this.shouldBe(VISIBLE)
+                .shouldBe(ENABLED);
+
+        SelenideElement row = getRow(rowBy)
+                .shouldBe(visible)
+                .shouldNotHave(selectedClass);
+
+        row.click();
+
+        return row;
+    }
+
+    @Override
+    public SelenideElement deselectRow(By rowBy) {
+        this.shouldBe(VISIBLE)
+                .shouldBe(ENABLED);
+
+        SelenideElement row = getRow(rowBy)
+                .shouldBe(visible)
+                .shouldHave(cssClass("v-selected"));
+
+        WebDriver webDriver = WebDriverRunner.getWebDriver();
+        Actions action = new Actions(webDriver);
+
+        action.keyDown(Keys.CONTROL)
+                .click(row.getWrappedElement())
+                .keyUp(Keys.CONTROL)
+                .build()
+                .perform();
+
+        return row;
+    }
+
+    @Override
+    public ElementsCollection selectRows(By rowBy) {
+        this.shouldBe(VISIBLE)
+                .shouldBe(LOADED)
+                .shouldBe(ENABLED);
+
+        ElementsCollection rows = getRows(rowBy);
+
+        WebDriver webDriver = WebDriverRunner.getWebDriver();
+        Actions action = new Actions(webDriver);
+
+        for (SelenideElement row : rows) {
+            row.shouldNotHave(selectedClass);
+
+            action.keyDown(Keys.CONTROL)
+                    .click(row.getWrappedElement())
+                    .keyUp(Keys.CONTROL)
+                    .build()
+                    .perform();
+        }
+
+        return rows;
     }
 
     @Override
@@ -151,7 +324,9 @@ public class TableImpl extends AbstractComponent<Table> implements Table {
 
     @Override
     public ElementsCollection getAllLines() {
-        // todo wait for loading rows
+        this.shouldBe(VISIBLE)
+                .shouldBe(LOADED);
+
         return impl.findAll(TagNames.TR);
     }
 
