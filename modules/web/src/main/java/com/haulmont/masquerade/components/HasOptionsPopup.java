@@ -57,7 +57,7 @@ public interface HasOptionsPopup<T> {
         /**
          * Selects option by selector.
          *
-         * @param by selector
+         * @param itemBy selector
          * @return parent
          * @see com.codeborne.selenide.Selectors#withText(String)
          * @see com.codeborne.selenide.Selectors#byText(String)
