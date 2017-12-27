@@ -18,21 +18,58 @@ package com.haulmont.masquerade.components;
 
 import com.codeborne.selenide.ElementsCollection;
 import com.codeborne.selenide.SelenideElement;
-import com.haulmont.masquerade.base.ByLocator;
-import com.haulmont.masquerade.base.SelenideElementWrapper;
+import com.haulmont.masquerade.Selectors;
+import com.haulmont.masquerade.util.Log;
 import org.openqa.selenium.By;
 
+import static com.codeborne.selenide.Condition.visible;
+import static com.haulmont.masquerade.Selectors.*;
+
 public interface Table extends Component<Table> {
+    SelenideElement getRow(By cellBy);
 
-    Row getRow(By by);
+    ElementsCollection getRows(By cellBy);
 
-    Table sort(String columnId, SortDirection direction);
+    /**
+     * Obtain reference to Table cell.
+     * <br>
+     * Supported bys:
+     * <ul>
+     * <li>{@link Selectors#byText(String)}</li>
+     * <li>{@link Selectors#withText(String)}</li>
+     * <li>{@link Selectors#byClassName(String)}</li>
+     * </ul>
+     *
+     * @param cellBy cell selector
+     * @return selenide element
+     */
+    SelenideElement getCell(By cellBy);
 
-    interface Row extends SelenideElementWrapper<Row>, ByLocator, Element {
-        void select();
+    ElementsCollection getCells(By cellBy);
 
-        SelenideElement getCell(By by);
+    @Log
+    ElementsCollection selectRows(By cellBy);
+
+    @Deprecated
+    default SelenideElement find(String cellValue) {
+        return getCell(byText(cellValue))
+                .shouldBe(visible);
     }
+
+    @Deprecated
+    default SelenideElement getRow(int rowNumber) {
+        return getRow(byIndex(rowNumber));
+    }
+
+    @Deprecated
+    default ElementsCollection getCells(int row) {
+        return getCells(byRowIndex(row));
+    }
+
+    ElementsCollection getAllLines();
+
+    @Log
+    Table sort(String columnId, SortDirection direction);
 
     enum SortDirection {
         /**
@@ -50,14 +87,4 @@ public interface Table extends Component<Table> {
          */
         NONE
     }
-
-    // Raw API
-
-    SelenideElement find(String cellValue);
-
-    SelenideElement getRow(int rowNumber);
-
-    ElementsCollection getCells(int row);
-
-    ElementsCollection getAllLines();
 }

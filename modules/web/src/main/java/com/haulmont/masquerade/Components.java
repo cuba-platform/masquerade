@@ -38,6 +38,7 @@ import java.util.function.Function;
 import static com.codeborne.selenide.Selenide.$;
 import static com.haulmont.masquerade.Selectors.byChain;
 import static com.haulmont.masquerade.Selectors.byPath;
+import static com.haulmont.masquerade.Selectors.byTarget;
 
 public class Components {
     private static final By BODY_MARKER_BY = By.tagName("body");
@@ -83,6 +84,10 @@ public class Components {
 
     public static <T> T wire(Class<T> clazz, By by) {
         return wireClassBy(clazz, by);
+    }
+
+    public static <T> T wire(Class<T> clazz, SelenideElement target) {
+        return wireClassBy(clazz, byTarget(target));
     }
 
     public static <T> T _$(Class<T> clazz) {

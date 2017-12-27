@@ -16,20 +16,26 @@
 
 package com.haulmont.masquerade.components.impl;
 
-import com.codeborne.selenide.Condition;
 import com.codeborne.selenide.ElementsCollection;
 import com.codeborne.selenide.SelenideElement;
-import com.haulmont.masquerade.components.Component;
+import com.haulmont.masquerade.Selectors.ByRowIndex;
+import com.haulmont.masquerade.Selectors.ByTargetClassName;
+import com.haulmont.masquerade.Selectors.ByTargetText;
+import com.haulmont.masquerade.Selectors.WithTargetText;
 import com.haulmont.masquerade.components.Table;
 import com.haulmont.masquerade.sys.TagNames;
 import org.openqa.selenium.By;
+import org.openqa.selenium.support.ui.Quotes;
 
 import static com.codeborne.selenide.Condition.cssClass;
 import static com.codeborne.selenide.Condition.visible;
-import static com.codeborne.selenide.Selectors.byClassName;
+import static com.codeborne.selenide.Selectors.*;
 import static com.codeborne.selenide.Selenide.$;
+import static com.codeborne.selenide.Selenide.$$;
 import static com.haulmont.masquerade.Selectors.byChain;
 import static com.haulmont.masquerade.Selectors.byCubaId;
+import static com.haulmont.masquerade.sys.matchers.InstanceOfCases.hasType;
+import static com.leacox.motif.Motif.match;
 
 public class TableImpl extends AbstractComponent<Table> implements Table {
 
@@ -40,8 +46,97 @@ public class TableImpl extends AbstractComponent<Table> implements Table {
     }
 
     @Override
+    public ElementsCollection getRows(By cellBy) {
+        // todo
+        return null;
+    }
+
+    @Override
+    public ElementsCollection getCells(By cellBy) {
+        return match(cellBy)
+                .when(hasType(ByTargetText.class)).get(byText -> {
+                    String text = byText.getElementText();
+
+                    String tdXpath = ".//td[contains(@class, 'v-table-cell-content') " +
+                            "and .//text()[normalize-space(.) = " + Quotes.escape(text) + "]]";
+
+                    return $$(byChain(by, byXpath(tdXpath)));
+                })
+                .when(hasType(WithTargetText.class)).get(withText -> {
+                    String text = withText.getElementText();
+
+                    String tdXpath = ".//td[contains(@class, 'v-table-cell-content') " +
+                            "and .//text()[contains(normalize-space(.), " + Quotes.escape(text) + ")]]";
+
+                    return $$(byChain(by, byXpath(tdXpath)));
+                })
+                .when(hasType(ByTargetClassName.class)).get(byClassName -> {
+                    String className = byClassName.getExpectedClassName();
+
+                    String tdXpath = ".//td[contains(@class, 'v-table-cell-content') " +
+                            "and contains(@class, " + Quotes.escape(className) + "]";
+
+                    return $$(byChain(by, byXpath(tdXpath)));
+                })
+                .when(hasType(ByRowIndex.class)).get(byRowIndex -> {
+                    int index = byRowIndex.getIndex();
+
+                    // todo
+                    String tdXpath = "";
+
+                    return $$(byChain(by, byXpath(tdXpath)));
+                })
+                .getMatch();
+    }
+
+    @Override
+    public SelenideElement getRow(By cellBy) {
+        // todo
+        return null;
+    }
+
+    @Override
+    public SelenideElement getCell(By cellBy) {
+        return match(cellBy)
+                .when(hasType(ByTargetText.class)).get(byText -> {
+                    String text = byText.getElementText();
+
+                    String tdXpath = ".//td[contains(@class, 'v-table-cell-content') " +
+                            "and .//text()[normalize-space(.) = " + Quotes.escape(text) + "]]";
+
+                    return $(byChain(by, byXpath(tdXpath)));
+                })
+                .when(hasType(WithTargetText.class)).get(withText -> {
+                    String text = withText.getElementText();
+
+                    String tdXpath = ".//td[contains(@class, 'v-table-cell-content') " +
+                            "and .//text()[contains(normalize-space(.), " + Quotes.escape(text) + ")]]";
+
+                    return $(byChain(by, byXpath(tdXpath)));
+                })
+                .when(hasType(ByTargetClassName.class)).get(byClassName -> {
+                    String className = byClassName.getExpectedClassName();
+
+                    String tdXpath = ".//td[contains(@class, 'v-table-cell-content') " +
+                            "and contains(@class, " + Quotes.escape(className) + "]";
+
+                    return $(byChain(by, byXpath(tdXpath)));
+                })
+                .getMatch();
+    }
+
+    @Override
+    public ElementsCollection selectRows(By cellBy) {
+        // todo
+        return null;
+    }
+
+    @Override
     public SelenideElement find(String cellValue) {
-        return getAllLines().find(Condition.text(cellValue));
+        SelenideElement textElement = $(byChain(by, byClassName("v-table-cell-content"), byText(cellValue)))
+                .shouldBe(visible);
+
+        return textElement.parent().parent();
     }
 
     @Override
@@ -61,16 +156,11 @@ public class TableImpl extends AbstractComponent<Table> implements Table {
     }
 
     @Override
-    public Row getRow(By by) {
-        // todo byIndex(..)
-        // todo byCells(..)
-        // todo selected()
-
-        return new RowImpl(by);
-    }
-
-    @Override
     public Table sort(String columnId, SortDirection direction) {
+        if (columnId.startsWith("column_")) {
+            columnId = columnId.substring("column_".length());
+        }
+
         SelenideElement columnHeaderCell = $(byChain(by, byClassName("v-table-header"), byCubaId("column_" + columnId)))
                 .shouldBe(visible)
                 .shouldHave(cssClass("v-table-header-sortable"));
@@ -130,43 +220,5 @@ public class TableImpl extends AbstractComponent<Table> implements Table {
         }
 
         return 2;
-    }
-
-    public class RowImpl implements Row {
-        private By by;
-        private SelenideElement impl;
-
-        public RowImpl(By by) {
-            this.by = by;
-            this.impl = $(by);
-        }
-
-        @Override
-        public void select() {
-            impl.shouldBe(visible)
-                    .shouldNotHave(cssClass(V_SELECTED))
-                    .click();
-        }
-
-        @Override
-        public SelenideElement getCell(By by) {
-            // todo
-            return null;
-        }
-
-        @Override
-        public SelenideElement getDelegate() {
-            return impl;
-        }
-
-        @Override
-        public By getBy() {
-            return by;
-        }
-
-        @Override
-        public Component getParent() {
-            return TableImpl.this;
-        }
     }
 }
