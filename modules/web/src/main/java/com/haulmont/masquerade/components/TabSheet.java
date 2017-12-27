@@ -19,18 +19,21 @@ package com.haulmont.masquerade.components;
 import com.haulmont.masquerade.Conditions;
 import com.haulmont.masquerade.base.ByLocator;
 import com.haulmont.masquerade.base.SelenideElementWrapper;
+import com.haulmont.masquerade.util.Log;
 import org.openqa.selenium.By;
+
+import java.util.List;
 
 import static com.haulmont.masquerade.Selectors.byCubaId;
 
 public interface TabSheet extends Component<TabSheet> {
-    @Deprecated
-    default void switchTo(String tabId) {
-        getTab(byCubaId(tabId))
-                .select();
+    Tab getTab(By tabBy);
+
+    default Tab getTab(String cubaId) {
+        return getTab(byCubaId(cubaId));
     }
 
-    Tab getTab(By tabBy);
+    List<Tab> getVisibleTabs();
 
     /**
      * Tab.
@@ -44,6 +47,9 @@ public interface TabSheet extends Component<TabSheet> {
      * </ul>
      */
     interface Tab extends SelenideElementWrapper<Tab>, ByLocator, Element {
+        @Log
         void select();
+        @Log
+        void close();
     }
 }

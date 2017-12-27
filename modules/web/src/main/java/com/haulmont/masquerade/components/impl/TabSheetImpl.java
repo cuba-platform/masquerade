@@ -17,11 +17,15 @@
 package com.haulmont.masquerade.components.impl;
 
 import com.codeborne.selenide.SelenideElement;
+import com.haulmont.masquerade.Selectors.ByCubaId;
+import com.haulmont.masquerade.Selectors.ByIndex;
 import com.haulmont.masquerade.Selectors.ByTargetText;
 import com.haulmont.masquerade.Selectors.WithTargetText;
 import com.haulmont.masquerade.components.Component;
 import com.haulmont.masquerade.components.TabSheet;
 import org.openqa.selenium.By;
+
+import java.util.List;
 
 import static com.codeborne.selenide.Condition.cssClass;
 import static com.codeborne.selenide.Condition.visible;
@@ -45,7 +49,18 @@ public class TabSheetImpl extends AbstractComponent<TabSheet> implements TabShee
                 .when(hasType(WithTargetText.class)).get(withText -> {
                     return (Tab)null;
                 })
+                .when(hasType(ByIndex.class)).get(byIndex -> {
+                    return (Tab)null;
+                })
+                .when(hasType(ByCubaId.class)).get(byCubaId -> {
+                    return (Tab)null;
+                })
                 .getMatch();
+    }
+
+    @Override
+    public List<Tab> getVisibleTabs() {
+        return null;
     }
 
     public class TabImpl implements Tab {
@@ -63,6 +78,11 @@ public class TabSheetImpl extends AbstractComponent<TabSheet> implements TabShee
                     .shouldNotHave(cssClass("v-tabsheet-tabitemcell-selected"))
                     .find(className("v-caption"))
                     .click();
+        }
+
+        @Override
+        public void close() {
+            // todo
         }
 
         @Override
