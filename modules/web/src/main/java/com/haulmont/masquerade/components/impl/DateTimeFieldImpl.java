@@ -24,12 +24,9 @@ import com.haulmont.masquerade.conditions.TimeValue;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
 
-import static com.codeborne.selenide.Condition.enabled;
 import static com.codeborne.selenide.Condition.*;
-import static com.codeborne.selenide.Condition.visible;
 import static com.codeborne.selenide.Selenide.$;
 import static com.haulmont.masquerade.Conditions.*;
-import static com.haulmont.masquerade.Conditions.READONLY;
 import static com.haulmont.masquerade.Selectors.byChain;
 import static com.haulmont.masquerade.sys.VaadinClassNames.readonlyClass;
 import static com.haulmont.masquerade.sys.VaadinClassNames.requiredClass;
@@ -86,7 +83,7 @@ public class DateTimeFieldImpl extends AbstractComponent<DateTimeField> implemen
         dateFieldImpl
                 .shouldBe(visible)
                 .shouldBe(enabled)
-                .shouldNotBe(READONLY)
+                .shouldNotBe(readonly)
                 .click();
 
         dateFieldImpl.sendKeys(Keys.HOME, value);
@@ -108,7 +105,7 @@ public class DateTimeFieldImpl extends AbstractComponent<DateTimeField> implemen
         timeFieldImpl
                 .shouldBe(visible)
                 .shouldBe(enabled)
-                .shouldNotBe(READONLY)
+                .shouldNotBe(readonly)
                 .click();
 
         timeFieldImpl.sendKeys(Keys.HOME, value);
