@@ -120,6 +120,16 @@ public class LoggingInvocationHandler implements InvocationHandler {
     private String getTargetId(Object target) {
         if (target instanceof Element) {
             Component parent = ((Element) target).getParent();
+
+            String loggingId = ((Element) target).getLoggingId();
+            if (loggingId != null) {
+                return loggingId + " of " + getTargetId(parent);
+            }
+
+            if (target instanceof ByLocator) {
+                return formatBy(((ByLocator) target).getBy()) + " of " + getTargetId(parent);
+            }
+
             return getTargetId(parent);
         }
 

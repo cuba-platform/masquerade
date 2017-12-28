@@ -26,7 +26,18 @@ import java.util.List;
 
 import static com.haulmont.masquerade.Selectors.byCubaId;
 
-public interface TabSheet extends Component<TabSheet> {
+/**
+ * Button component.
+ * <br>
+ * Supported conditions:
+ * <ul>
+ *     <li>{@link Conditions#VISIBLE}</li>
+ *     <li>{@link Conditions#HIDDEN}</li>
+ *     <li>{@link Conditions#ENABLED}</li>
+ *     <li>{@link Conditions#DISABLED}</li>
+ * </ul>
+ */
+public interface TabSheet extends Container<TabSheet> {
     Tab getTab(By tabBy);
 
     default Tab getTab(String cubaId) {
@@ -36,12 +47,13 @@ public interface TabSheet extends Component<TabSheet> {
     List<Tab> getVisibleTabs();
 
     /**
-     * Tab.
+     * Tab header element.
      * <br>
      * Supported conditions:
      * <ul>
      *     <li>{@link Conditions#VISIBLE}</li>
      *     <li>{@link Conditions#HIDDEN}</li>
+     *     <li>{@link Conditions#SELECTED}</li>
      *     <li>{@link Conditions#caption(String)} </li>
      *     <li>{@link Conditions#captionContains(String)} </li>
      * </ul>
@@ -49,6 +61,7 @@ public interface TabSheet extends Component<TabSheet> {
     interface Tab extends SelenideElementWrapper<Tab>, ByLocator, Element {
         @Log
         void select();
+
         @Log
         void close();
     }

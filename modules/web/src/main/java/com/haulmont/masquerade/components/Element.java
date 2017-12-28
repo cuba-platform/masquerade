@@ -16,6 +16,13 @@
 
 package com.haulmont.masquerade.components;
 
+import javax.annotation.Nullable;
+
 public interface Element {
     Component getParent();
+
+    @Nullable
+    default String getLoggingId() {
+        return null;
+    }
 }
