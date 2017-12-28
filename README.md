@@ -4,6 +4,7 @@ masquerade
 Cuba Platform UI testing library.
 
 <a href="https://gitter.im/cuba-platform/masquerade"><img src="https://badges.gitter.im/Join%20Chat.svg" alt="Join the chat at https://gitter.im/cuba-platform/masquerade" title=""></a>
+[ ![Download](https://api.bintray.com/packages/cuba-platform/main/masquerade/images/download.svg) ](https://bintray.com/cuba-platform/main/masquerade/_latestVersion)
 
 ## Overview
 
