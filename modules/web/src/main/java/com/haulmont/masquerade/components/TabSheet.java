@@ -17,6 +17,7 @@
 package com.haulmont.masquerade.components;
 
 import com.haulmont.masquerade.Conditions;
+import com.haulmont.masquerade.Selectors;
 import com.haulmont.masquerade.base.ByLocator;
 import com.haulmont.masquerade.base.SelenideElementWrapper;
 import com.haulmont.masquerade.util.Log;
@@ -38,6 +39,20 @@ import static com.haulmont.masquerade.Selectors.byCubaId;
  * </ul>
  */
 public interface TabSheet extends Container<TabSheet> {
+    /**
+     * Get tab by selector.
+     * <br>
+     * Supported selectors
+     * <ul>
+     *     <li>{@link Selectors#byCubaId(String)}</li>
+     *     <li>{@link Selectors#byIndex(int)}</li>
+     *     <li>{@link Selectors#byText(String)}</li>
+     *     <li>{@link Selectors#withText(String)}</li>
+     * </ul>
+     *
+     * @param tabBy tab selector
+     * @return tab
+     */
     Tab getTab(By tabBy);
 
     default Tab getTab(String cubaId) {
