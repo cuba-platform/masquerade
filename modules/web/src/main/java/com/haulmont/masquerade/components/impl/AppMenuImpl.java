@@ -19,17 +19,14 @@ package com.haulmont.masquerade.components.impl;
 import com.haulmont.masquerade.Components;
 import com.haulmont.masquerade.components.AppMenu;
 import org.openqa.selenium.By;
+import org.openqa.selenium.support.ui.Quotes;
 
 import static com.codeborne.selenide.Condition.enabled;
 import static com.codeborne.selenide.Condition.visible;
-import static com.codeborne.selenide.Selectors.byClassName;
+import static com.codeborne.selenide.Selectors.byXpath;
 import static com.codeborne.selenide.Selenide.$;
-import static com.haulmont.masquerade.Selectors.byChain;
-import static com.haulmont.masquerade.Selectors.byCubaId;
 
 public class AppMenuImpl extends AbstractComponent<AppMenu> implements AppMenu {
-
-    public static final String MENUITEM_CAPTION_CLASS = "v-menubar-menuitem-caption";
 
     public AppMenuImpl(By by) {
         super(by);
@@ -50,7 +47,10 @@ public class AppMenuImpl extends AbstractComponent<AppMenu> implements AppMenu {
     @Override
     public void openItem(String... path) {
         for (String s : path) {
-            $(byChain(byCubaId(s), byClassName(MENUITEM_CAPTION_CLASS)))
+            String itemXpath = "//span[contains(@class, 'v-menubar-menuitem') " +
+                    "and @cuba-id=" + Quotes.escape(s) + "]";
+
+            $(byXpath(itemXpath))
                     .shouldBe(visible)
                     .shouldBe(enabled)
                     .click();
