@@ -98,8 +98,8 @@ configure(project(':masquerade-web')) {
 
     dependencies {
         compile 'com.leacox.motif:motif:0.1'
-        compile 'com.codeborne:selenide:4.8'
-        compile 'org.seleniumhq.selenium:selenium-java:3.7.1'
+        compile 'com.codeborne:selenide:4.9'
+        compile 'org.seleniumhq.selenium:selenium-java:3.8.1'
 
         testCompile 'org.codehaus.groovy:groovy-all:2.4.12'
         testCompile 'junit:junit:4.12'
