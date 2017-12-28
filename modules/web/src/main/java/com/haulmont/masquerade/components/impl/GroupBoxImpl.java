@@ -20,6 +20,7 @@ import com.codeborne.selenide.Condition;
 import com.haulmont.masquerade.Conditions;
 import com.haulmont.masquerade.components.GroupBox;
 import com.haulmont.masquerade.conditions.Caption;
+import com.haulmont.masquerade.conditions.CaptionContains;
 import com.haulmont.masquerade.conditions.SpecificCondition;
 import org.openqa.selenium.By;
 
@@ -55,6 +56,9 @@ public class GroupBoxImpl extends AbstractComponent<GroupBox> implements GroupBo
                 })
                 .when(hasType(Caption.class)).get(c -> {
                     return $(byChain(by, CAPTION_TEXT)).has(exactText(c.getCaption()));
+                })
+                .when(hasType(CaptionContains.class)).get(cc -> {
+                    return $(byChain(by, CAPTION_TEXT)).has(text(cc.getCaptionSubstring()));
                 })
                 .getMatch();
     }

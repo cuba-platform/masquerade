@@ -30,6 +30,7 @@ import com.haulmont.masquerade.Conditions;
  *     <li>{@link Conditions#EXPANDED}</li>
  *     <li>{@link Conditions#COLLAPSED}</li>
  *     <li>{@link Conditions#caption(String)}</li>
+ *     <li>{@link Conditions#captionContains(String)}</li>
  * </ul>
  */
 public interface GroupBox extends Container<GroupBox> {
