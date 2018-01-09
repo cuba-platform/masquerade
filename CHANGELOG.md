@@ -4,6 +4,20 @@ All notable changes to this project will be documented in this file.
 
 ## Unreleased
 
+## 1.0.1 - 2018-01-09
+
+### Added
+
+#### web
+
+- Table.getRows() with Selectors.isVisible()
+- GroupBox condition support for captionContains(..)
+- Updated Selenium / Selenide version to 3.8.1 / 4.9
+
+### Fixed
+
+- AppMenu.openItem with Chrome web driver
+
 ## 1.0.0 - 2017-12-28
 
 ### Added
