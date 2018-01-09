@@ -198,7 +198,7 @@ public interface Table extends Component<Table> {
     }
 
     /**
-     * Note that: method will wait for data loading at least for 400 ms.
+     * Will be removed in 2.0
      *
      * @deprecated Use {@link #getRows(By)} with {@link Selectors#isVisible()}
      * @return all rows
