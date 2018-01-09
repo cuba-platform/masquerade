@@ -70,6 +70,7 @@ public class TableImpl extends AbstractComponent<Table> implements Table {
                 .getMatch();
     }
 
+    @SuppressWarnings("CodeBlock2Expr")
     @Override
     public SelenideElement getRow(By rowBy) {
         return match(rowBy)
@@ -121,9 +122,13 @@ public class TableImpl extends AbstractComponent<Table> implements Table {
 
                     return $(byChain(by, byClassName("v-table-table"), byXpath(trsXpath)));
                 })
+                .when(hasType(ByVisibleRows.class)).get(by -> {
+                    return $(byChain(by, byClassName("v-table-table"), byXpath(".//tr")));
+                })
                 .getMatch();
     }
 
+    @SuppressWarnings("CodeBlock2Expr")
     @Override
     public ElementsCollection getRows(By rowBy) {
         return match(rowBy)
@@ -174,6 +179,9 @@ public class TableImpl extends AbstractComponent<Table> implements Table {
                     String trsXpath = ".//tr[" + tds + "]";
 
                     return $$(byChain(by, byClassName("v-table-table"), byXpath(trsXpath)));
+                })
+                .when(hasType(ByVisibleRows.class)).get(by -> {
+                    return $$(byChain(by, byClassName("v-table-table"), byXpath(".//tr")));
                 })
                 .getMatch();
     }
@@ -323,6 +331,7 @@ public class TableImpl extends AbstractComponent<Table> implements Table {
     }
 
     @Override
+    @Deprecated
     public ElementsCollection getAllLines() {
         this.shouldBe(VISIBLE)
                 .shouldBe(LOADED);

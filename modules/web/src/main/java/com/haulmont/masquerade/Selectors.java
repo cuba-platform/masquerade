@@ -97,6 +97,10 @@ public class Selectors extends com.codeborne.selenide.Selectors {
         return new BySelected();
     }
 
+    public static By isVisible() {
+        return new ByVisibleRows();
+    }
+
     public static class ByTarget extends By {
         private final SelenideElement target;
 
@@ -254,6 +258,22 @@ public class Selectors extends com.codeborne.selenide.Selectors {
         @Override
         public String toString() {
             return "By.selectedRow";
+        }
+    }
+
+    public static class ByVisibleRows extends By {
+        public ByVisibleRows() {
+        }
+
+        @Override
+        public List<WebElement> findElements(SearchContext context) {
+            throw new RuntimeException(
+                    "BySelected must be checked ony in Component implementations");
+        }
+
+        @Override
+        public String toString() {
+            return "By.allRows";
         }
     }
 }

@@ -47,9 +47,10 @@ public interface Table extends Component<Table> {
      * <li>{@link Selectors#byText(String)}</li>
      * <li>{@link Selectors#byCells(String...)}</li>
      * <li>{@link Selectors#withText(String)}</li>
-     * <li>{@link Selectors#isSelected()}</li>
      * <li>{@link Selectors#byRowIndex(int)}</li>
      * <li>{@link Selectors#byIndex(int)}</li>
+     * <li>{@link Selectors#isSelected()}</li>
+     * <li>{@link Selectors#isVisible()}</li>
      * </ul>
      *
      * @param rowBy row selector
@@ -65,9 +66,10 @@ public interface Table extends Component<Table> {
      * <li>{@link Selectors#byText(String)}</li>
      * <li>{@link Selectors#byCells(String...)}</li>
      * <li>{@link Selectors#withText(String)}</li>
-     * <li>{@link Selectors#isSelected()}</li>
      * <li>{@link Selectors#byRowIndex(int)}</li>
      * <li>{@link Selectors#byIndex(int)}</li>
+     * <li>{@link Selectors#isSelected()}</li>
+     * <li>{@link Selectors#isVisible()}</li>
      * </ul>
      *
      * @param rowBy row selector
@@ -198,8 +200,10 @@ public interface Table extends Component<Table> {
     /**
      * Note that: method will wait for data loading at least for 400 ms.
      *
+     * @deprecated Use {@link #getRows(By)} with {@link Selectors#isVisible()}
      * @return all rows
      */
+    @Deprecated
     ElementsCollection getAllLines();
 
     @Log
