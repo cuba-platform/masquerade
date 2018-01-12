@@ -12,7 +12,7 @@ All notable changes to this project will be documented in this file.
 
 - Table.getRows() with Selectors.isVisible()
 - GroupBox condition support for captionContains(..)
-- Updated Selenium / Selenide version to 3.8.1 / 4.9
+- Updated Selenium / Selenide version to 3.8.1 / 4.9.1
 
 ### Fixed
 
