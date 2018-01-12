@@ -23,6 +23,7 @@ import com.haulmont.masquerade.components.CheckBox;
 import com.haulmont.masquerade.conditions.Caption;
 import com.haulmont.masquerade.conditions.SpecificCondition;
 import org.openqa.selenium.By;
+import org.openqa.selenium.Keys;
 
 import java.util.Objects;
 
@@ -65,7 +66,7 @@ public class CheckBoxImpl extends AbstractComponent<CheckBox> implements CheckBo
                 .shouldBe(enabled);
 
         if (checked != checkBoxInput.is(Condition.checked)) {
-            checkBoxInput.sendKeys(" ");
+            checkBoxInput.sendKeys(Keys.SPACE);
         }
 
         return this;

@@ -331,6 +331,6 @@ test {
 
 After that, run the following task in the terminal:
 
-    gradle test -Dselenide.browser=marionette -Dwebdriver.gecko.driver=<your_path>/geckodriver.exe
+    gradle test -Dwebdriver.gecko.driver=<your_path>/geckodriver.exe
     
 where <your_path> is the path to the gecko driver on your computer.
