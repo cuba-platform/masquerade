@@ -4,6 +4,16 @@ All notable changes to this project will be documented in this file.
 
 ## Unreleased
 
+## 1.0.2 - 2018-01-16
+
+### Fixed
+
+- Table.getRows() with Selectors.isVisible()
+
+### Added
+
+- Table.getCell() with Selectors.byRowColIndexes(r, c)
+
 ## 1.0.1 - 2018-01-09
 
 ### Added

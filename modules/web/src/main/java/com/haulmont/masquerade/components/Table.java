@@ -86,6 +86,7 @@ public interface Table extends Component<Table> {
      * <li>{@link Selectors#withText(String)}</li>
      * <li>{@link Selectors#byClassName(String)}</li>
      * <li>{@link Selectors#byRowIndex(int)}</li>
+     * <li>{@link Selectors#byRowColIndexes(int, int)}</li>
      * </ul>
      *
      * @param cellBy cell selector

@@ -81,6 +81,10 @@ public class Selectors extends com.codeborne.selenide.Selectors {
         return new ByRowIndex(index);
     }
 
+    public static By byRowColIndexes(int rowIndex, int colIndex) {
+        return new ByRowColIndexes(rowIndex, colIndex);
+    }
+
     public static By byText(String cellText) {
         return new ByTargetText(cellText);
     }
@@ -268,12 +272,41 @@ public class Selectors extends com.codeborne.selenide.Selectors {
         @Override
         public List<WebElement> findElements(SearchContext context) {
             throw new RuntimeException(
-                    "BySelected must be checked ony in Component implementations");
+                    "ByVisibleRows must be checked ony in Component implementations");
         }
 
         @Override
         public String toString() {
-            return "By.allRows";
+            return "By.visibleRows";
+        }
+    }
+
+    public static class ByRowColIndexes extends By {
+        private int rowIndex;
+        private int colIndex;
+
+        public ByRowColIndexes(int rowIndex, int colIndex) {
+            this.rowIndex = rowIndex;
+            this.colIndex = colIndex;
+        }
+
+        @Override
+        public List<WebElement> findElements(SearchContext context) {
+            throw new RuntimeException(
+                    "ByRowColIndexes must be checked ony in Component implementations");
+        }
+
+        @Override
+        public String toString() {
+            return "By.colRowIndexes";
+        }
+
+        public int getRowIndex() {
+            return rowIndex;
+        }
+
+        public int getColIndex() {
+            return colIndex;
         }
     }
 }

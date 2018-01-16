@@ -122,7 +122,7 @@ public class TableImpl extends AbstractComponent<Table> implements Table {
 
                     return $(byChain(by, byClassName("v-table-table"), byXpath(trsXpath)));
                 })
-                .when(hasType(ByVisibleRows.class)).get(by -> {
+                .when(hasType(ByVisibleRows.class)).get(byVisibleRows -> {
                     return $(byChain(by, byClassName("v-table-table"), byXpath(".//tr")));
                 })
                 .getMatch();
@@ -180,7 +180,7 @@ public class TableImpl extends AbstractComponent<Table> implements Table {
 
                     return $$(byChain(by, byClassName("v-table-table"), byXpath(trsXpath)));
                 })
-                .when(hasType(ByVisibleRows.class)).get(by -> {
+                .when(hasType(ByVisibleRows.class)).get(byVisibleRows -> {
                     return $$(byChain(by, byClassName("v-table-table"), byXpath(".//tr")));
                 })
                 .getMatch();
@@ -212,6 +212,14 @@ public class TableImpl extends AbstractComponent<Table> implements Table {
                             "and contains(@class, " + Quotes.escape(className) + "]";
 
                     return $(byChain(by, byXpath(tdXpath)));
+                })
+                .when(hasType(ByRowColIndexes.class)).get(byColRow -> {
+                    int rowIndex = byColRow.getRowIndex() + 1;
+                    int colIndex = byColRow.getColIndex() + 1;
+
+                    String tdsXpath = "(.//tr)[" + rowIndex + "]//td[" + colIndex +"]";
+
+                    return $(byChain(by, byClassName("v-table-table"), byXpath(tdsXpath)));
                 })
                 .getMatch();
     }
