@@ -21,18 +21,19 @@ import com.codeborne.selenide.SelenideElement;
 import com.haulmont.masquerade.Conditions;
 import com.haulmont.masquerade.components.CheckBox;
 import com.haulmont.masquerade.conditions.Caption;
+import com.haulmont.masquerade.conditions.CaptionContains;
 import com.haulmont.masquerade.conditions.SpecificCondition;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
 
-import java.util.Objects;
-
-import static com.codeborne.selenide.Condition.enabled;
-import static com.codeborne.selenide.Condition.visible;
+import static com.codeborne.selenide.Condition.*;
 import static com.codeborne.selenide.Selenide.$;
+import static com.haulmont.masquerade.Conditions.EDITABLE;
+import static com.haulmont.masquerade.Conditions.READONLY;
 import static com.haulmont.masquerade.Selectors.byChain;
 import static com.haulmont.masquerade.sys.TagNames.INPUT;
 import static com.haulmont.masquerade.sys.TagNames.LABEL;
+import static com.haulmont.masquerade.sys.VaadinClassNames.readonlyClass;
 import static com.haulmont.masquerade.sys.matchers.ConditionCases.componentApply;
 import static com.haulmont.masquerade.sys.matchers.InstanceOfCases.hasType;
 import static com.leacox.motif.MatchesExact.eq;
@@ -54,7 +55,16 @@ public class CheckBoxImpl extends AbstractComponent<CheckBox> implements CheckBo
                         $(byChain(by, INPUT)).is(Condition.selected)
                 )
                 .when(hasType(Caption.class)).get(c ->
-                        Objects.equals(getCaption(), c.getCaption())
+                        impl.has(exactText(c.getCaption()))
+                )
+                .when(hasType(CaptionContains.class)).get(cc ->
+                        impl.has(text(cc.getCaptionSubstring()))
+                )
+                .when(eq(READONLY)).get(() ->
+                        impl.has(readonlyClass)
+                )
+                .when(eq(EDITABLE)).get(() ->
+                        !impl.has(readonlyClass)
                 )
                 .getMatch();
     }

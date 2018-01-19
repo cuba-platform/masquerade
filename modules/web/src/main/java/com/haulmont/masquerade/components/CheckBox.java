@@ -33,6 +33,7 @@ import com.haulmont.masquerade.util.Log;
  *     <li>{@link Conditions#CHECKED}</li>
  *     <li>{@link Conditions#SELECTED}</li>
  *     <li>{@link Conditions#caption(String)}</li>
+ *     <li>{@link Conditions#captionContains(String)}</li>
  * </ul>
  */
 public interface CheckBox extends Field<CheckBox> {
