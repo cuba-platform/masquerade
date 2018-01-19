@@ -64,6 +64,9 @@ dependencies {
     
     //the library provides an ability to access web-services, JMX and etc.
     testCompile('com.haulmont.masquerade:masquerade-connector:1.0.0') 
+    
+    // enable logging
+    testCompile('org.slf4j:slf4j-simple:1.7.25')
 }
 ```
 
