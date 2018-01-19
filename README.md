@@ -57,7 +57,7 @@ repositories {
 }
 
 dependencies {
-    testCompile group: 'junit', name: 'junit', version: '4.12'
+    testCompile('junit:junit:4.12')
     
      //the library for the UI testing
     testCompile('com.haulmont.masquerade:masquerade-web:1.0.0')
