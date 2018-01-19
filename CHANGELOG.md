@@ -4,6 +4,12 @@ All notable changes to this project will be documented in this file.
 
 ## Unreleased
 
+## 1.0.3 - 2018-01-19
+
+### Fixed
+
+- CheckBox READONLY / EDITABLE conditions support
+
 ## 1.0.2 - 2018-01-16
 
 ### Fixed
