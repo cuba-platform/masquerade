@@ -16,6 +16,7 @@
 
 package com.haulmont.masquerade.components.impl;
 
+import com.codeborne.selenide.SelenideElement;
 import com.haulmont.masquerade.Components;
 import com.haulmont.masquerade.components.AppMenu;
 import org.openqa.selenium.By;
@@ -25,6 +26,8 @@ import static com.codeborne.selenide.Condition.enabled;
 import static com.codeborne.selenide.Condition.visible;
 import static com.codeborne.selenide.Selectors.byXpath;
 import static com.codeborne.selenide.Selenide.$;
+import static com.codeborne.selenide.Selenide.Wait;
+import static org.openqa.selenium.support.ui.ExpectedConditions.elementToBeClickable;
 
 public class AppMenuImpl extends AbstractComponent<AppMenu> implements AppMenu {
 
@@ -50,10 +53,15 @@ public class AppMenuImpl extends AbstractComponent<AppMenu> implements AppMenu {
             String itemXpath = "//span[contains(@class, 'v-menubar-menuitem') " +
                     "and @cuba-id=" + Quotes.escape(s) + "]";
 
-            $(byXpath(itemXpath))
+            SelenideElement menuItemElement = $(byXpath(itemXpath));
+
+            menuItemElement
                     .shouldBe(visible)
-                    .shouldBe(enabled)
-                    .click();
+                    .shouldBe(enabled);
+
+            Wait().until(elementToBeClickable(menuItemElement));
+
+            menuItemElement.click();
         }
     }
 }
