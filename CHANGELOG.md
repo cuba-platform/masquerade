@@ -4,6 +4,12 @@ All notable changes to this project will be documented in this file.
 
 ## Unreleased
 
+## 1.0.4 - 2018-01-23
+
+### Fixed
+
+- AppMenu openItem in Chrome
+
 ## 1.0.3 - 2018-01-19
 
 ### Fixed
@@ -29,10 +35,6 @@ All notable changes to this project will be documented in this file.
 - Table.getRows() with Selectors.isVisible()
 - GroupBox condition support for captionContains(..)
 - Updated Selenium / Selenide version to 3.8.1 / 4.9.1
-
-### Fixed
-
-- AppMenu.openItem with Chrome web driver
 
 ## 1.0.0 - 2017-12-28
 
