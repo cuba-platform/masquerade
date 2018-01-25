@@ -10,7 +10,7 @@ Cuba Platform UI testing library.
 
 ## Overview
 
-Library provides an ability to create UI tests for the CUBA based applications. 
+The library provides an ability to create UI tests for the CUBA based applications. 
 It can help you to write better tests.
 
 It is based on:
