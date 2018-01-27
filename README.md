@@ -266,10 +266,10 @@ There are some useful tips for those who use Groovy to write the tests.
 
 * .with() method.
 
-Groovy closures have a delegate associated with them. The delegate is given an 
-opportunity to respond to method calls which happen inside of the closure. It 
-allows you to use methods/properties within a closure without having to repeat 
-the object name each time.
+Groovy closures have a delegate associated with them. The delegate can respond 
+to method calls which happen inside of the closure. It enables you to use 
+methods/properties within a `with {}` closure without having to repeat the 
+object name each time.
 
 ```groovy
 loginWindow.with {
@@ -282,7 +282,7 @@ loginWindow.with {
 ```
 * Ability to set the value of the element using "property access" syntax
 
-In Groovy, a getters and setters form what we call a "property", and offers a 
+In Groovy, getters and setters form what we call a "property", and offers a 
 shortcut notation for accessing and setting such properties. So instead of the 
 Java-way of calling getters / setters, you can use a field-like access notation: 
 
