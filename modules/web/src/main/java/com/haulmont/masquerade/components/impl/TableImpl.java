@@ -267,8 +267,7 @@ public class TableImpl extends AbstractComponent<Table> implements Table {
                 .shouldBe(ENABLED);
 
         SelenideElement row = getRow(rowBy)
-                .shouldBe(visible)
-                .shouldNotHave(selectedClass);
+                .shouldBe(visible);
 
         row.click();
 
