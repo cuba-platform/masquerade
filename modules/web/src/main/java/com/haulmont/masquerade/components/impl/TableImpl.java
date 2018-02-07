@@ -281,7 +281,7 @@ public class TableImpl extends AbstractComponent<Table> implements Table {
 
         SelenideElement row = getRow(rowBy)
                 .shouldBe(visible)
-                .shouldHave(cssClass("v-selected"));
+                .shouldHave(selectedClass);
 
         WebDriver webDriver = WebDriverRunner.getWebDriver();
         Actions action = new Actions(webDriver);
