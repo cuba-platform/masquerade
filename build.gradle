@@ -83,9 +83,9 @@ configure([project(':masquerade-web'), project(':masquerade-connector')]) {
 
 configure(project(':masquerade-connector')) {
     dependencies {
-        compile 'com.squareup.retrofit2:retrofit:2.3.0'
-        compile 'com.squareup.retrofit2:converter-gson:2.3.0'
-        compile 'com.google.guava:guava:23.0'
+        compile 'com.squareup.retrofit2:retrofit:2.4.0'
+        compile 'com.squareup.retrofit2:converter-gson:2.4.0'
+        compile 'com.google.guava:guava:24.1-jre'
         compile 'org.slf4j:slf4j-api:1.7.25'
 
         testCompile 'junit:junit:4.12'
@@ -99,9 +99,9 @@ configure(project(':masquerade-web')) {
     dependencies {
         compile 'com.leacox.motif:motif:0.1'
         compile 'com.codeborne:selenide:4.10.01'
-        compile 'org.seleniumhq.selenium:selenium-java:3.9.1'
+        compile 'org.seleniumhq.selenium:selenium-java:3.11.0'
 
-        testCompile 'org.codehaus.groovy:groovy-all:2.4.12'
+        testCompile 'org.codehaus.groovy:groovy-all:2.4.14'
         testCompile 'junit:junit:4.12'
         testCompile 'org.slf4j:slf4j-simple:1.7.25'
     }
