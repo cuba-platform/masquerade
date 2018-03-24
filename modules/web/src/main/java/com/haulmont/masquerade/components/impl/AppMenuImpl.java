@@ -24,9 +24,11 @@ import org.openqa.selenium.support.ui.Quotes;
 
 import static com.codeborne.selenide.Condition.enabled;
 import static com.codeborne.selenide.Condition.visible;
+import static com.codeborne.selenide.Selectors.byClassName;
 import static com.codeborne.selenide.Selectors.byXpath;
 import static com.codeborne.selenide.Selenide.$;
 import static com.codeborne.selenide.Selenide.Wait;
+import static com.haulmont.masquerade.Selectors.byChain;
 import static org.openqa.selenium.support.ui.ExpectedConditions.elementToBeClickable;
 
 public class AppMenuImpl extends AbstractComponent<AppMenu> implements AppMenu {
@@ -49,11 +51,20 @@ public class AppMenuImpl extends AbstractComponent<AppMenu> implements AppMenu {
 
     @Override
     public void openItem(String... path) {
-        for (String s : path) {
+        for (int i = 0; i < path.length; i++) {
+            String s = path[i];
+
             String itemXpath = "//span[contains(@class, 'v-menubar-menuitem') " +
                     "and @cuba-id=" + Quotes.escape(s) + "]";
 
-            SelenideElement menuItemElement = $(byXpath(itemXpath));
+            SelenideElement menuItemElement;
+
+            if (i == 0) {
+                menuItemElement = $(byXpath(itemXpath));
+            } else {
+                // Firefox requires click on caption in submenus
+                menuItemElement = $(byChain(byXpath(itemXpath), byClassName("v-menubar-menuitem-caption")));
+            }
 
             menuItemElement
                     .shouldBe(visible)
