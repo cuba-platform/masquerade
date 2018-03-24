@@ -1,5 +1,5 @@
 language: java
-jdk: oraclejdk8
+jdk: openjdk8
 
 install:
   - ./gradlew --no-daemon assemble
@@ -15,4 +15,4 @@ cache:
 addons:
   apt:
     packages:
-      - oracle-java8-installer
+      - openjdk-8-jdk
