@@ -26,4 +26,8 @@ public interface OAuthTokenService {
     @POST("oauth/token")
     Call<AccessToken> token(@Field("username") String username, @Field("password") String password,
                             @Field("grant_type") String grantType);
+
+    @FormUrlEncoded
+    @POST("oauth/revoke")
+    Call<Void> revoke(@Field("token") String token, @Field("token_type_hint") String tokenTypeHint);
 }
