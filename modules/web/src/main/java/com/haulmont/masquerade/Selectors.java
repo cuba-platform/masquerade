@@ -26,6 +26,7 @@ import org.openqa.selenium.support.pagefactory.ByChained;
 
 import java.util.List;
 
+import static com.codeborne.selenide.Selenide.$;
 import static com.google.common.base.Preconditions.checkNotNull;
 import static java.util.Collections.singletonList;
 
@@ -103,6 +104,16 @@ public class Selectors extends com.codeborne.selenide.Selectors {
 
     public static By isVisible() {
         return new ByVisibleRows();
+    }
+
+    /**
+     * Get selenide element by cuba-id.
+     *
+     * @param cubaId cuba-id value
+     * @return SelenideElement
+     */
+    public static SelenideElement $c(String cubaId) {
+        return $(byCubaId(cubaId));
     }
 
     public static class ByTarget extends By {
