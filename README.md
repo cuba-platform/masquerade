@@ -309,14 +309,14 @@ with Gradle run the following tasks in the terminal:
 
     gradle setupTomcat deploy createDb start
 
-If you run your tests in the Mozilla Firefox browser, you need to edit standard 
+If you run your tests in the Chrome browser, you need to edit standard
 test configuration for the test project in Idea. To do so, click the 
 **Select Run/Debug Configuration** button, select *Edit Configurations*  in the 
 drop-down list. In the VM options field add the following:
 
-    -Dselenide.browser=marionette -Dwebdriver.gecko.driver=<your_path>/geckodriver.exe
+    -Dselenide.browser=chrome -Dwebdriver.chrome.driver=<your_path>/chromedriver.exe
 
-where <your_path> is the path to the gecko driver on your computer.
+where <your_path> is the path to the chrome driver on your computer.
 
 ![Create Configuration](images/testConfiguration.png)
 
@@ -328,12 +328,12 @@ To run the tests using Gradle add the following task in the ```build.gradle``` f
 ```groovy
 test {
      systemProperty 'selenide.browser', System.getProperty('selenide.browser')
-     systemProperty 'webdriver.gecko.driver', System.getProperty('webdriver.gecko.driver')
+     systemProperty 'webdriver.chrome.driver', System.getProperty('webdriver.chrome.driver')
 }
 ```
 
 After that, run the following task in the terminal:
 
-    gradle test -Dwebdriver.gecko.driver=<your_path>/geckodriver.exe
+    gradle test -Dselenide.browser=chrome -Dwebdriver.chrome.driver=<your_path>/chromedriver.exe
     
-where <your_path> is the path to the gecko driver on your computer.
+where <your_path> is the path to the chrome driver on your computer.
