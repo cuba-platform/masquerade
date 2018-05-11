@@ -178,7 +178,7 @@ Here are some useful tips on how to work with the library.
 
 ## How to work with elements
 
-The library has a special method  ```_$``` to define any element in the screen. 
+The library has a special method  ```_$``` to define any element on the screen. 
 This method has three implementations:
 
 * The first implementation gets the element by its class:
@@ -309,7 +309,7 @@ with Gradle, run the following tasks in the terminal:
     gradle setupTomcat deploy createDb start
 
 If you run your tests in Chrome browser, you need to edit standard
-test configuration for the test project in IntellJ. To do so, click the 
+test configuration for the test project in IntelliJ. To do so, click the 
 *Select Run/Debug Configuration* button and select *Edit Configurations*  in the 
 drop-down list. In the VM options field, add the following:
 
