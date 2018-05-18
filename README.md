@@ -329,6 +329,9 @@ def loginWindow = _$(LoginWindow)
 
 ## Run tests
 
+Note, that you need to download one of the latest versions of the web driver depending on the browser you want to use to testing.
+For Chrome browser this is [chromedriver](http://chromedriver.chromium.org/downloads), for Firefox this is [geckodriver](https://github.com/mozilla/geckodriver/releases).
+
 To run the test, first of all, you need to set ```cuba.testMode``` property to 
 true in the `web-app.properties` file of your CUBA application. After that, you 
 should start the application using Studio or Gradle tasks. To start application 
