@@ -48,11 +48,12 @@ version = '0.1'
 sourceCompatibility = 1.8
 
 repositories {
-    mavenCentral()    
-    repositories { 
-      maven { 
-        url "https://dl.bintray.com/cuba-platform/main" 
-      } 
+    mavenCentral()
+    
+    repositories {
+        maven {
+            url "https://dl.bintray.com/cuba-platform/main"
+        }
     }
 }
 
@@ -60,15 +61,17 @@ dependencies {
     testCompile('junit:junit:4.12')
     
      //the library for the UI testing
-    testCompile('com.haulmont.masquerade:masquerade-web:1.0.0')
+    testCompile('com.haulmont.masquerade:masquerade-web:<check the latest version>')
     
     //the library provides an ability to access web-services, JMX and etc.
-    testCompile('com.haulmont.masquerade:masquerade-connector:1.0.0') 
+    testCompile('com.haulmont.masquerade:masquerade-connector:<check the latest version>')
     
     // enable logging
     testCompile('org.slf4j:slf4j-simple:1.7.25')
 }
 ```
+
+Find the latest version number here: https://bintray.com/cuba-platform/main/masquerade
 
 ## Creating a test
 
@@ -104,7 +107,6 @@ import com.haulmont.masquerade.components.PasswordField;
 import com.haulmont.masquerade.components.TextField;
 import org.openqa.selenium.support.FindBy;
 
-
 public class LoginWindow extends Composite<LoginWindow> {
 
     @Wire
@@ -127,7 +129,6 @@ public class LoginWindow extends Composite<LoginWindow> {
 
     @FindBy(className = "c-login-caption")
     public Label welcomeLabelTest;
-
 }
 ``` 
 
@@ -225,9 +226,9 @@ This method has three implementations:
 For example, we can click the button on the screen: 
 
 ```java
-import static com.haulmont.masquerade.Components._$
+import static com.haulmont.masquerade.Components._$;
 
-_$(Button, 'logoutButton').click()
+_$(Button, 'logoutButton').click();
 ```
 
 ## How to check the state of an element
@@ -240,7 +241,7 @@ element. For example:
 ```java
 loginButton
    .shouldBe(VISIBLE)
-   .shouldBe(ENABLED)
+   .shouldBe(ENABLED);
 ```
 
 To check if the element has some properties, use the `shouldHave` element. For example:
@@ -257,7 +258,7 @@ like `name`, `className`, `id` and so on, which helps to identify the component.
 
 ```java
 @FindBy(className = "c-login-caption")
-public Label welcomeLabelTest; 
+public Label welcomeLabelTest;
 ```    
 
 Also, using this annotation, you can define `SelenideElement` type for the attribute 
@@ -286,7 +287,7 @@ method. This method returns the `SelenideElement` type component. After that, yo
 can use all test methods provided by Selenide.
 
 ```java
-loginWindow.getDelegate().exists()
+loginWindow.getDelegate().exists();
 ```    
 
 ## Useful tips for the Groovy tests
