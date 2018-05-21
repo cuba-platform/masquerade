@@ -102,6 +102,10 @@ public class Components {
         return wire(clazz, by);
     }
 
+    public static <T> T _$(Class<T> clazz, SelenideElement target) {
+        return wire(clazz, target);
+    }
+
     protected static <T> T wireClassBy(Class<T> clazz, By by) {
         if (by == null) {
             throw new IllegalArgumentException("By cannot be null");
