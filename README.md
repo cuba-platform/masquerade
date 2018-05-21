@@ -75,7 +75,7 @@ Find the latest version number here: https://bintray.com/cuba-platform/main/masq
 
 ## Creating a test
 
-Create a new package in the `com.company.demo` and name it `composite`. Create 
+In the `src/test/java` folder create a new package in the `com.company.demo` and name it `composite`. Create 
 a new Java class in this package and name it `LoginWindow`. This class 
 should be inherited from the `Composite\<T>` where `T` is the name of your 
 class. This class will be used as a helper class, usually it declares UI 
@@ -132,7 +132,7 @@ public class LoginWindow extends Composite<LoginWindow> {
 }
 ``` 
 
-Create a Java class in the `com.company.demo` package. Name it `LoginTest`. 
+Create a Java class in the `com.company.demo` package in the `src/test/java` folder. Name it `LoginWindowTest`. 
 
 Create a new method and add ```@Test``` annotation to it. The ```@Test``` 
 annotation tells JUnit that the public void method can be run as a test case. 
