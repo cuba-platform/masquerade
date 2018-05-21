@@ -37,6 +37,12 @@ following structure:
 + settings.gradle  
 ```
 
+The simplest way to create an initial structure for the project using gradle 
+is to execute the following command: `gradle init --type java-library`. 
+An empty project with two stub files will be created for you. 
+Those files `src/man/java/Library.java` and `src/test/java/LibraryTest.java` can be safely deleted 
+after project structure is generated. Then you should create a package `com.company.demo` in the `src/test/java` folder.
+
 Here’s the complete `build.gradle` file:
 
 ```groovy
@@ -60,19 +66,22 @@ dependencies {
     testCompile('junit:junit:4.12')
     
      //the library for the UI testing
-    testCompile('com.haulmont.masquerade:masquerade-web:1.0.0')
+    testCompile('com.haulmont.masquerade:masquerade-web:1.0.6')
     
     //the library provides an ability to access web-services, JMX and etc.
-    testCompile('com.haulmont.masquerade:masquerade-connector:1.0.0') 
+    testCompile('com.haulmont.masquerade:masquerade-connector:1.0.6') 
     
     // enable logging
     testCompile('org.slf4j:slf4j-simple:1.7.25')
 }
 ```
 
+_It is recommended to verify that you use the latest released version of the library and connector._ 
+You can check it on the [releases](https://github.com/cuba-platform/masquerade/releases) page. 
+
 ## Creating a test
 
-Create a new package in the `com.company.demo` and name it `composite`. Create 
+In the `src/test/java` folder create a new package in the `com.company.demo` and name it `composite`. Create 
 a new Java class in this package and name it `LoginWindow`. This class 
 should be inherited from the `Composite\<T>` where `T` is the name of your 
 class. This class will be used as a helper class, usually it declares UI 
@@ -131,7 +140,7 @@ public class LoginWindow extends Composite<LoginWindow> {
 }
 ``` 
 
-Create a Java class in the `com.company.demo` package. Name it `LoginTest`. 
+Create a Java class in the `com.company.demo` package in the `src/test/java` folder. Name it `LoginWindowTest`. 
 
 Create a new method and add ```@Test``` annotation to it. The ```@Test``` 
 annotation tells JUnit that the public void method can be run as a test case. 
