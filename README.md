@@ -79,7 +79,7 @@ class. This class will be used as a helper class, usually it declares UI
 components of an application screen / frame / panel that is shown in a web page. 
 Also, all test methods can be declared here.
  
-All class attributes must be marked with the ```@Wire``` annotation. 
+All class attributes should be marked with the ```@Wire``` annotation. 
 This annotation has optional `path` element which allows userService to define 
 the path to the component using the `cuba-id` parameter. If the component does 
 not have the `cuba-id` parameter, you can use the ```@FindBy``` annotation 
@@ -94,19 +94,21 @@ The name of the attribute corresponds to the `cuba-id` attribute of a DOM
 element that corresponds to the UI component. 
 
 ```java
+import com.haulmont.masquerade.Wire;
+import com.haulmont.masquerade.base.Composite;
+import com.haulmont.masquerade.components.Button;
+import com.haulmont.masquerade.components.CheckBox;
+import com.haulmont.masquerade.components.Label;
+import com.haulmont.masquerade.components.LookupField;
+import com.haulmont.masquerade.components.PasswordField;
+import com.haulmont.masquerade.components.TextField;
+import org.openqa.selenium.support.FindBy;
 
-import com.haulmont.masquerade.Wire
-import com.haulmont.masquerade.base.Composite
-import com.haulmont.masquerade.components.Button
-import com.haulmont.masquerade.components.CheckBox
-import com.haulmont.masquerade.components.Label
-import com.haulmont.masquerade.components.LookupField
-import com.haulmont.masquerade.components.PasswordField
-import com.haulmont.masquerade.components.TextField
 
 public class LoginWindow extends Composite<LoginWindow> {
+
     @Wire
-    public TextField loginField; 
+    public TextField loginField;
 
     @Wire
     public PasswordField passwordField;
@@ -124,7 +126,8 @@ public class LoginWindow extends Composite<LoginWindow> {
     public Label welcomeLabel;
 
     @FindBy(className = "c-login-caption")
-    public Label welcomeLabelTest;    
+    public Label welcomeLabelTest;
+
 }
 ``` 
 
@@ -133,62 +136,62 @@ Create a Java class in the `com.company.demo` package. Name it `LoginTest`.
 Create a new method and add ```@Test``` annotation to it. The ```@Test``` 
 annotation tells JUnit that the public void method can be run as a test case. 
  
-You can use all JUnit annotations to improve the tests. Also, it is possible to 
+You can use all JUnit annotations to improve the tests. Also it is possible to 
 use a set of assertion methods provided by JUnit.
  
 ```java
-import com.company.uisample.web.ui.LoginWindow
-import com.haulmont.masquerade.components.Untyped
-import org.junit.Test
+import com.company.demo.composite.LoginWindow;
+import com.haulmont.masquerade.components.Untyped;
+import org.junit.Test;
 
-import static com.codeborne.selenide.Selenide.close
-import static com.codeborne.selenide.Selenide.open
-import static com.haulmont.masquerade.Components._$
-import static com.haulmont.masquerade.Components.wire
-import static com.haulmont.masquerade.Conditions.*
+import static com.codeborne.selenide.Selenide.close;
+import static com.codeborne.selenide.Selenide.open;
+import static com.haulmont.masquerade.Components._$;
+import static com.haulmont.masquerade.Components.wire;
+import static com.haulmont.masquerade.Conditions.*;
 
-class LoginUiTest {
-
+public class LoginWindowTest {
 
     @Test
-    void loginTest() {
+    public void loginTest() {
         // open URL of an application
-        open("http://localhost:8080/app")
+        open("http://localhost:8080/app");
 
         // obtain UI object
-        LoginWindow loginWindow = _$(LoginWindow.class)
+        LoginWindow loginWindow = _$(LoginWindow.class);
 
         loginWindow.loginField
                 .shouldBe(EDITABLE)
-                .shouldBe(ENABLED)
+                .shouldBe(ENABLED);
 
         // setting values
-        loginWindow.with {
-            loginField.setValue("admin")
-            passwordField.setValue("admin")
-
-            rememberMeCheckBox.setChecked(true)
-        }
+        loginWindow.loginField.setValue("admin");
+        loginWindow.passwordField.setValue("admin");
+        loginWindow.rememberMeCheckBox.setChecked(true);
 
         // fluent asserts
         loginWindow.welcomeLabel
-                .shouldBe(VISIBLE)
+                .shouldBe(VISIBLE);
 
-        loginWindow.loginButton
+        loginWindow.loginSubmitButton
                 .shouldBe(VISIBLE)
                 .shouldBe(ENABLED)
-                .shouldHave(caption("Submit"))
+                .shouldHave(caption("Submit"));
+
+        loginWindow.rememberMeCheckBox
+                .shouldBe(VISIBLE)
+                .shouldBe(CHECKED);
 
         // get values from Component
-        String caption = loginWindow.loginButton.getCaption()
-        boolean enabled = loginWindow.loginButton.is(ENABLED)
+        String caption = loginWindow.loginSubmitButton.getCaption();
+        boolean enabled = loginWindow.loginSubmitButton.is(ENABLED);
 
-        Untyped loginFormLayout = wire(Untyped.class, "loginFormLayout")
-        loginFormLayout.shouldBe(VISIBLE)
+        Untyped loginFormLayout = wire(Untyped.class, "loginFormLayout");
+        loginFormLayout.shouldBe(VISIBLE);
 
-        loginWindow.loginButton.click()
-
-        close()
+        loginWindow.loginSubmitButton.click();
+        
+        close();
     }
 }
 ``` 
@@ -329,11 +332,11 @@ def loginWindow = _$(LoginWindow)
 
 ## Run tests
 
-Note, that you need to download one of the latest versions of the web driver depending on the browser you want to use to testing.
+Please note that you need to download one of the latest versions of the web driver depending on the browser you want to use to testing.
 For Chrome browser this is [chromedriver](http://chromedriver.chromium.org/downloads), for Firefox this is [geckodriver](https://github.com/mozilla/geckodriver/releases).
 
 To run the test, first of all, you need to set ```cuba.testMode``` property to 
-true in the `web-app.properties` file of your CUBA application. After that, you 
+true in the `web-app.properties` file in the `web` module in your CUBA application. After that you 
 should start the application using Studio or Gradle tasks. To start application 
 with Gradle, run the following tasks in the terminal:
 
@@ -350,7 +353,7 @@ where `<your_path>` is the path to the chrome driver on your computer.
 
 ![Create Configuration](images/testConfiguration.png)
 
-After that, select the simple test or the test class you want to run, right 
+After that select the simple test or the test class you want to run, right 
 click on it and select *Debug* option.
 
 To run the tests using Gradle, add the following task to the ```build.gradle``` file:
