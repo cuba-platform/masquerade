@@ -47,10 +47,6 @@ public class Selectors extends com.codeborne.selenide.Selectors {
             bys[i] = byCubaId(path[i]);
         }
 
-        if (bys.length == 1) {
-            return bys[0];
-        }
-
         return byChain(bys);
     }
 
