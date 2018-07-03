@@ -20,6 +20,7 @@ import com.codeborne.selenide.SelenideElement;
 import com.haulmont.masquerade.Components;
 import com.haulmont.masquerade.Wire;
 import com.haulmont.masquerade.components.Container;
+import com.haulmont.masquerade.components.impl.AbstractSpecificConditionHandler;
 import org.openqa.selenium.By;
 
 /**
@@ -27,7 +28,7 @@ import org.openqa.selenium.By;
  *
  * @param <T> type of class
  */
-public abstract class Composite<T> implements Container<T> {
+public abstract class Composite<T> extends AbstractSpecificConditionHandler<T> implements Container<T> {
     @Wire
     private SelenideElement impl;
     @Wire
