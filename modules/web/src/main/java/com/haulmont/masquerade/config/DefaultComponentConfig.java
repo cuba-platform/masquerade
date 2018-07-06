@@ -58,6 +58,8 @@ public class DefaultComponentConfig implements ComponentConfig {
         components.put(SourceCodeEditor.class, SourceCodeEditorImpl::new);
         components.put(Tree.class, TreeImpl::new);
 
+        components.put(DataGrid.class, DataGridImpl::new);
+
         return components;
     }
 }
