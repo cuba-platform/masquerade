@@ -107,7 +107,6 @@ public interface DataGrid extends Component<DataGrid> {
      * @param rowBy row selector
      * @return selenide element collection
      */
-    @Log
     SelenideElement selectRow(By rowBy);
 
     /**
@@ -126,7 +125,6 @@ public interface DataGrid extends Component<DataGrid> {
      * @param rowBy row selector
      * @return selenide element collection
      */
-    @Log
     SelenideElement deselectRow(By rowBy);
 
     /**
@@ -145,11 +143,33 @@ public interface DataGrid extends Component<DataGrid> {
      * @param rowBy row selector
      * @return selenide element collection
      */
-    @Log
     ElementsCollection selectRows(By rowBy);
 
-    @Log
+    /**
+     * Select DataGrid header cell.
+     * <br>
+     * Supported bys:
+     * <ul>
+     * <li>{@link Selectors#byText(String)}</li>
+     * <li>{@link Selectors#withText(String)}</li>
+     * <li>{@link Selectors#byClassName(String)}</li>
+     * <li>{@link Selectors#byCubaId(String)}</li>
+     * </ul>
+     *
+     * @param cellBy cell selector
+     * @return selenide element
+     */
     SelenideElement getHeaderCell(By cellBy);
+
+    /**
+     * Select DataGrid header cell.
+     * <br>
+     * @param columnId cell selector
+     * @return selenide element
+     */
+    SelenideElement getHeaderCell(String columnId);
+
+    SelenideElement getDetailsRow();
 
     @Log
     DataGrid sort(String columnId, DataGrid.SortDirection direction);

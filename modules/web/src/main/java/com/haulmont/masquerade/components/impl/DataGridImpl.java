@@ -340,6 +340,16 @@ public class DataGridImpl extends AbstractComponent<DataGrid> implements DataGri
     }
 
     @Override
+    public SelenideElement getHeaderCell(String columnId) {
+        return  $(byChain(by, byClassName("v-grid-header"), byCubaId("column_" + columnId)));
+    }
+
+    @Override
+    public SelenideElement getDetailsRow() {
+        return $(byChain(by, byClassName("v-grid-spacer")));
+    }
+
+    @Override
     public DataGrid sort(String columnId, SortDirection direction) {
         if (columnId.startsWith("column_")) {
             columnId = columnId.substring("column_".length());
