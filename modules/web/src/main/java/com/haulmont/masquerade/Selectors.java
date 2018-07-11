@@ -82,10 +82,28 @@ public class Selectors extends com.codeborne.selenide.Selectors {
         return new ByRowColIndexes(rowIndex, colIndex);
     }
 
+    /**
+     * Find element that has given text (the whole text, not a substring).
+     *
+     * This method ignores difference between space, \n, \r, \t and &nbsp;
+     * This method ignores multiple spaces.
+     *
+     * @param cellText Text that searched element should have
+     * @return standard selenium By criteria
+     */
     public static By byText(String cellText) {
         return new ByTargetText(cellText);
     }
 
+    /**
+     * Find element CONTAINING given text (as a substring).
+     *
+     * This method ignores difference between space, \n, \r, \t and &nbsp;
+     * This method ignores multiple spaces.
+     *
+     * @param cellText Text to search inside element
+     * @return standard selenium By criteria`
+     */
     public static By withText(String cellText) {
         return new WithTargetText(cellText);
     }
