@@ -27,6 +27,8 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 import javax.annotation.Nonnull;
 
+import static com.google.common.base.Preconditions.checkArgument;
+
 public class ServiceGenerator {
 
     private static LoadingCache<String, Retrofit.Builder> builders = CacheBuilder.newBuilder()
@@ -69,6 +71,8 @@ public class ServiceGenerator {
      * @return service proxy instance
      */
     public static <S> S createService(String baseUrl, Class<S> serviceClass, AccessToken accessToken) {
+        checkArgument(accessToken != null, "accessToken should not be null");
+
         return createService(baseUrl, serviceClass, accessToken.toAuthorizationToken());
     }
 
