@@ -48,13 +48,10 @@ version = '0.1'
 sourceCompatibility = 1.8
 
 repositories {
-    mavenCentral()
-    
-    repositories {
-        maven {
-            url "https://dl.bintray.com/cuba-platform/main"
-        }
-    }
+    mavenCentral()    
+    maven {
+        url "https://dl.bintray.com/cuba-platform/main"
+    }    
 }
 
 dependencies {
