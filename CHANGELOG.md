@@ -2,7 +2,39 @@
 
 All notable changes to this project will be documented in this file.
 
-## Unreleased
+## 1.0.7 - 2018-11-13
+
+### Added
+
+#### web
+
+- Introduce DataGrid component
+- Updated Selenium / Selenide version to 4.14.2 / 3.141.5
+- Ability to apply a custom condition to an instance of a Composite class
+- Shortcut method for wire(Class, SelenideElement)
+
+#### connector
+
+- Provided service proxy generation method without authentication
+
+## 1.0.6 - 2018-05-15
+
+### Added
+
+#### web
+
+- Short syntax variant $c(id), replacement for $(byCubaId(id))
+
+#### connector
+
+- OAuthTokenService method mapping for token revocation
+
+## 1.0.5 - 2018-03-18
+
+### Fixed
+
+- Menu items do not open in the new version of the Firefox
+- Get rid of row.shouldNotHave(selectedClass) in Table.selectRow() 
 
 ## 1.0.4 - 2018-01-23
 
