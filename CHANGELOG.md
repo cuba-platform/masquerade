@@ -9,7 +9,6 @@ All notable changes to this project will be documented in this file.
 #### web
 
 - Introduce DataGrid component
-- Updated Selenium / Selenide version to 4.14.2 / 3.141.5
 - Ability to apply a custom condition to an instance of a Composite class
 - Shortcut method for wire(Class, SelenideElement)
 
