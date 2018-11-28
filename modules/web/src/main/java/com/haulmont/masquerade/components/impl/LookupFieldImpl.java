@@ -19,6 +19,7 @@ package com.haulmont.masquerade.components.impl;
 import com.codeborne.selenide.SelenideElement;
 import com.haulmont.masquerade.components.LookupField;
 import org.openqa.selenium.By;
+import org.openqa.selenium.Keys;
 
 import static com.codeborne.selenide.Condition.*;
 import static com.codeborne.selenide.Selectors.byClassName;
@@ -73,7 +74,8 @@ public class LookupFieldImpl extends AbstractInputComponent<LookupField> impleme
                 .shouldBe(enabled)
                 .click();
 
-        inputImpl.clear();
+        // being used workaround since clear doesn't work for autocomplete fields
+        inputImpl.sendKeys(Keys.chord(Keys.CONTROL, "a"), Keys.DELETE);
 
         if (!isNullOrEmpty(filter)) {
             // todo may be replace with javascript set to speed up this call
