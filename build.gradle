@@ -20,7 +20,7 @@ allprojects {
     if (rootProject.hasProperty('buildVersion')) {
         version rootProject.buildVersion
     } else {
-        version '1.0-SNAPSHOT'
+        version '2.0-SNAPSHOT'
     }
 
     repositories {
@@ -85,7 +85,7 @@ configure(project(':masquerade-connector')) {
     dependencies {
         compile 'com.squareup.retrofit2:retrofit:2.4.0'
         compile 'com.squareup.retrofit2:converter-gson:2.4.0'
-        compile 'com.google.guava:guava:24.1-jre'
+        compile 'com.google.guava:guava:27.0-jre'
         compile 'org.slf4j:slf4j-api:1.7.25'
 
         testCompile 'junit:junit:4.12'
@@ -98,10 +98,10 @@ configure(project(':masquerade-web')) {
 
     dependencies {
         compile 'com.leacox.motif:motif:0.1'
-        compile 'com.codeborne:selenide:4.11.4'
-        compile 'org.seleniumhq.selenium:selenium-java:3.12.0'
+        compile 'com.codeborne:selenide:5.0.1'
+        compile 'org.seleniumhq.selenium:selenium-java:3.141.59'
 
-        testCompile 'org.codehaus.groovy:groovy-all:2.4.14'
+        testCompile 'org.codehaus.groovy:groovy:2.5.4'
         testCompile 'junit:junit:4.12'
         testCompile 'org.slf4j:slf4j-simple:1.7.25'
     }

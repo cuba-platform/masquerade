@@ -2,6 +2,10 @@
 
 All notable changes to this project will be documented in this file.
 
+## Unreleased
+
+- Updated versions of selenide and selenium-java
+
 ## 1.0.7 - 2018-11-13
 
 ### Added
