@@ -22,9 +22,9 @@ import org.junit.Ignore;
 import org.junit.Test;
 
 import static com.codeborne.selenide.Selenide.open;
-import static com.haulmont.masquerade.Components._$;
 import static com.haulmont.masquerade.Components.wire;
 import static com.haulmont.masquerade.Conditions.*;
+import static com.haulmont.masquerade.Selectors.$c;
 import static org.junit.Assert.assertNotNull;
 
 @Ignore
@@ -33,7 +33,7 @@ public class LoginTest {
     public void login() {
         open("http://localhost:8080/app");
 
-        LoginWindow loginWindow = _$(LoginWindow.class);
+        LoginWindow loginWindow = $c(LoginWindow.class);
 
         assertNotNull(loginWindow.getLoginField());
         assertNotNull(loginWindow.getPasswordField());

@@ -22,9 +22,9 @@ import org.junit.Ignore
 import org.junit.Test
 
 import static com.codeborne.selenide.Selenide.open
-import static com.haulmont.masquerade.Components._$
 import static com.haulmont.masquerade.Components.wire
 import static com.haulmont.masquerade.Conditions.*
+import static com.haulmont.masquerade.Selectors.$c
 import static com.haulmont.masquerade.components.Notification.Type
 import static org.junit.Assert.assertNotNull
 
@@ -58,7 +58,7 @@ class GroovyLoginTest {
 
             loginButton.click()
 
-            _$(Notification)
+            $c(Notification)
                     .shouldBe(VISIBLE)
                     .shouldHave(captionContains("Failed"))
                     .shouldHave(descriptionContains("Unknown login"))

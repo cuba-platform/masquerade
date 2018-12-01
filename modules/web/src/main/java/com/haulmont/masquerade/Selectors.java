@@ -28,6 +28,7 @@ import java.util.List;
 
 import static com.codeborne.selenide.Selenide.$;
 import static com.google.common.base.Preconditions.checkNotNull;
+import static com.haulmont.masquerade.Components.wire;
 import static java.util.Collections.singletonList;
 
 public class Selectors extends com.codeborne.selenide.Selectors {
@@ -128,6 +129,32 @@ public class Selectors extends com.codeborne.selenide.Selectors {
      */
     public static SelenideElement $c(String cubaId) {
         return $(byCubaId(cubaId));
+    }
+
+    /**
+     * Get selenide element by cuba-id path.
+     *
+     * @param path cuba-id path
+     * @return SelenideElement
+     */
+    public static SelenideElement $c(String... path) {
+        return $(byPath(path));
+    }
+
+    public static <T> T $c(Class<T> clazz) {
+        return wire(clazz);
+    }
+
+    public static <T> T $c(Class<T> clazz, String... path) {
+        return wire(clazz, path);
+    }
+
+    public static <T> T $c(Class<T> clazz, By by) {
+        return wire(clazz, by);
+    }
+
+    public static <T> T $c(Class<T> clazz, SelenideElement target) {
+        return wire(clazz, target);
     }
 
     public static class ByTarget extends By {
