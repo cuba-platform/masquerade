@@ -16,21 +16,40 @@
 
 package com.haulmont.masquerade.components;
 
-import com.haulmont.masquerade.util.Log;
+import com.haulmont.masquerade.Selectors;
 import com.haulmont.masquerade.base.ByLocator;
 import com.haulmont.masquerade.base.SelenideElementWrapper;
+import com.haulmont.masquerade.util.Log;
+import org.openqa.selenium.By;
 
 import java.util.List;
 
 public interface PopupButton extends Component<PopupButton> {
-    void click(String option);
+    void click(String optionText);
 
     @Log
     PopupContent openPopupContent();
     PopupContent getPopupContent();
 
     interface PopupContent extends SelenideElementWrapper<PopupContent>, ByLocator {
-        void select(String option);
+        void select(String optionText);
+
+        /**
+         * Trigger action of popup menu.
+         * <br>
+         * Supported bys:
+         * <ul>
+         * <li>{@link Selectors#byText(String)}</li>
+         * <li>{@link Selectors#withText(String)}</li>
+         * <li>{@link Selectors#byCubaId(String)} </li>
+         * </ul>
+         *
+         * @param actionBy action selector
+         */
+        @Log
+        void trigger(By actionBy);
+        @Log
+        void trigger(String cubaId);
 
         List<String> getOptions();
     }

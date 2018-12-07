@@ -17,6 +17,7 @@
 package com.haulmont.masquerade.components.impl;
 
 import com.codeborne.selenide.SelenideElement;
+import com.haulmont.masquerade.Selectors;
 import com.haulmont.masquerade.components.PopupButton;
 import org.openqa.selenium.By;
 
@@ -27,8 +28,11 @@ import static com.codeborne.selenide.Selectors.byText;
 import static com.codeborne.selenide.Selenide.$;
 import static com.codeborne.selenide.Selenide.$$;
 import static com.haulmont.masquerade.Selectors.byChain;
+import static com.haulmont.masquerade.Selectors.byCubaId;
 import static com.haulmont.masquerade.sys.TagNames.SPAN;
 import static com.haulmont.masquerade.sys.VaadinClassNames.disabledClass;
+import static com.haulmont.masquerade.sys.matchers.InstanceOfCases.hasType;
+import static com.leacox.motif.Motif.match;
 import static org.openqa.selenium.By.className;
 
 public class PopupButtonImpl extends AbstractComponent<PopupButton> implements PopupButton {
@@ -38,9 +42,9 @@ public class PopupButtonImpl extends AbstractComponent<PopupButton> implements P
     }
 
     @Override
-    public void click(String option) {
+    public void click(String optionText) {
         openPopupContent()
-                .select(option);
+                .select(optionText);
     }
 
     @Override
@@ -83,17 +87,48 @@ public class PopupButtonImpl extends AbstractComponent<PopupButton> implements P
         }
 
         @Override
-        public void select(String option) {
-            $(byChain(by, SPAN, byText(option)))
-                    .parent().parent()
-                    .shouldBe(visible)
-                    .shouldNotHave(disabledClass)
-                    .click();
+        public void select(String optionText) {
+            trigger(byText(optionText));
+        }
+
+        @SuppressWarnings("CodeBlock2Expr")
+        @Override
+        public void trigger(By actionBy) {
+            match(actionBy)
+                    .when(hasType(Selectors.ByTargetText.class)).then(byText -> {
+
+                        $(byChain(by, SPAN, byText))
+                                .parent().parent()
+                                .shouldBe(visible)
+                                .shouldNotHave(disabledClass)
+                                .click();
+                    })
+                    .when(hasType(Selectors.WithTargetText.class)).then(withText -> {
+
+                        $(byChain(by, SPAN, withText))
+                                .parent().parent()
+                                .shouldBe(visible)
+                                .shouldNotHave(disabledClass)
+                                .click();
+                    })
+                    .when(hasType(Selectors.ByCubaId.class)).then(byCubaId -> {
+
+                        $(byChain(by, byCubaId))
+                                .shouldBe(visible)
+                                .shouldNotHave(disabledClass)
+                                .click();
+                    })
+                    .doMatch();
+        }
+
+        @Override
+        public void trigger(String cubaId) {
+            trigger(byCubaId(cubaId));
         }
 
         @Override
         public List<String> getOptions() {
-            return $$(byChain(by, SPAN, className("v-button-caption"))).texts();
+            return $$(byChain(by, SPAN, className("c-cm-button-caption"))).texts();
         }
     }
 }

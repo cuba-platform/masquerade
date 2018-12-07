@@ -30,10 +30,19 @@ public interface Tree extends Component<Tree> {
      * <li>{@link Selectors#byText(String)}</li>
      * <li>{@link Selectors#withText(String)}</li>
      * <li>{@link Selectors#byClassName(String)}</li>
+     * <li>{@link Selectors#byRowIndex(int)} </li>
      * </ul>
      *
      * @param nodeBy node selector
      * @return selenide element
      */
     SelenideElement getNode(By nodeBy);
+
+    /* todo
+    void select(By nodeBy);
+
+    void expand(By nodeBy);
+
+    void collapse(By nodeBy);
+    */
 }

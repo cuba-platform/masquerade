@@ -61,10 +61,10 @@ public class TreeImpl extends AbstractComponent<Tree> implements Tree {
 
                     return $(byChain(by, byXpath(tdXpath)));
                 })
-                .when(hasType(Selectors.ByRowIndex.class)).get(byColRow -> {
-                    int rowIndex = byColRow.getIndex() + 1;
+                .when(hasType(Selectors.ByRowIndex.class)).get(byRow -> {
+                    int rowIndex = byRow.getIndex() + 1;
 
-                    String tdsXpath = "(.//tr)[" + rowIndex + "]//td[" + 1 +"]";
+                    String tdsXpath = "(.//tr)[" + rowIndex + "]//td[" + 1 + "]";
 
                     return $(byChain(by, byClassName("v-tree8-body"), byXpath(tdsXpath)));
                 })
