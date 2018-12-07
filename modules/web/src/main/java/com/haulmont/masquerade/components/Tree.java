@@ -16,5 +16,24 @@
 
 package com.haulmont.masquerade.components;
 
+import com.codeborne.selenide.SelenideElement;
+import com.haulmont.masquerade.Selectors;
+import org.openqa.selenium.By;
+
 public interface Tree extends Component<Tree> {
+
+    /**
+     * Obtain reference to Tree node.
+     * <br>
+     * Supported bys:
+     * <ul>
+     * <li>{@link Selectors#byText(String)}</li>
+     * <li>{@link Selectors#withText(String)}</li>
+     * <li>{@link Selectors#byClassName(String)}</li>
+     * </ul>
+     *
+     * @param nodeBy node selector
+     * @return selenide element
+     */
+    SelenideElement getNode(By nodeBy);
 }
