@@ -24,11 +24,9 @@ import org.openqa.selenium.By;
 import java.util.List;
 
 import static com.codeborne.selenide.Condition.visible;
-import static com.codeborne.selenide.Selectors.byText;
 import static com.codeborne.selenide.Selenide.$;
 import static com.codeborne.selenide.Selenide.$$;
-import static com.haulmont.masquerade.Selectors.byChain;
-import static com.haulmont.masquerade.Selectors.byCubaId;
+import static com.haulmont.masquerade.Selectors.*;
 import static com.haulmont.masquerade.sys.TagNames.SPAN;
 import static com.haulmont.masquerade.sys.VaadinClassNames.disabledClass;
 import static com.haulmont.masquerade.sys.matchers.InstanceOfCases.hasType;
@@ -36,6 +34,8 @@ import static com.leacox.motif.Motif.match;
 import static org.openqa.selenium.By.className;
 
 public class PopupButtonImpl extends AbstractComponent<PopupButton> implements PopupButton {
+
+    public static final By POPUP_PANEL = By.cssSelector("div.v-popupbutton-popup");
 
     public PopupButtonImpl(By by) {
         super(by);
@@ -53,7 +53,7 @@ public class PopupButtonImpl extends AbstractComponent<PopupButton> implements P
                 .shouldNotHave(disabledClass)
                 .click();
 
-        PopupContentImpl popupContent = new PopupContentImpl(By.cssSelector("div.v-popupbutton-popup"));
+        PopupContentImpl popupContent = new PopupContentImpl(POPUP_PANEL);
         popupContent.shouldBe(visible);
 
         return popupContent;
@@ -61,7 +61,7 @@ public class PopupButtonImpl extends AbstractComponent<PopupButton> implements P
 
     @Override
     public PopupContent getPopupContent() {
-        PopupContentImpl popupContent = new PopupContentImpl(By.cssSelector("div.v-popupbutton-popup"));
+        PopupContentImpl popupContent = new PopupContentImpl(POPUP_PANEL);
         popupContent.shouldBe(visible);
 
         return popupContent;
