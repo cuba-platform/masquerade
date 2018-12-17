@@ -19,7 +19,9 @@ package com.haulmont.masquerade.components.impl;
 import com.codeborne.selenide.SelenideElement;
 import com.haulmont.masquerade.Components;
 import com.haulmont.masquerade.components.LookupPickerField;
+import org.apache.commons.lang3.StringUtils;
 import org.openqa.selenium.By;
+import org.openqa.selenium.Keys;
 
 import static com.codeborne.selenide.Condition.*;
 import static com.codeborne.selenide.Selectors.byClassName;
@@ -67,7 +69,10 @@ public class LookupPickerFieldImpl extends AbstractInputComponent<LookupPickerFi
                 .shouldBe(enabled)
                 .click();
 
-        inputImpl.clear();
+        if (StringUtils.isNotEmpty(inputImpl.getValue())) {
+            // remove all if needed
+            inputImpl.sendKeys(Keys.chord(Keys.CONTROL, "a"), Keys.DELETE);
+        }
 
         if (!isNullOrEmpty(filter)) {
             // todo may be replace with javascript set to speed up this call
