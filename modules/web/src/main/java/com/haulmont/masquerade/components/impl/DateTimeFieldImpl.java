@@ -39,7 +39,7 @@ import static org.openqa.selenium.By.cssSelector;
 public class DateTimeFieldImpl extends AbstractComponent<DateTimeField> implements DateTimeField {
 
     public static final By DATEPART = cssSelector("div[class*='popupcalendar'] > input");
-    public static final By TIMEPART = cssSelector("input[class*='maskedfield']");
+    public static final By TIMEPART = cssSelector("input[class*='timefield']");
 
     public DateTimeFieldImpl(By by) {
         super(by);
