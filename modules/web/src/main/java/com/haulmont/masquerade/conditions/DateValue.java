@@ -26,7 +26,7 @@ public class DateValue extends SpecificCondition {
 
     @Override
     public String toString() {
-        return name + " '" + expectedValue + "'";
+        return getName() + " '" + expectedValue + "'";
     }
 
     public String getExpectedValue() {

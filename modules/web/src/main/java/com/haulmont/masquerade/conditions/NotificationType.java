@@ -32,6 +32,6 @@ public class NotificationType extends SpecificCondition {
 
     @Override
     public String toString() {
-        return name + " '" + type + "'";
+        return getName() + " '" + type + "'";
     }
 }

@@ -26,7 +26,7 @@ public class Description extends SpecificCondition {
 
     @Override
     public String toString() {
-        return name + " '" + description + "'";
+        return getName() + " '" + description + "'";
     }
 
     public String getDescription() {

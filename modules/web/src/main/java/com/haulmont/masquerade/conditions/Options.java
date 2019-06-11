@@ -36,6 +36,6 @@ public class Options extends SpecificCondition {
 
     @Override
     public String toString() {
-        return name + " : " + StringUtils.join(options, ',');
+        return getName() + " : " + StringUtils.join(options, ',');
     }
 }

@@ -17,6 +17,7 @@
 package com.haulmont.masquerade.conditions;
 
 import com.codeborne.selenide.Condition;
+import com.codeborne.selenide.Driver;
 import org.openqa.selenium.WebElement;
 
 /**
@@ -28,7 +29,7 @@ public class SpecificCondition extends Condition {
     }
 
     @Override
-    public boolean apply(WebElement element) {
+    public boolean apply(Driver driver, WebElement element) {
         SpecificConditionHandler handler = SpecificConditionContext.getHandler();
         if (handler == null) {
             throw new RuntimeException(
