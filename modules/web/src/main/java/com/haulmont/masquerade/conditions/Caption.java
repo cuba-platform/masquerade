@@ -26,7 +26,7 @@ public class Caption extends SpecificCondition {
 
     @Override
     public String toString() {
-        return name + " '" + caption + "'";
+        return getName() + " '" + caption + "'";
     }
 
     public String getCaption() {

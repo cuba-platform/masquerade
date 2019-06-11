@@ -27,7 +27,7 @@ public class ValueContains extends SpecificCondition {
 
     @Override
     public String toString() {
-        return name + " '" + expectedValueSubstring + "'";
+        return getName() + " '" + expectedValueSubstring + "'";
     }
 
     public String getExpectedValueSubstring() {

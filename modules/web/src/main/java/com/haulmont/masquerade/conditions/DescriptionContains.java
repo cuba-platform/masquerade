@@ -26,7 +26,7 @@ public class DescriptionContains extends SpecificCondition {
 
     @Override
     public String toString() {
-        return name + " '" + descriptionSubstring + "'";
+        return getName() + " '" + descriptionSubstring + "'";
     }
 
     public String getDescriptionSubstring() {
