@@ -39,6 +39,7 @@ public class DefaultComponentConfig implements ComponentConfig {
         components.put(AppMenu.class, AppMenuImpl::new);
         components.put(LookupField.class, LookupFieldImpl::new);
         components.put(Table.class, TableImpl::new);
+        components.put(GroupTable.class, GroupTableImpl::new);
         components.put(PopupButton.class, PopupButtonImpl::new);
         components.put(DateField.class, DateFieldImpl::new);
         components.put(DateTimeField.class, DateTimeFieldImpl::new);
