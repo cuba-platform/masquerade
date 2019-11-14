@@ -28,6 +28,7 @@ import org.openqa.selenium.Keys;
 
 import static com.codeborne.selenide.Condition.*;
 import static com.codeborne.selenide.Selenide.$;
+import static com.haulmont.masquerade.Conditions.CHECKBOX_CHECKED;
 import static com.haulmont.masquerade.Conditions.EDITABLE;
 import static com.haulmont.masquerade.Conditions.READONLY;
 import static com.haulmont.masquerade.Selectors.byChain;
@@ -49,7 +50,7 @@ public class CheckBoxImpl extends AbstractComponent<CheckBox> implements CheckBo
     public boolean apply(SpecificCondition condition) {
         return componentApply(match(condition), getDelegate())
                 .when(eq(Conditions.CHECKED)).get(() ->
-                        $(byChain(by, INPUT)).is(Condition.checked)
+                        $(byChain(by, INPUT)).is(CHECKBOX_CHECKED)
                 )
                 .when(eq(Conditions.SELECTED)).get(() ->
                         $(byChain(by, INPUT)).is(Condition.selected)
@@ -75,7 +76,7 @@ public class CheckBoxImpl extends AbstractComponent<CheckBox> implements CheckBo
                 .shouldBe(visible)
                 .shouldBe(enabled);
 
-        if (checked != checkBoxInput.is(Condition.checked)) {
+        if (checked != checkBoxInput.is(CHECKBOX_CHECKED)) {
             checkBoxInput.sendKeys(Keys.SPACE);
         }
 
