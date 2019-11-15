@@ -8,6 +8,7 @@ import com.haulmont.masquerade.Selectors;
 import com.haulmont.masquerade.components.DataGrid;
 import com.haulmont.masquerade.conditions.SpecificCondition;
 import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.interactions.Actions;
@@ -27,6 +28,7 @@ import static com.haulmont.masquerade.Conditions.LOADED;
 import static com.haulmont.masquerade.Conditions.VISIBLE;
 import static com.haulmont.masquerade.Selectors.byChain;
 import static com.haulmont.masquerade.Selectors.byCubaId;
+import static com.haulmont.masquerade.components.impl.TableImpl.MAC_OS_PLATFORM;
 import static com.haulmont.masquerade.sys.VaadinClassNames.selectedClass;
 import static com.haulmont.masquerade.sys.matchers.ConditionCases.componentApply;
 import static com.haulmont.masquerade.sys.matchers.InstanceOfCases.hasType;
@@ -270,9 +272,11 @@ public class DataGridImpl extends AbstractComponent<DataGrid> implements DataGri
         WebDriver webDriver = WebDriverRunner.getWebDriver();
         Actions action = new Actions(webDriver);
 
-        action.keyDown(Keys.CONTROL)
+        Keys controlKey = getControlKey();
+
+        action.keyDown(controlKey)
                 .click(row.getWrappedElement())
-                .keyUp(Keys.CONTROL)
+                .keyUp(controlKey)
                 .build()
                 .perform();
 
@@ -293,9 +297,11 @@ public class DataGridImpl extends AbstractComponent<DataGrid> implements DataGri
         for (SelenideElement row : rows) {
             row.shouldNotHave(selectedClass);
 
-            action.keyDown(Keys.CONTROL)
+            Keys controlKey = getControlKey();
+
+            action.keyDown(controlKey)
                     .click(row.getWrappedElement())
-                    .keyUp(Keys.CONTROL)
+                    .keyUp(controlKey)
                     .build()
                     .perform();
         }
@@ -414,5 +420,29 @@ public class DataGridImpl extends AbstractComponent<DataGrid> implements DataGri
         }
 
         return 2;
+    }
+
+    /**
+     * @return control key depending on operating system
+     */
+    protected Keys getControlKey() {
+        Keys controlKey = Keys.CONTROL;
+
+        WebDriver webDriver = WebDriverRunner.getWebDriver();
+        if (webDriver instanceof JavascriptExecutor) {
+            // check if working on MacOS
+            Object result = ((JavascriptExecutor) webDriver)
+                    .executeScript("return window.navigator.platform");
+
+            if (result instanceof String) {
+                String platform = (String) result;
+
+                if (MAC_OS_PLATFORM.equals(platform)) {
+                    controlKey = Keys.COMMAND;
+                }
+            }
+        }
+
+        return controlKey;
     }
 }

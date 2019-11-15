@@ -25,6 +25,7 @@ import com.haulmont.masquerade.components.Table;
 import com.haulmont.masquerade.conditions.SpecificCondition;
 import com.haulmont.masquerade.sys.TagNames;
 import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.interactions.Actions;
@@ -49,6 +50,8 @@ import static com.leacox.motif.MatchesExact.eq;
 import static com.leacox.motif.Motif.match;
 
 public class TableImpl extends AbstractComponent<Table> implements Table {
+
+    public static final String MAC_OS_PLATFORM = "MacIntel";
 
     public TableImpl(By by) {
         super(by);
@@ -286,9 +289,11 @@ public class TableImpl extends AbstractComponent<Table> implements Table {
         WebDriver webDriver = WebDriverRunner.getWebDriver();
         Actions action = new Actions(webDriver);
 
-        action.keyDown(Keys.CONTROL)
+        Keys controlKey = getControlKey();
+
+        action.keyDown(controlKey)
                 .click(row.getWrappedElement())
-                .keyUp(Keys.CONTROL)
+                .keyUp(controlKey)
                 .build()
                 .perform();
 
@@ -309,9 +314,11 @@ public class TableImpl extends AbstractComponent<Table> implements Table {
         for (SelenideElement row : rows) {
             row.shouldNotHave(selectedClass);
 
-            action.keyDown(Keys.CONTROL)
+            Keys controlKey = getControlKey();
+
+            action.keyDown(controlKey)
                     .click(row.getWrappedElement())
-                    .keyUp(Keys.CONTROL)
+                    .keyUp(controlKey)
                     .build()
                     .perform();
         }
@@ -411,5 +418,29 @@ public class TableImpl extends AbstractComponent<Table> implements Table {
         }
 
         return 2;
+    }
+
+    /**
+     * @return control key depending on operating system
+     */
+    protected Keys getControlKey() {
+        Keys controlKey = Keys.CONTROL;
+
+        WebDriver webDriver = WebDriverRunner.getWebDriver();
+        if (webDriver instanceof JavascriptExecutor) {
+            // check if working on MacOS
+            Object result = ((JavascriptExecutor) webDriver)
+                    .executeScript("return window.navigator.platform");
+
+            if (result instanceof String) {
+                String platform = (String) result;
+
+                if (MAC_OS_PLATFORM.equals(platform)) {
+                    controlKey = Keys.COMMAND;
+                }
+            }
+        }
+
+        return controlKey;
     }
 }
