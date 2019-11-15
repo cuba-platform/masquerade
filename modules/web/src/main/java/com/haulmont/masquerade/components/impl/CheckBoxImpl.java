@@ -22,13 +22,13 @@ import com.haulmont.masquerade.Conditions;
 import com.haulmont.masquerade.components.CheckBox;
 import com.haulmont.masquerade.conditions.Caption;
 import com.haulmont.masquerade.conditions.CaptionContains;
+import com.haulmont.masquerade.conditions.CheckBoxChecked;
 import com.haulmont.masquerade.conditions.SpecificCondition;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
 
 import static com.codeborne.selenide.Condition.*;
 import static com.codeborne.selenide.Selenide.$;
-import static com.haulmont.masquerade.Conditions.CHECKBOX_CHECKED;
 import static com.haulmont.masquerade.Conditions.EDITABLE;
 import static com.haulmont.masquerade.Conditions.READONLY;
 import static com.haulmont.masquerade.Selectors.byChain;
@@ -41,6 +41,8 @@ import static com.leacox.motif.MatchesExact.eq;
 import static com.leacox.motif.Motif.match;
 
 public class CheckBoxImpl extends AbstractComponent<CheckBox> implements CheckBox {
+
+    protected static final Condition CHECKBOX_CHECKED = new CheckBoxChecked("checked");
 
     public CheckBoxImpl(By by) {
         super(by);

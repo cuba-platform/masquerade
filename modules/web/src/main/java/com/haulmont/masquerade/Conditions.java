@@ -57,8 +57,6 @@ public class Conditions {
 
     public static final Condition CHECKED = new SpecificCondition("checked");
 
-    public static final Condition CHECKBOX_CHECKED = new CheckBoxChecked("checked");
-
     public static final Condition SELECTED = new SpecificCondition("selected");
 
     public static final Condition EXPANDED = new SpecificCondition("expanded");
