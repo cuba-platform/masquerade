@@ -137,6 +137,14 @@ public class Components {
 
             return proxyComponent(clazz, instance);
         } else {
+            if (SelenideElement.class.isAssignableFrom(clazz)) {
+                SelenideElement element = $(by);
+                if (element != null) {
+                    //noinspection unchecked
+                    return (T) element;
+                }
+            }
+
             // custom composite
             T instance;
             try {
