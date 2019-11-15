@@ -16,16 +16,35 @@
 
 package com.haulmont.masquerade.components.impl;
 
+import com.codeborne.selenide.SelenideElement;
 import com.haulmont.masquerade.components.DateField;
+import com.haulmont.masquerade.conditions.DateValue;
+import com.haulmont.masquerade.conditions.SpecificCondition;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
 
 import static com.codeborne.selenide.Condition.*;
+import static com.codeborne.selenide.Selenide.$;
+import static com.haulmont.masquerade.Selectors.byChain;
+import static com.haulmont.masquerade.components.impl.DateTimeFieldImpl.DATEPART;
+import static com.haulmont.masquerade.sys.matchers.ConditionCases.componentApply;
+import static com.haulmont.masquerade.sys.matchers.InstanceOfCases.hasType;
+import static com.leacox.motif.Motif.match;
 
 public class DateFieldImpl extends AbstractInputComponent<DateField> implements DateField {
 
     public DateFieldImpl(By by) {
         super(by);
+    }
+
+    @Override
+    public boolean apply(SpecificCondition condition) {
+        return componentApply(match(condition), impl)
+                .when(hasType(DateValue.class)).get(dv -> {
+                    SelenideElement dateFieldImpl = $(byChain(by, DATEPART));
+                    return dateFieldImpl.has(exactValue(dv.getExpectedValue()));
+                })
+                .getMatch();
     }
 
     @Override
