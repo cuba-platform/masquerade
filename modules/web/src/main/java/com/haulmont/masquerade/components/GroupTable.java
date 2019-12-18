@@ -2,6 +2,7 @@ package com.haulmont.masquerade.components;
 
 import com.haulmont.masquerade.Conditions;
 import com.haulmont.masquerade.util.Log;
+import org.openqa.selenium.By;
 
 /**
  * GroupTable component.
@@ -13,6 +14,36 @@ import com.haulmont.masquerade.util.Log;
  * </ul>
  */
 public interface GroupTable extends Component<GroupTable> {
+
+    /**
+     * Expands first group row matching the given {@code groupRowSelector}.
+     * <p>
+     * Example:
+     * <pre>
+     *    $c(GroupTable, 'tableId')
+     *        .expand(withText('groupRowTextSubstring'))
+     * </pre>
+     *
+     * @param groupRowSelector selector of the group row to expand
+     *
+     * @return component instance
+     */
+    GroupTable expand(By groupRowSelector);
+
+    /**
+     * Expands first group row matching the given {@code groupRowSelector}.
+     * <p>
+     * Example:
+     * <pre>
+     *    $c(GroupTable, 'tableId')
+     *        .collapse(withText('groupRowTextSubstring'))
+     * </pre>
+     *
+     * @param groupRowSelector selector of the group row to collapse
+     *
+     * @return component instance
+     */
+    GroupTable collapse(By groupRowSelector);
 
     /**
      * Expands all groups.

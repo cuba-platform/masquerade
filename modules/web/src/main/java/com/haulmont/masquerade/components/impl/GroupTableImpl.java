@@ -26,9 +26,13 @@ import static org.openqa.selenium.By.cssSelector;
 
 public class GroupTableImpl extends AbstractComponent<GroupTable> implements GroupTable {
 
+    public static final String TABLE_CLASS_NAME = "v-table";
+    public static final String GROUP_ROW_CLASS_NAME = "c-group-row";
+    public static final String GROUP_ROW_CAPTION_CLASS_NAME = "c-grouptable-float";
+    public static final String EXPANDED_ROW_CLASS_NAME = "v-expanded";
+
     public static final By CELL_EXPANDER = cssSelector("div[class*='c-grouptable-group-cell-expander']");
     public static final By GROUP_ROW = cssSelector("tr.c-group-row");
-    public static final String EXPANDED_ROW_STYLE = "v-expanded";
 
     public GroupTableImpl(By by) {
         super(by);
@@ -53,21 +57,63 @@ public class GroupTableImpl extends AbstractComponent<GroupTable> implements Gro
     }
 
     @Override
+    public GroupTable expand(By groupRowSelector) {
+        SelenideElement element = $(byChain(by, groupRowSelector))
+                .shouldBe(visible)
+                .shouldHave(cssClass(GROUP_ROW_CAPTION_CLASS_NAME));
+
+        while (element != null
+                && !element.has(cssClass(TABLE_CLASS_NAME))
+                && !element.has(cssClass(GROUP_ROW_CLASS_NAME))) {
+            element = element.parent();
+        }
+
+        if (element != null
+                && element.has(cssClass(GROUP_ROW_CLASS_NAME))) {
+            expandRow(element);
+        }
+
+        return this;
+    }
+
+    @Override
+    public GroupTable collapse(By groupRowSelector) {
+        SelenideElement element = $(byChain(by, groupRowSelector))
+                .shouldBe(visible)
+                .shouldHave(cssClass(GROUP_ROW_CAPTION_CLASS_NAME));
+
+        while (element != null
+                && !element.has(cssClass(TABLE_CLASS_NAME))
+                && !element.has(cssClass(GROUP_ROW_CLASS_NAME))) {
+            element = element.parent();
+        }
+
+        if (element != null
+                && element.has(cssClass(GROUP_ROW_CLASS_NAME))) {
+            collapseRow(element);
+        }
+
+        return this;
+    }
+
+    @Override
     public GroupTable expandAll() {
-        List<SelenideElement> collapsedRows = getGroupRows(this::isRowCollapsed);
-        while (!collapsedRows.isEmpty()) {
-            collapsedRows.forEach(this::expandRow);
-            collapsedRows = getGroupRows(this::isRowCollapsed);
+        while (!getGroupRows(this::isRowCollapsed).isEmpty()) {
+            SelenideElement collapsedRow = getGroupRows(this::isRowCollapsed)
+                    .get(0);
+
+            expandRow(collapsedRow);
         }
         return this;
     }
 
     @Override
     public GroupTable collapseAll() {
-        List<SelenideElement> expandedRows = getGroupRows(this::isRowExpanded);
-        while (!expandedRows.isEmpty()) {
-            expandedRows.forEach(this::collapseRow);
-            expandedRows = getGroupRows(this::isRowExpanded);
+        while (!getGroupRows(this::isRowExpanded).isEmpty()) {
+            SelenideElement expandedRow = getGroupRows(this::isRowExpanded)
+                    .get(0);
+
+            collapseRow(expandedRow);
         }
         return this;
     }
@@ -104,7 +150,7 @@ public class GroupTableImpl extends AbstractComponent<GroupTable> implements Gro
     }
 
     protected boolean isRowExpanded(SelenideElement groupRow) {
-        return groupRow.has(cssClass(EXPANDED_ROW_STYLE));
+        return groupRow.has(cssClass(EXPANDED_ROW_CLASS_NAME));
     }
 
     protected boolean isRowCollapsed(SelenideElement groupRow) {
