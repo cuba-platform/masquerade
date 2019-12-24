@@ -4,7 +4,7 @@ masquerade
 Cuba Platform UI testing library.
 
 <a href="http://www.apache.org/licenses/LICENSE-2.0"><img src="https://img.shields.io/badge/license-Apache%20License%202.0-blue.svg?style=flat" alt="license" title=""></a>
-<a href='https://bintray.com/cuba-platform/main/masquerade/_latestVersion'><img src='https://api.bintray.com/packages/cuba-platform/main/masquerade/images/download.svg'></a>
+<a href='https://bintray.com/cuba-platform/main/masquerade/2.0.1/link'><img src='https://api.bintray.com/packages/cuba-platform/main/masquerade/images/download.svg?version=2.0.1'></a>
 <a href="https://travis-ci.org/cuba-platform/masquerade"><img src="https://travis-ci.org/cuba-platform/masquerade.svg?branch=master" alt="Build Status" title=""></a>
 
 ## Overview
