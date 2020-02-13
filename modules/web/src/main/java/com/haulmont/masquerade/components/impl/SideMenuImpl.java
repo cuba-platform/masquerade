@@ -26,10 +26,11 @@ import static org.openqa.selenium.support.ui.ExpectedConditions.elementToBeClick
 
 public class SideMenuImpl extends AbstractComponent<SideMenu> implements SideMenu {
 
-    public static final String SIDE_MENU_CONTAINER_CLASS_NAME = "c-sidemenu-container";
-    public static final String COLLAPSED_CLASS_NAME = "collapsed";
+    protected static final String SIDE_MENU_CONTAINER_CLASS_NAME = "c-sidemenu-container";
+    protected static final String SIDE_MENU_ITEM_HEADER_OPEN = "c-sidemenu-item-header-open";
+    protected static final String COLLAPSED_CLASS_NAME = "collapsed";
 
-    public static final By COLLAPSE_BUTTON = byCubaId("collapseMenuButton");
+    protected static final By MENU_COLLAPSE_BUTTON = byCubaId("collapseMenuButton");
 
     public SideMenuImpl(By by) {
         super(by);
@@ -58,18 +59,19 @@ public class SideMenuImpl extends AbstractComponent<SideMenu> implements SideMen
     @Override
     public void openItem(String... path) {
         for (String s : path) {
-            String itemXpath = "//div[contains(@class, 'c-sidemenu-item') " +
-                    "and @cuba-id=" + Quotes.escape(s) + "]";
+            String itemXpath = String.format(
+                    "//div[contains(@class, 'c-sidemenu-item') and @cuba-id=%s]",
+                    Quotes.escape(s));
 
-            SelenideElement menuItemElement = $(byXpath(itemXpath));
-
-            menuItemElement
+            SelenideElement menuItemElement = $(byXpath(itemXpath))
                     .shouldBe(visible)
                     .shouldBe(enabled);
 
             Wait().until(elementToBeClickable(menuItemElement));
 
-            menuItemElement.click();
+            if (!menuItemElement.has(cssClass(SIDE_MENU_ITEM_HEADER_OPEN))) {
+                menuItemElement.click();
+            }
         }
     }
 
@@ -92,8 +94,9 @@ public class SideMenuImpl extends AbstractComponent<SideMenu> implements SideMen
     }
 
     protected boolean isCollapsed() {
-        return $(byChain(by, byClassName(SIDE_MENU_CONTAINER_CLASS_NAME)))
-                .shouldBe(visible)
+        SelenideElement sideMenu = $(byChain(by, byClassName(SIDE_MENU_CONTAINER_CLASS_NAME)));
+        return sideMenu.exists()
+                && sideMenu.shouldBe(visible)
                 .has(cssClass(COLLAPSED_CLASS_NAME));
     }
 
@@ -102,8 +105,10 @@ public class SideMenuImpl extends AbstractComponent<SideMenu> implements SideMen
     }
 
     protected void toggleCollapsed() {
-        $c(Button.class, COLLAPSE_BUTTON)
-                .shouldBe(visible)
-                .click();
+        Button collapseMenuButton = $c(Button.class, MENU_COLLAPSE_BUTTON);
+        if (collapseMenuButton.exists()) {
+            collapseMenuButton.shouldBe(visible)
+                    .click();
+        }
     }
 }

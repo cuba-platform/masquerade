@@ -7,8 +7,8 @@ import java.util.Arrays;
 
 /**
  * SideMenu component.
- * <br>
- * Supported conditions:
+ * <p/>
+ * Supported conditions for collapsible SideMenu:
  * <ul>
  * <li>{@link Conditions#EXPANDED}</li>
  * <li>{@link Conditions#COLLAPSED}</li>
@@ -21,7 +21,7 @@ public interface SideMenu extends Component<SideMenu> {
      * <p>
      * Example:
      * <pre>
-     *     $c(SideMenu).openItem(UserBrowser.class, 'administration', 'sec$User.browse')
+     *     $c(SideMenu).openItem(UserBrowser, 'administration', 'sec$User.browse')
      * </pre>
      *
      * @param screenClass screen class to open
@@ -33,11 +33,11 @@ public interface SideMenu extends Component<SideMenu> {
     <T> T openItem(Class<T> screenClass, String... path);
 
     /**
-     * Opens side menu item matching the given {@link com.haulmont.masquerade.components.SideMenu.Menu}.
+     * Opens side menu item matching the given {@link Menu}.
      * <p>
      * Example:
      * <pre>
-     *     $c(SideMenu).openItem(new AppMenu.Menu<>(UserBrowser.class, 'administration', 'sec$User.browse'))
+     *     $c(SideMenu).openItem(new AppMenu.Menu<>(UserBrowser, 'administration', 'sec$User.browse'))
      * </pre>
      *
      * @param menu menu item
