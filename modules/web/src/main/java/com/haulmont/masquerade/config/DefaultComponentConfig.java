@@ -52,6 +52,7 @@ public class DefaultComponentConfig implements ComponentConfig {
         components.put(PickerField.class, PickerFieldImpl::new);
         components.put(Notification.class, NotificationImpl::new);
         components.put(DialogWindow.class, DialogWindowImpl::new);
+        components.put(SideMenu.class, SideMenuImpl::new);
         // stubs
         components.put(BoxLayout.class, BoxLayoutImpl::new);
         components.put(TabSheet.class, TabSheetImpl::new);
