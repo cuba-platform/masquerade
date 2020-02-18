@@ -7,7 +7,7 @@ import java.util.Arrays;
 
 /**
  * SideMenu component.
- * <p/>
+ * <p>
  * Supported conditions for collapsible SideMenu:
  * <ul>
  * <li>{@link Conditions#EXPANDED}</li>
@@ -37,7 +37,7 @@ public interface SideMenu extends Component<SideMenu> {
      * <p>
      * Example:
      * <pre>
-     *     $c(SideMenu).openItem(new AppMenu.Menu<>(UserBrowser, 'administration', 'sec$User.browse'))
+     *     $c(SideMenu).openItem(new SideMenu.Menu(UserBrowser, 'administration', 'sec$User.browse'))
      * </pre>
      *
      * @param menu menu item
