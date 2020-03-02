@@ -143,7 +143,7 @@ import org.junit.Test;
 
 import static com.codeborne.selenide.Selenide.close;
 import static com.codeborne.selenide.Selenide.open;
-import static com.haulmont.masquerade.Components._$;
+import static com.haulmont.masquerade.Components.$c;
 import static com.haulmont.masquerade.Components.wire;
 import static com.haulmont.masquerade.Conditions.*;
 
@@ -155,7 +155,7 @@ public class LoginWindowTest {
         open("http://localhost:8080/app");
 
         // obtain UI object
-        LoginWindow loginWindow = _$(LoginWindow.class);
+        LoginWindow loginWindow = $c(LoginWindow.class);
 
         loginWindow.loginField
                 .shouldBe(EDITABLE)
@@ -206,25 +206,25 @@ Here are some useful tips on how to work with the library.
 
 ## How to work with elements
 
-The library has a special method  ```_$``` to define any element on the screen. 
+The library has a special method  ```$c``` to define any element on the screen. 
 This method has three implementations:
 
 * The first implementation gets the element by its class:
 
-    ```_$(Class<T> clazz)```
+    ```$c(Class<T> clazz)```
 * The second implementation gets the element by its class and the path:
 
-    ```_$(Class<T> clazz, String... path)```
+    ```$c(Class<T> clazz, String... path)```
 * The third implementation gets the element by its class and _by_ selector:
 
-    ```_$(Class<T> clazz, By by)```
+    ```$c(Class<T> clazz, By by)```
     
 For example, we can click the button on the screen: 
 
 ```java
-import static com.haulmont.masquerade.Components._$;
+import static com.haulmont.masquerade.Components.$c;
 
-_$(Button, 'logoutButton').click();
+$c(Button, 'logoutButton').click();
 ```
 
 ## How to check the state of an element
@@ -324,7 +324,7 @@ by the compiler. It eliminates the unnecessary boilerplate in variable
 declarations and makes your code shorter.
 
 ```groovy
-def loginWindow = _$(LoginWindow)
+def loginWindow = $c(LoginWindow)
 ```
 
 ## Run tests
