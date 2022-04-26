@@ -49,7 +49,7 @@ sourceCompatibility = 1.8
 repositories {
     mavenCentral()    
     maven {
-        url "https://dl.bintray.com/cuba-platform/main"
+        url "https://repo.cuba-platform.com/content/groups/work"
     }    
 }
 
