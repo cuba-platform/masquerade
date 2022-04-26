@@ -67,7 +67,7 @@ dependencies {
 }
 ```
 
-Find the latest version number here: https://bintray.com/cuba-platform/main/masquerade
+Find the latest version number here: https://repo.cuba-platform.com/content/groups/work/com/haulmont/masquerade
 
 ## Creating a test
 
